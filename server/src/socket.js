@@ -11,8 +11,10 @@ const io = socket(server)
 io.on('connection', socket => {
 	console.log('user connected')
 	socket.on('customerMessage', data => {
-		console.log(data)
-		io.emit('agentToCustomer', 'na Tunde dey talk so')
+		io.emit('customerToAgent' data)
+	})
+	socket.on('agentMessage', data => {
+		io.emit('agentToCustomer', data)
 	})
 
 	socket.on('disconnect', () => {
