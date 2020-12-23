@@ -1,0 +1,20 @@
+{
+  "name": "csteam-twilio",
+  "version": "1.0.0",
+  "description": "the twilio server to get app to get messages to csteam server",
+  "main": "twilio.js",
+  "scripts": {
+    "start":"node src/twilio.js",
+    "dev":"nodemon src/twilio.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tunde Oduguwa",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "socket.io-client": "^3.0.4",
+    "twilio": "^3.54.1"
+  }
+}
