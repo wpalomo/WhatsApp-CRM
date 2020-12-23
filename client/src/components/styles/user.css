@@ -1,0 +1,14 @@
+.container {
+	height: 100%;
+	display: flex;
+}
+
+.all_messages {
+	border: 1px solid blue;
+	width: 30%;
+}
+
+.singlechat {
+	border: 1px solid black;
+	width: 70%;
+}

@@ -1,0 +1,19 @@
+.top__left {
+	border: 1px solid red;
+	height: 20%;
+}
+
+.all__clients_area {
+	height: 80%;
+	overflow: scroll;
+}
+
+.singleclient {
+	border: 1px solid grey;
+	box-shadow: 5px;
+}
+
+.singleclient h2, p {
+	padding: 3px;
+	margin: 0px;
+}
