@@ -4,10 +4,7 @@ This is a Node.js application powered by Socket.io and Express that provides a o
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
-<!-- * [Setup](#setup) -->
-<!-- * [Features](#features) -->
 * [Status](#status)
-<!-- * [Inspiration](#inspiration) -->
 * [Contact](#contact)
 
 ## General info
