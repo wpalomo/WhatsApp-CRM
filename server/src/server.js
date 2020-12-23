@@ -17,7 +17,7 @@ app.use('/api/v0/', IndexRouter)
 
 app.get('/', (req, res) => {
 	res.send('/api/v0/') 
-}) 
+})  
  
 app.post('/', (req, res) => {
 	res.send('/api/v0/') 
