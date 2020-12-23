@@ -5,7 +5,7 @@ require('dotenv').config();
 const io = require('socket.io-client');
 const socket = io("http://localhost:4001/")
 
-//start 16 Dec 2020
+//start 16 Dec 2020 and end on 23 Jan 2021
 //client >> cs line >> agents >> client
 const server = express();
 server.use(bodyParser.urlencoded({ extended:false }));
