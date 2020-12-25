@@ -28,7 +28,7 @@ const client = twilio(accountSid, authToken);
 		socket.emit('customerMessage', { Body, From })
 		socket.once('agentToCustomer', data => {
 			console.log(data)
-			res.status(200).send('got it')
+			res.status(200).send(data)
 		})
 	})
 
