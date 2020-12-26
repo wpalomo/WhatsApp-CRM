@@ -21,7 +21,7 @@ io.on('connection', socket => {
 	// 	console.log(data)
 	// 	io.emit('agentToCustomer', 'the server is talking')
 	// })
-	socket.emit('agentMessage', 'from sock server to react on xmas')
+	socket.emit('agentMessage', 'from sock server to react on boxing day')
 	socket.on('agentToCustomer', data => {
 		console.log(data)
 	})	
