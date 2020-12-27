@@ -19,12 +19,15 @@ class ExpandedSingleChat extends Component {
 		//show on the screen, in the left bar, and pass to the server
 		//to server
 		this.props.agentMessageToServer(this.state.agentMessage)
+		this.setState({
+			agentMessage: ""
+		})
 	}
 
 	render() {
 		const { agentMessage } = this.state
 		const { customerMessage } = this.props
-		const { Body, From } = customerMessage //destructor the customer message
+		const { Body } = customerMessage //destructure the customer message
 		return(
 			<div className="singlechat">
 				<ul id="messages">{ Body }</ul>

@@ -9,12 +9,17 @@ class User extends Component {
 	constructor() {
 		super()
 		this.state = {
-			agentMessageFromChat:"",
 			customerChatFromServer:""
 		}
 	}
 
 	componentDidMount() {
+
+		socket.on('connect', () => {
+			const socketID = socket.id
+			console.log(socketID)
+		})
+
 		socket.on('serverToAgent', data => {
 			this.setState({
 				customerChatFromServer: data
@@ -22,21 +27,13 @@ class User extends Component {
 		})
 	}
 
-	componentDidUpdate(prevState) {
-		const { agentMessageFromChat } = this.state
-		if (prevState.agentMessageFromChat !== agentMessageFromChat) {
-			socket.emit('agentToServer', agentMessageFromChat)
-		}
-	}
 
 	componentWillUnmount() {
 		socket.disconnect()
 	}
 
 	handleAgentMessage = data => {
-		this.setState({
-			agentMessageFromChat : data
-		})
+		socket.emit('agentToServer', data)
 	}
 	
 	render() {
