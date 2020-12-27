@@ -14,10 +14,19 @@ class User extends Component {
 	}
 
 	componentDidMount() {
-		socket.on('agentMessage', data => {
-			console.log('incoming:', data)
+		// socket.on('agentMessage', data => {
+		// 	console.log(data)})
+		// socket.emit('agentToCustomer', 'data')
+		socket.on('connection', data => {
+			console.log('react has connected')
 		})
-		socket.emit('agentToCustomer', 'from react to you on boxing day')
+	}
+
+	componentDidUpdate(prevState) {
+		const { agentMessageFromChat } = this.state
+		if (prevState.agentMessageFromChat !== agentMessageFromChat) {
+			socket.emit('agentToCustomer', agentMessageFromChat)
+		}
 	}
 
 	componentWillUnmount() {
@@ -25,7 +34,9 @@ class User extends Component {
 	}
 
 	handleAgentMessage = data => {
-		console.log('agent message waiting to enter socket:', data)
+		this.setState({
+			agentMessageFromChat : data
+		})
 	}
 	
 	render() {
