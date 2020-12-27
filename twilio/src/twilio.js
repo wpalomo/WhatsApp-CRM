@@ -25,11 +25,12 @@ const client = twilio(accountSid, authToken);
 
 	server.post('/', (req, res) => {	
 		let { Body, From } = req.body
-		socket.emit('customerMessage', { Body, From })
-		socket.once('agentToCustomer', data => {
-			console.log(data)
-			res.status(200).send(data)
-		})
+		socket.emit('customerToServer', { Body, From })
+		res.status(200).send('e dey work')
+	})
+
+	socket.on('serverToCustomer', data => {
+		console.log(data)
 	})
 
 	server.post('/incoming', (req, res) => {

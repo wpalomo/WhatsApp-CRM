@@ -23,9 +23,11 @@ class ExpandedSingleChat extends Component {
 
 	render() {
 		const { agentMessage } = this.state
+		const { customerMessage } = this.props
+		const { Body, From } = customerMessage //destructor the customer message
 		return(
 			<div className="singlechat">
-				<ul id="messages"></ul>
+				<ul id="messages">{ Body }</ul>
 				 <div className="single_message">
 			      <div className="input_area">
 			        <input value={agentMessage} id="m" autoComplete="off" onChange={this.getAgentMessage}/>

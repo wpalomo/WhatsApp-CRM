@@ -15,15 +15,14 @@ const io = socket(server, {
 	}
 })
 
-io.on('connection', socket => {
+io.on('connection', socket => { 
 	console.log('user connected')
-	// socket.on('customerMessage', data => {
-	// 	console.log(data)
-	// 	io.emit('agentToCustomer', 'the server is talking')
-	// })
-	socket.emit('agentMessage', 'from sock server to react on boxing day')
-	socket.on('agentToCustomer', data => {
-		console.log(data)
+	socket.on('customerToServer', data => {
+		io.emit('serverToAgent', data)
+	})
+
+	socket.on('agentToServer', data => {
+		io.emit('serverToCustomer', data)
 	})	
 	
 

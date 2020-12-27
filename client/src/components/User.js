@@ -9,23 +9,23 @@ class User extends Component {
 	constructor() {
 		super()
 		this.state = {
-			agentMessageFromChat:""
+			agentMessageFromChat:"",
+			customerChatFromServer:""
 		}
 	}
 
 	componentDidMount() {
-		// socket.on('agentMessage', data => {
-		// 	console.log(data)})
-		// socket.emit('agentToCustomer', 'data')
-		socket.on('connection', data => {
-			console.log('react has connected')
+		socket.on('serverToAgent', data => {
+			this.setState({
+				customerChatFromServer: data
+			})
 		})
 	}
 
 	componentDidUpdate(prevState) {
 		const { agentMessageFromChat } = this.state
 		if (prevState.agentMessageFromChat !== agentMessageFromChat) {
-			socket.emit('agentToCustomer', agentMessageFromChat)
+			socket.emit('agentToServer', agentMessageFromChat)
 		}
 	}
 
@@ -40,10 +40,11 @@ class User extends Component {
 	}
 	
 	render() {
+		const { customerChatFromServer } = this.state
 		return (
 		   	<div className="container">
 		   		<LeftBar />
-				<ExpandedSingleChat agentMessageToServer={this.handleAgentMessage}/>
+				<ExpandedSingleChat customerMessage={customerChatFromServer} agentMessageToServer={this.handleAgentMessage}/>
 		   	</div>
 		  );
 	}
