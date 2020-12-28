@@ -1,6 +1,8 @@
 import React from 'react';
 
-const SingleClient = () => {
+const SingleClient = ({ customerMsg }) => {
+	const { Body, From } = customerMsg
+	let customer = From.split(':')[1]
 	return(
 		<div className="singleclient">
 		<div className="singleclient__inner">

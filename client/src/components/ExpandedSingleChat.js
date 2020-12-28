@@ -14,7 +14,7 @@ class ExpandedSingleChat extends Component {
 			agentMessage: e.target.value
 		})
 	}
-
+ 
 	submitAgentMessage = () => {
 		//show on the screen, in the left bar, and pass to the server
 		//to server

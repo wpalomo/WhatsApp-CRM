@@ -13,7 +13,7 @@ class User extends Component {
 		}
 	}
 
-	componentDidMount() {
+	componentDidMount() { 
 
 		socket.on('connect', () => {
 			const socketID = socket.id
@@ -46,7 +46,7 @@ class User extends Component {
 		const { customerChatFromServer } = this.state
 		return (
 		   	<div className="container">
-		   		<LeftBar />
+		   		<LeftBar customerMsg={customerChatFromServer}/>
 				<ExpandedSingleChat customerMessage={customerChatFromServer} agentMessageToServer={this.handleAgentMessage}/>
 		   	</div>
 		  );
