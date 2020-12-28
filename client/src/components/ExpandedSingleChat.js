@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 class ExpandedSingleChat extends Component {
 
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 		this.state = {
-			agentMessage:""
+			agentMessage:"",
 		}
 	}
 
@@ -18,7 +18,10 @@ class ExpandedSingleChat extends Component {
 	submitAgentMessage = () => {
 		//show on the screen, in the left bar, and pass to the server
 		//to server
-		this.props.agentMessageToServer(this.state.agentMessage)
+		const { agentMessage } = this.state
+		const { From } = this.props.customerMessage
+		let customerID = From.split(':')[1]
+		this.props.agentMessageToServer({agentMessage, customerID})
 		this.setState({
 			agentMessage: ""
 		})
@@ -29,7 +32,7 @@ class ExpandedSingleChat extends Component {
 		const { customerMessage } = this.props
 		const { Body } = customerMessage //destructure the customer message
 		return(
-			<div className="singlechat">
+			<div className="singlechat"> 
 				<ul id="messages">{ Body }</ul>
 				 <div className="single_message">
 			      <div className="input_area">

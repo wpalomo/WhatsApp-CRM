@@ -29,22 +29,27 @@ const client = twilio(accountSid, authToken);
 		if (agentList.length === 0) {
 			socket.emit('customerToServer', { Body, From })
 			socket.once('serverToCustomer', data => {
-				const { agentID, agentMsg } = data
-				if (!(agentList.includes(agentID))) {
-					agentList.push(agentID)
-				}
-				res.status(200).send(data)
+				const { agentMessage, agentID, customerID } = data
+				agentList.push({agentID, customerID})
+				res.status(200).send(agentMessage)
 			})
 		} else {
-			console.log('number of agents in twilio:', agentList.length)
-			socket.emit('customerToOneAgent', { Body, From })
-			socket.once('serverToCustomer', data => {
-				const { agentID, agentMsg } = data
-				if (!(agentList.includes(agentID))) {
-					agentList.push(agentID)
-				}
-				res.status(200).send(data)
-			})
+			let customerID = From.split(':')[1]
+			let allCustomers = agentList.map(obj => obj.customerID)
+			if (allCustomers.includes(customerID)) {
+				socket.emit('customerToOneAgent', { Body, From })
+				socket.once('serverToCustomer', data => {
+					const { agentMessage } = data
+					res.status(200).send(agentMessage)
+				})
+			} else {
+				socket.emit('customerToServer', { Body, From })
+				socket.once('serverToCustomer', data => {
+					const { agentMessage, agentID, customerID } = data
+					agentList.push({agentID, customerID})
+					res.status(200).send(agentMessage)
+				})
+			}
 		}
 	})
 

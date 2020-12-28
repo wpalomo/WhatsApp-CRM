@@ -24,17 +24,28 @@ io.on('connection', socket => {
 	})
 	
 	socket.on('customerToOneAgent', data => {
-		console.log(data, 'to select agent')
-		io.to(agentList[0]).emit('serverToSpecificAgent', data)
+		const { Body, From } = data
+		let customerID = From.split(':')[1]
+		for (let obj of agentList) {
+			if (obj.customerID === customerID) {
+				io.to(obj.agentID).emit('serverToSpecificAgent', data)
+			}
+		}
 	})
 
 	socket.on('agentToServer', data => {
 		let agentID = socket.id
-		let agentMsg = data
-		if (!(agentList.includes(agentID))) {
-			agentList.push(agentID)
+		const { agentMessage, customerID  } = data
+		if (agentList.length === 0) {
+			agentList.push({agentID, customerID})
+		} else {
+			for (let obj of agentList) {
+				if (obj.customerID !== customerID) {
+					agentList.push({agentID, customerID})
+				}
+			}
 		}
-		io.emit('serverToCustomer', {agentMsg, agentID})
+		io.emit('serverToCustomer', {agentMessage, agentID, customerID})
 	})	
 	
 
