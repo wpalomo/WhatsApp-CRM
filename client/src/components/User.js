@@ -25,6 +25,12 @@ class User extends Component {
 				customerChatFromServer: data
 			})
 		})
+
+		socket.on('serverToSpecificAgent', data => {
+			this.setState({
+				customerChatFromServer: data
+			})
+		})
 	}
 
 

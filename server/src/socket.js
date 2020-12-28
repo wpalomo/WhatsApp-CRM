@@ -15,14 +15,26 @@ const io = socket(server, {
 	}
 })
 
+let agentList = []
 io.on('connection', socket => { 
-	console.log('user connected')
+	console.log('user connected') 
+
 	socket.on('customerToServer', data => {
 		io.emit('serverToAgent', data)
 	})
+	
+	socket.on('customerToOneAgent', data => {
+		console.log(data, 'to select agent')
+		io.to(agentList[0]).emit('serverToSpecificAgent', data)
+	})
 
 	socket.on('agentToServer', data => {
-		io.emit('serverToCustomer', data)
+		let agentID = socket.id
+		let agentMsg = data
+		if (!(agentList.includes(agentID))) {
+			agentList.push(agentID)
+		}
+		io.emit('serverToCustomer', {agentMsg, agentID})
 	})	
 	
 

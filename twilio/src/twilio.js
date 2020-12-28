@@ -23,15 +23,32 @@ const client = twilio(accountSid, authToken);
 		res.status(200).send('welcome to csteams home')
 	})
 
+	let agentList = []
 	server.post('/', (req, res) => {	
 		let { Body, From } = req.body
-		socket.emit('customerToServer', { Body, From })
-		res.status(200).send('e dey work')
+		if (agentList.length === 0) {
+			socket.emit('customerToServer', { Body, From })
+			socket.once('serverToCustomer', data => {
+				const { agentID, agentMsg } = data
+				if (!(agentList.includes(agentID))) {
+					agentList.push(agentID)
+				}
+				res.status(200).send(data)
+			})
+		} else {
+			console.log('number of agents in twilio:', agentList.length)
+			socket.emit('customerToOneAgent', { Body, From })
+			socket.once('serverToCustomer', data => {
+				const { agentID, agentMsg } = data
+				if (!(agentList.includes(agentID))) {
+					agentList.push(agentID)
+				}
+				res.status(200).send(data)
+			})
+		}
 	})
 
-	socket.on('serverToCustomer', data => {
-		console.log(data)
-	})
+	
 
 	server.post('/incoming', (req, res) => {
 		console.log(req.body.Body) //>> this is the customer's message that will need to be shared among several numbers 
