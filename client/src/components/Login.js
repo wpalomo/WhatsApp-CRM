@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import axios from 'axios';
-import history from "./History";
+//import history from "./History";
 // import "./routes.css"
 
 class Login extends Component { 
@@ -26,8 +26,9 @@ class Login extends Component {
 	}
 
 	onSubmitSignin =  async () => {
-		//const { signinUsername, signinPassword } = this.state;
-		history.push('/user')
+		const { signinUsername, signinPassword } = this.state;
+		console.log({signinUsername, signinPassword})
+		//history.push('/user')
 		this.setState({
 			signinUsername:"",
 			signinPassword:""
