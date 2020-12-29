@@ -9,7 +9,8 @@ class User extends Component {
 	constructor() {
 		super()
 		this.state = {
-			customerChatFromServer:""
+			customerChatFromServer:"",
+			allChats:[]
 		}
 	}
 
@@ -21,12 +22,60 @@ class User extends Component {
 		})
 
 		socket.on('serverToAgent', data => {
+			const { allChats } = this.state
+			//to left bar chats area
+			if (allChats.length === 0) {
+				this.setState({
+					allChats: [...allChats, data]
+				})
+			} else {
+				const { From, Body } = data
+				let customerIndex = allChats.findIndex(obj => obj.From === From)
+				if (customerIndex === -1) {
+					this.setState({
+						allChats: [...allChats, data]
+					})
+				} else {
+					let newArray = [...allChats]
+					let customer = { ...newArray[customerIndex] }
+					customer.Body = Body
+					newArray[customerIndex] = customer
+					this.setState({
+						allChats: newArray
+					})
+				}
+			}
+			//to expanded chat area
 			this.setState({
 				customerChatFromServer: data
 			})
 		})
 
 		socket.on('serverToSpecificAgent', data => {
+			const { allChats } = this.state
+			//to left bar chats area
+			if (allChats.length === 0) {
+				this.setState({
+					allChats: [...allChats, data]
+				})
+			} else {
+				const { From, Body } = data
+				let customerIndex = allChats.findIndex(obj => obj.From === From)
+				if (customerIndex === -1) {
+					this.setState({
+						allChats: [...allChats, data]
+					})
+				} else {
+					let newArray = [...allChats]
+					let customer = { ...newArray[customerIndex] }
+					customer.Body = Body
+					newArray[customerIndex] = customer
+					this.setState({
+						allChats: newArray
+					})
+				}
+			}
+			//to expanded chat area
 			this.setState({
 				customerChatFromServer: data
 			})
@@ -43,10 +92,10 @@ class User extends Component {
 	}
 	
 	render() {
-		const { customerChatFromServer } = this.state
+		const { customerChatFromServer, allChats } = this.state
 		return (
 		   	<div className="container">
-		   		<LeftBar customerMsg={customerChatFromServer}/>
+		   		<LeftBar customerList={allChats}/>
 				<ExpandedSingleChat customerMessage={customerChatFromServer} agentMessageToServer={this.handleAgentMessage}/>
 		   	</div>
 		  );

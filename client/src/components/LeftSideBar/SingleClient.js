@@ -6,12 +6,12 @@ const SingleClient = ({ customerMsg }) => {
 	return(
 		<div className="singleclient">
 		<div className="singleclient__inner">
-			<h2>07030117552</h2>
+			<h2>{ customer }</h2>
 			{
 				//<h4>16:35</h4>
 			}
 		</div>
-			<p>This is the new era</p>
+			<p>{ Body }</p>
 		</div>
 	)
 }

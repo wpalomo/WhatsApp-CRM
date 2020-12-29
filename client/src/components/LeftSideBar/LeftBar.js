@@ -3,11 +3,11 @@ import TopLeft from './TopLeft';
 import AllClientArea from './AllClientArea';
 import './leftbar.css';
 
-const LeftBar = ({ customerMsg }) => {
+const LeftBar = ({ customerList }) => {
 	return(
 		<div className="all_messages">
 			<TopLeft />
-			<AllClientArea customerMsg={customerMsg}/> 
+			<AllClientArea customerList={customerList}/> 
 		</div>
 	)
 }
