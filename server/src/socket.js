@@ -16,8 +16,14 @@ const io = socket(server, {
 })
 
 let agentList = []
+const usernameSocketidMap = new Map();
+
 io.on('connection', socket => { 
 	console.log('user connected') 
+
+	socket.on('loggedInAgent', agentUsername => {
+		addAgentToMap(agentUsername, socket.id)
+	})
 
 	socket.on('customerToServer', data => {
 		io.emit('serverToAgent', data)
