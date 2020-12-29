@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import axios from 'axios';
-//import history from "./History";
-// import "./routes.css"
+import history from "./History";
+import "./styles/login.css"
 
 class Login extends Component { 
 
@@ -27,8 +27,15 @@ class Login extends Component {
 
 	onSubmitSignin =  async () => {
 		const { signinUsername, signinPassword } = this.state;
-		console.log({signinUsername, signinPassword})
-		//history.push('/user')
+		//send to backend for auth and map the username to a socket if auth is successful
+
+		//- change route to user if auth is true
+		history.push('/user') 
+
+		//send the usernmae to the user socket
+		this.props.agentLoginUsername(signinUsername)
+
+		//clear the form
 		this.setState({
 			signinUsername:"",
 			signinPassword:""
@@ -63,22 +70,24 @@ class Login extends Component {
 		const { signinUsername, signinPassword } = this.state
 		return(
 			<div className="signin-container">
-				<div className="signin-text">
-					<p>Log in to Sauceflow</p> 
+				<div className="login_box">
+					<div className="signin-text">
+						<p>Sauceflow</p> 
+					</div>
+					<div className="signin-input">
+						<input value={signinUsername} onChange={this.getSigninUsername} type="text" name="username" placeholder="username"/>
+						<input value={signinPassword} onChange={this.getSigninPassword} type="password" name="password" placeholder="password"/>
+					</div>
+					<div className="login__area">
+						<div className="login-button" onClick={this.onSubmitSignin}>Log in</div>
+					</div>
+					{
+						// <div className="signin-footer">
+						// 				<p onClick={() => history.push('/forgot')}>Forgot password?</p> 
+						// 				<p onClick={() => history.push('/signup')}>Signup</p>
+						// 			</div>
+								}
 				</div>
-				<div className="signin-input">
-					<input value={signinUsername} onChange={this.getSigninUsername} type="text" name="username" placeholder="username"/>
-					<input value={signinPassword} onChange={this.getSigninPassword} type="password" name="password" placeholder="password"/>
-				</div>
-				<div>
-					<div className="signin-login-button" onClick={this.onSubmitSignin}>Log in</div>
-				</div>
-				{
-					// <div className="signin-footer">
-					// 				<p onClick={() => history.push('/forgot')}>Forgot password?</p> 
-					// 				<p onClick={() => history.push('/signup')}>Signup</p>
-					// 			</div>
-							}
 			</div>
 		)
 	}

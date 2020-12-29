@@ -25,7 +25,7 @@ class ExpandedSingleChat extends Component {
 		this.setState({
 			agentMessage: ""
 		})
-	}
+	} 
 
 	render() {
 		const { agentMessage } = this.state

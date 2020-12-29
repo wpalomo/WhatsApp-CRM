@@ -1,0 +1,21 @@
+.signin-container {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.login_box {
+	border: 1px solid grey;
+	align-self: center;
+	padding: 40px;
+	border-radius: 20px;
+}
+.signin-text {
+	text-align: center;
+	margin-bottom: 5px;
+}
+
+.login__area {
+	text-align: center;
+	margin-top: 5px;
+}
