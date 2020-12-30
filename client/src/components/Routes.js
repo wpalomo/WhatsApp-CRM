@@ -1,9 +1,52 @@
 import React from 'react';
-import { Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route, Redirect } from "react-router-dom";
 import history from "./History";
 
 import Login from "./Login";
 import User from "./User";
+import ProtectedRoute from "./ProtectedRoute";
+
+const Routes = () => {
+	return(
+		<Router history={history}>
+			<Switch>
+				<Route exact path="/" render={() => (<Redirect to={{ pathname: '/login' }}/>)}/>
+				<Route path="/login" component={Login}/>
+				<ProtectedRoute path="/user" component={User}/>
+			</Switch>
+		</Router>
+	)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //old cose for passing username props - import Component if needed 
 // class Routes extends Component {
@@ -40,16 +83,5 @@ import User from "./User";
 // 	}
 // }
 
-
-const Routes = () => {
-	return(
-		<Router history={history}>
-			<Switch>
-				<Route path="/login" component={Login}/>
-				<Route path="/user" component={User}/>
-			</Switch>
-		</Router>
-	)
-}
 
 export default Routes;
