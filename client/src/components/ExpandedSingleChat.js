@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Avatar } from "@material-ui/core";
+
+import "./styles/chat.css";
 
 class ExpandedSingleChat extends Component {
 
@@ -8,7 +11,7 @@ class ExpandedSingleChat extends Component {
 			agentMessage:"",
 		}
 	}
-
+ 
 	getAgentMessage = e => {
 		this.setState({
 			agentMessage: e.target.value
@@ -33,14 +36,12 @@ class ExpandedSingleChat extends Component {
 		const { Body } = customerMessage //destructure the customer message
 		return(
 			<div className="singlechat"> 
-				<ul id="messages">{ Body }</ul>
-				 <div className="single_message">
-			      <div className="input_area">
-			        <input value={agentMessage} id="m" autoComplete="off" onChange={this.getAgentMessage}/>
-			      </div>
-			      <div>
-			      	<button onClick={this.submitAgentMessage}>Send</button>
-			      </div>
+				<div className="chat__header"> 
+					<Avatar />
+			    </div>
+			    <div className="chat__body"> 
+			    </div>
+			    <div className="chat__footer"> 
 			    </div>
 			</div>
 		)
@@ -48,3 +49,18 @@ class ExpandedSingleChat extends Component {
 }
 
 export default ExpandedSingleChat;
+
+
+// return(
+// 			<div className="singlechat"> 
+// 				<ul id="messages">{ Body }</ul>
+// 				 <div className="single_message">
+// 			      <div className="input_area">
+// 			        <input value={agentMessage} id="m" autoComplete="off" onChange={this.getAgentMessage}/>
+// 			      </div>
+// 			      <div>
+// 			      	<button onClick={this.submitAgentMessage}>Send</button>
+// 			      </div>
+// 			    </div>
+// 			</div>
+// 		)

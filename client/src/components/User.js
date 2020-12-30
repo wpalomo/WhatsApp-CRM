@@ -10,7 +10,7 @@ class User extends Component {
 		super()
 		this.state = {
 			customerChatFromServer:"", 
-			allChats:[]
+			allChats:[] 
 		}
 	}
 
