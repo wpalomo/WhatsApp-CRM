@@ -5,7 +5,7 @@ import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import ChatIcon from "@material-ui/icons/Chat";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
-import TopLeft from './TopLeft';
+//import TopLeft from './TopLeft';
 import AllClientArea from './AllClientArea';
 import './leftbar.css';
 
@@ -33,12 +33,9 @@ const LeftBar = ({ customerList }) => {
 					<input type="text" placeholder="Search or start a new chat" />
 				</div>
 			</div>
-			<TopLeft />
 			<div className="leftbar__chats"> 
-				
+				<AllClientArea customerList={customerList}/> 
 			</div>
-			<AllClientArea customerList={customerList}/> 
-			
 		</div> 
 	)
 }

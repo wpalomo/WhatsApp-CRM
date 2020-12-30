@@ -49,3 +49,9 @@
 	margin-right: 2vw;
 	font-size: 24px !important;
 }
+
+.leftbar__chats {
+	flex: 1;
+	background-color: #fff;
+	overflow: scroll;
+}
