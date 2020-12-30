@@ -1,56 +1,55 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Router, Switch, Route } from "react-router-dom";
 import history from "./History";
 
 import Login from "./Login";
 import User from "./User";
- 
-class Routes extends Component {
 
-	constructor() {
-		super()
-		this.state = {
-			agentUsername:""
-		}
-	}
+//old cose for passing username props - import Component if needed 
+// class Routes extends Component {
 
-	getAgentUsername = data => {
-		this.setState({
-			agentUsername: data
-		})
-	}
+// 	constructor() {
+// 		super()
+// 		this.state = {
+// 			agentUsername:""
+// 		}
+// 	}
 
-	render() {
-		const { agentUsername } = this.state
-		return(
-			<Router history={history}>
-				<Switch>
-					<Route 
-						path="/login" 
-						render={() => <Login agentLoginUsername={this.getAgentUsername}/>}
-					/>
-					<Route 
-						path="/user" 
-						render={() => <User agentUsername={agentUsername}/>}
-					/>
-				</Switch>
-			</Router>
-		)
-	}
-}
+// 	getAgentUsername = data => {
+// 		this.setState({
+// 			agentUsername: data
+// 		})
+// 	}
 
-
-
-
-// const Routes = () => {
-// 	return(
-// 		<Router history={history}>
-// 			<Switch>
-// 				<Route path="/login" component={Login}/>
-// 				<Route path="/user" component={User}/>
-// 			</Switch>
-// 		</Router>
-// 	)
+// 	render() {
+// 		const { agentUsername } = this.state
+// 		return(
+// 			<Router history={history}>
+// 				<Switch>
+// 					<Route 
+// 						path="/login" 
+// 						render={() => <Login agentLoginUsername={this.getAgentUsername}/>}
+// 					/>
+// 					<Route 
+// 						path="/user" 
+// 						render={() => <User agentUsername={agentUsername}/>}
+// 					/>
+// 				</Switch>
+// 			</Router>
+// 		)
+// 	}
 // }
+
+
+const Routes = () => {
+	return(
+		<Router history={history}>
+			<Switch>
+				<Route path="/login" component={Login}/>
+				<Route path="/user" component={User}/>
+			</Switch>
+		</Router>
+	)
+}
 
 export default Routes;

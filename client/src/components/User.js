@@ -15,14 +15,9 @@ class User extends Component {
 	}
 
 	componentDidMount() { 
-		const { agentUsername } = this.props
-		
-		socket.on('connect', () => {
-			const socketID = socket.id
-			console.log(socketID)
-		})
+		let currentUser = sessionStorage.getItem('aun')
 
-		socket.emit('loggedInAgent', agentUsername)
+		socket.emit('loggedInAgent', currentUser)
 
 		socket.on('serverToAgent', data => {
 			const { allChats } = this.state

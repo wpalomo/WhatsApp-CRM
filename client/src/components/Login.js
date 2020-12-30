@@ -33,7 +33,8 @@ class Login extends Component {
 		history.push('/user') 
 
 		//send the usernmae to the user socket
-		this.props.agentLoginUsername(signinUsername)
+		sessionStorage.setItem('aun', signinUsername)
+		//this.props.agentLoginUsername(signinUsername) - old code
 
 		//clear the form
 		this.setState({
