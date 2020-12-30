@@ -1,4 +1,5 @@
 import React from 'react';
+import { Avatar } from "@material-ui/core";
 import "../styles/singleclient.css";
 
 // const SingleClient = ({ customerMsg }) => {
@@ -21,8 +22,11 @@ const SingleClient = () => {
 	
 	return(
 		<div className="singleclient">
-			<h2>07030117552</h2>
-			<p>Howdy</p> 
+			<Avatar src=""/>
+			<div className="singleclient__info">
+			<h2>2347030117552</h2>
+			<p>Last message...</p> 
+			</div>
 		</div>
 	)
 }
