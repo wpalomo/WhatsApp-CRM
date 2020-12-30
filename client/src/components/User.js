@@ -9,7 +9,7 @@ class User extends Component {
 	constructor() {
 		super()
 		this.state = {
-			customerChatFromServer:"",
+			customerChatFromServer:"", 
 			allChats:[]
 		}
 	}
@@ -92,8 +92,8 @@ class User extends Component {
 	render() {
 		const { customerChatFromServer, allChats } = this.state
 		return (
-		   	<div className="container">
-		   		<LeftBar customerList={allChats}/>
+			<div className="app__body">
+			   	<LeftBar customerList={allChats}/>
 				<ExpandedSingleChat customerMessage={customerChatFromServer} agentMessageToServer={this.handleAgentMessage}/>
 		   	</div>
 		  );

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import axios from 'axios';
 import history from "./History";
 import "./styles/login.css"
 
@@ -34,7 +33,6 @@ class Login extends Component {
 
 		//send the usernmae to the user socket
 		sessionStorage.setItem('aun', signinUsername)
-		//this.props.agentLoginUsername(signinUsername) - old code
 
 		//clear the form
 		this.setState({
@@ -43,29 +41,7 @@ class Login extends Component {
 		})
 	}
 
-	// onSubmitSignin =  async () => {
-	// 	const { signinUsername, signinPassword } = this.state;
-	// 	let token = await addCSRFToken();
-	// 	axios.defaults.headers['X-CSRF-Token'] = token;
-	// 	if ((signinUsername === "") || (signinPassword === "")) {
-	// 		alert("Please enter your username and password")
-	// 	}
-	// 	try {
-	// 		let resp = await axios.post(`/api/v0/users/login`, this.state) 
-	// 		if ((resp.status === 200) && (resp.data.auth === true)) {
-	// 			this.setState({
-	// 				signinUsername:"",
-	// 				signinPassword:""
-	// 			})
-	// 			sessionStorage.setItem("userid", resp.data.userid)
-	// 			sessionStorage.setItem("bookieSelection", resp.data.bookieAuth)
-	// 			history.push('/user')
-	// 		} 
-	// 	} catch (error) {
-	// 		alert("Wrong username or password")
-	// 	}
-		
-	// }
+	
  
 	render() {
 		const { signinUsername, signinPassword } = this.state
@@ -73,7 +49,7 @@ class Login extends Component {
 			<div className="signin-container">
 				<div className="login_box">
 					<div className="signin-text">
-						<p>Sauceflow</p> 
+						<p>Sign in to Sauceflow</p> 
 					</div>
 					<div className="signin-input">
 						<input value={signinUsername} onChange={this.getSigninUsername} type="text" name="username" placeholder="username"/>

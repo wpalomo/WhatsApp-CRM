@@ -52,10 +52,7 @@ const removeAgentFromMap = (socketId) => {
 }
 
 io.on('connection', socket => { 
-	console.log('user connected') 
-	// socket.on('refresh', data => {
-	// 	addAgentToMap(data, socket.id)
-	// })
+	console.log('connected!')
 
 	socket.on('loggedInAgent', agentUsername => {
 		if (agentUsername !== "") {

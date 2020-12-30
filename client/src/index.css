@@ -1,6 +1,17 @@
+* {
+	margin: 0;
+}
+
 html, body {
 	height: 100%;
 	margin: 0;
+}
+
+.app {
+	display: grid;
+	place-items: center;
+	background-color: #dadbd3;
+	height: 100vh;
 }
 
 #root {
