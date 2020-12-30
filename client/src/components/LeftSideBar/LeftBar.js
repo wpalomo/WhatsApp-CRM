@@ -1,5 +1,6 @@
 import React from 'react';
-import { Avatar } from "@material-ui/core";
+import { Avatar, IconButton } from "@material-ui/core";
+import { SearchOutlined } from "@material-ui/icons";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import ChatIcon from "@material-ui/icons/Chat";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -14,14 +15,23 @@ const LeftBar = ({ customerList }) => {
 			<div className="leftbar__header">
 				<Avatar />
 				<div className="leftbar__headerRight">
-					<DonutLargeIcon />
-					<ChatIcon />
-					<MoreVertIcon />
+					<IconButton>
+						<DonutLargeIcon />
+					</IconButton>
+					<IconButton>
+						<ChatIcon />
+					</IconButton>
+					<IconButton>
+						<MoreVertIcon />
+					</IconButton>
 				</div>
 			</div>
 
 			<div className="leftbar__search">
-				
+				<div className="leftbar__searchContainer">
+					<SearchOutlined />
+					<input type="text" placeholder="Search or start a new chat" />
+				</div>
 			</div>
 			<TopLeft />
 			<div className="leftbar__chats"> 
