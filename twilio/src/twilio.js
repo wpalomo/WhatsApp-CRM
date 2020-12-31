@@ -5,12 +5,11 @@ require('dotenv').config();
 const io = require('socket.io-client');
 const socket = io("http://localhost:4001/")
 
-//start 16 Dec 2020 and end on 23 Jan 2021
-//client >> cs line >> agents >> client
+//start 16 Dec 2020 and end on 13 Jan 2021
 const server = express();
 server.use(bodyParser.urlencoded({ extended:false }));
 server.use(bodyParser.json());//for local testing with postman
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; 
  
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;

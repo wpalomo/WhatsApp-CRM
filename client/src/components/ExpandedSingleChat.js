@@ -21,9 +21,10 @@ class ExpandedSingleChat extends Component {
 		})
 	}
  
-	submitAgentMessage = () => {
+	submitAgentMessage = (e) => {
 		//show on the screen, in the left bar, and pass to the server
 		//to server
+		e.preventDefault()
 		const { agentMessage } = this.state
 		const { From } = this.props.customerMessage
 		let customerID = From.split(':')[1]
@@ -35,8 +36,8 @@ class ExpandedSingleChat extends Component {
 
 	render() {
 		const { agentMessage } = this.state
-		const { customerMessage } = this.props
-		const { Body } = customerMessage //destructure the customer message
+		//const { customerMessage } = this.props
+		//const { Body, From } = customerMessage //destructure the customer message
 		return(
 			<div className="singlechat"> 
 				<div className="chat__header"> 
@@ -68,8 +69,8 @@ class ExpandedSingleChat extends Component {
 						<AttachFile />
 					</IconButton>
 			    	<form>
-						<input placeholder="Type a message" type="text" />
-						<button>Send</button>
+						<input value={agentMessage} autoComplete="off" onChange={this.getAgentMessage} placeholder=" Type a message" type="text" />
+						<button type="submit" onClick={this.submitAgentMessage}>Send</button>
 					</form>
 					<IconButton>
 			    		<MicIcon />

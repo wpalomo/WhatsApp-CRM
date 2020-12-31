@@ -97,7 +97,7 @@ io.on('connection', socket => {
 			console.log(resp, 'left')
 		} else {
 			console.log(resp.leavingAgent, 'closed a connection')
-		}
+		} 
 	})
 })
 
