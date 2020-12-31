@@ -3,8 +3,7 @@ import { Avatar } from "@material-ui/core";
 import "../styles/singleclient.css";
 
 const SingleClient = ({ dbObj }) => {
-	const { data } = dbObj
-	const { customerNum } = data
+	const { customerNum } = dbObj
 	return(
 		<div className="singleclient">
 			<Avatar src=""/>

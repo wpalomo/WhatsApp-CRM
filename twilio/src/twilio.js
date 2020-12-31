@@ -9,7 +9,7 @@ const socket = io("http://localhost:4001/")
 const server = express();
 server.use(bodyParser.urlencoded({ extended:false }));
 server.use(bodyParser.json());//for local testing with postman
-const PORT = process.env.PORT || 6000; 
+const PORT = process.env.PORT || 5000; 
  
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;

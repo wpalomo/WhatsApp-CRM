@@ -15,19 +15,19 @@ class User extends Component {
 		}
 	} 
 
-	componentDidMount() { 
-		//get exisitng chats for this agent - replace agent1 with the logged in agent
-		db.collection('agent1').onSnapshot(snapshot => (
+	getMessages = () => {
+		this.unsubscribe = db.collection('agent1').onSnapshot(snapshot => (
 			this.setState({
 				allChats: snapshot.docs.map(obj => {
 					return {id:obj.id, data:obj.data()}
 				})
 			})
 		))
+	}
 
-
-
-
+	componentDidMount() { 
+		//get exisitng chats for this agent - replace agent1 with the logged in agent
+		this.getMessages()
 
 		let currentUser = sessionStorage.getItem('aun')
 
@@ -37,9 +37,29 @@ class User extends Component {
 		//when a new message comes in
 		socket.on('serverToAgent', data => {
 			const { From, Body } = data
-			let customerNumber = From.split('+')[1]
-			//check if this customer exists in the db
+			let customerNumber = Number(From.split('+')[1])
+			const agentRef = db.collection('agent1')
+			//check if this customer exists in the db for this agent
+			// agentRef
+			// 	.get()
+			// 	.then(snapshot => {
+			// 		const result = snapshot.docs.filter(obj => {
+			// 			return obj.data().customerNum === customerNumber
+			// 		})
+			// 		//data = [e], you need to work on the data[0]
+			// 		if (result.length !== 0) { //means this customer was already chatting with this agent
+			// 			//send the message to the frontend and db and this particular agent
 
+			// 		} else {
+			// 			//means this a new customer and should be sent to all connected agents
+			// 			//to all agents
+			// 			this.setState({
+			// 				allChats:[...allChats, data]
+			// 			})
+			// 			//to db of the agent
+
+			// 		}
+			// 	})
 		})
 
 		socket.on('serverToSpecificAgent', data => {
@@ -76,6 +96,7 @@ class User extends Component {
 
 	componentWillUnmount() {
 		socket.disconnect()
+		this.unsubscribe()
 	}
 
 	handleAgentMessage = data => {
@@ -94,3 +115,4 @@ class User extends Component {
 }
 
 export default User;
+ 
