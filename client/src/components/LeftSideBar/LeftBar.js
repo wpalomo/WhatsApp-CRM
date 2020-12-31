@@ -30,7 +30,7 @@ const LeftBar = ({ customerList }) => {
 			<div className="leftbar__search">
 				<div className="leftbar__searchContainer">
 					<SearchOutlined />
-					<input type="text" placeholder="Search or start a new chat" />
+					<input type="text" placeholder="Search or start a new chat" /> 
 				</div>
 			</div>
 			<div className="leftbar__chats"> 

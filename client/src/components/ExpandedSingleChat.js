@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Avatar, IconButton } from "@material-ui/core";
-import { SearchOutlined } from "@material-ui/icons";
-import AttachFile from "@material-ui/icons/AttachFile";
-import MoreVert from "@material-ui/icons/MoreVert";
+import { SearchOutlined, MoreVert, AttachFile } from "@material-ui/icons";
+import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import MicIcon from "@material-ui/icons/Mic";
 
 import "./styles/chat.css";
 
@@ -50,9 +50,6 @@ class ExpandedSingleChat extends Component {
 							<SearchOutlined />
 						</IconButton>
 						<IconButton>
-							<AttachFile />
-						</IconButton>
-						<IconButton>
 							<MoreVert />
 						</IconButton>
 					</div>
@@ -64,6 +61,19 @@ class ExpandedSingleChat extends Component {
 			    	</p>
 			    </div>
 			    <div className="chat__footer"> 
+			    	<IconButton>
+			    		<InsertEmoticonIcon />
+			    	</IconButton>
+			    	<IconButton>
+						<AttachFile />
+					</IconButton>
+			    	<form>
+						<input placeholder="Type a message" type="text" />
+						<button>Send</button>
+					</form>
+					<IconButton>
+			    		<MicIcon />
+			    	</IconButton>
 			    </div>
 			</div>
 		)
