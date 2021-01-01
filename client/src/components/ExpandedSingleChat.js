@@ -13,7 +13,7 @@ class ExpandedSingleChat extends Component {
 		this.state = { 
 			agentMessage:"",
 		}
-	}
+	} 
  
 	getAgentMessage = e => {
 		this.setState({

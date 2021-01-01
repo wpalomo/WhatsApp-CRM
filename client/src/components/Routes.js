@@ -4,6 +4,7 @@ import history from "./History";
 
 import Login from "./Login";
 import User from "./User";
+import ExpandedSingleChat from './ExpandedSingleChat';
 import ProtectedRoute from "./ProtectedRoute";
 
 const Routes = () => {
@@ -12,6 +13,9 @@ const Routes = () => {
 			<Switch>
 				<Route exact path="/" render={() => (<Redirect to={{ pathname: '/login' }}/>)}/>
 				<Route path="/login" component={Login}/>
+				<Route path="/customers/:customerId">
+					<ExpandedSingleChat />
+				</Route>
 				<ProtectedRoute path="/user" component={User}/>
 			</Switch>
 		</Router> 
