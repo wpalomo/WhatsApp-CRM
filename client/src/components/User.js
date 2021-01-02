@@ -12,7 +12,8 @@ class User extends Component {
 		super()
 		this.state = {
 			customerChatFromServer:"", 
-			allChats:[] 
+			allChats:[],
+			selectedCustomer:{} 
 		}
 	} 
 
@@ -103,18 +104,24 @@ class User extends Component {
 	// handleAgentMessage = data => {
 	// 	socket.emit('agentToServer', data)
 	// }
+
+	getCustomer = data => {
+		this.setState({
+			selectedCustomer: data
+		})
+	}
 	
 	render() {
-		const { customerChatFromServer, allChats } = this.state
+		const { customerChatFromServer, allChats, selectedCustomer } = this.state
 		return (
 			<div className="app__body">
 				<Switch>
 					<Route path="/customers/all">
-						<LeftBar customerList={allChats}/>
+						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
 					</Route>
 					<Route path="/customers/:customerId">
-						<LeftBar customerList={allChats}/>
-						<ExpandedSingleChat customerMessage={customerChatFromServer} agentMessageToServer={this.handleAgentMessage}/>
+						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
+						<ExpandedSingleChat selectedCustomer={selectedCustomer} customerMessage={customerChatFromServer} agentMessageToServer={this.handleAgentMessage}/>
 					</Route>
 					<Redirect from="/customers" to="/customers/all" exact/>
 				</Switch>
