@@ -9,9 +9,6 @@ import AllClientArea from './AllClientArea';
 import './leftbar.css';
 
 const LeftBar = ({ customerList }) => {
-	const clickedCustomerId = data => {
-		console.log('in the leftbar >>>', data)
-	}
 	return(
 		<div className="leftbar"> 
 			<div className="leftbar__header">
@@ -36,7 +33,7 @@ const LeftBar = ({ customerList }) => {
 				</div>
 			</div>
 			<div className="leftbar__chats"> 
-				<AllClientArea customerList={customerList} clickedCustomerId={clickedCustomerId}/>  
+				<AllClientArea customerList={customerList}/>  
 			</div>
 		</div> 
 	)

@@ -25,11 +25,11 @@ class Login extends Component {
 	}
 
 	onSubmitSignin =  async () => {
-		const { signinUsername, signinPassword } = this.state;
+		const { signinUsername } = this.state;
 		//send to backend for auth and map the username to a socket if auth is successful
 
 		//- change route to user if auth is true
-		history.push('/user') 
+		history.push('/customers') 
 
 		//send the usernmae to the user socket
 		sessionStorage.setItem('aun', signinUsername)
