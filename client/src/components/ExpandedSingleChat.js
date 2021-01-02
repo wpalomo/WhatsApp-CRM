@@ -3,6 +3,7 @@ import { Avatar, IconButton } from "@material-ui/core";
 import { SearchOutlined, MoreVert, AttachFile } from "@material-ui/icons";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
+import db from "../firebase";
 
 import "./styles/chat.css";
 
@@ -12,8 +13,31 @@ class ExpandedSingleChat extends Component {
 		super(props)
 		this.state = { 
 			agentMessage:"",
+			customerNum: ""
 		}
 	}  
+
+	getCustomerData = id => {
+		this.unsubscribe =  db.collection('agent1')
+							  .doc(id)
+							  .onSnapshot(snapshot => {
+							  	this.setState({
+							  		customerNum:snapshot.data().customerNum
+							  	})
+							  })
+	}
+
+	componentDidMount() {
+		const { id } = this.props.selectedCustomer
+		this.getCustomerData(id)
+	}
+
+	componentDidUpdate(prevProps) {
+		const { id } = this.props.selectedCustomer
+		if (id !== prevProps.id) {
+			this.getCustomerData(id)
+		}
+	}
  
 	getAgentMessage = e => {
 		this.setState({
@@ -34,16 +58,21 @@ class ExpandedSingleChat extends Component {
 		})
 	} 
 
+	componentWillUnmount() {
+		this.unsubscribe()
+	}
+
 	render() {
-		const { agentMessage } = this.state
+		const { agentMessage, customerNum } = this.state
 		//const { customerMessage } = this.props
 		//const { Body, From } = customerMessage //destructure the customer message
+
 		return(
 			<div className="singlechat"> 
 				<div className="chat__header"> 
 					<Avatar />
 					<div className="chat__headerInfo"> 
-						<h3>Customer Name</h3>
+						<h3>{ customerNum }</h3>
 						<p>Last seen at ...</p>
 					</div>
 					<div className="chat__headerRight"> 
