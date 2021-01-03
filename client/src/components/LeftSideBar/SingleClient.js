@@ -7,6 +7,7 @@ const SingleClient = ({ dbObj, id, currentCustomer }) => {
 	const { customerNum } = dbObj
 	const getCustomer = () => {
 		currentCustomer({id, customerNum})
+		sessionStorage.setItem('cn', customerNum)
 	}
 	
 	return(
@@ -16,9 +17,9 @@ const SingleClient = ({ dbObj, id, currentCustomer }) => {
 				<div className="singleclient__info">
 				<h2>{ customerNum }</h2>
 				<p>Last message...</p> 
-				</div>
+				</div> 
 			</div> 
-		</Link>
+		</Link> 
 	)
 }
 

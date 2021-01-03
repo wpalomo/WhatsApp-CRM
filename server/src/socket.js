@@ -14,7 +14,7 @@ const io = socket(server, {
 		methods: ['GET', 'POST']
 	}
 })
-
+ 
 let agentList = []
 const usernameSocketidMap = new Map();
 
@@ -62,7 +62,7 @@ io.on('connection', socket => {
 	})
 
 	socket.on('customerToServer', data => {
-		io.emit('serverToAgent', data)
+		io.emit('serverToAgent', data) 
 	})
 	
 	socket.on('customerToOneAgent', data => {

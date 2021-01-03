@@ -3,9 +3,13 @@ import { Avatar, IconButton } from "@material-ui/core";
 import { SearchOutlined, MoreVert, AttachFile } from "@material-ui/icons";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
-import db from "../firebase";
+//import db from "../firebase";
+//import firebase from "firebase";
+//import { db } from '../firebase'
 
 import "./styles/chat.css";
+
+
 
 class ExpandedSingleChat extends Component {
 
@@ -13,30 +17,59 @@ class ExpandedSingleChat extends Component {
 		super(props)
 		this.state = { 
 			agentMessage:"",
-			customerNum: ""
+			customerNum: "",
+			chats:[]
 		}
 	}  
 
-	getCustomerData = id => {
-		this.unsubscribe =  db.collection('agent1')
-							  .doc(id)
-							  .onSnapshot(snapshot => {
-							  	this.setState({
-							  		customerNum:snapshot.data().customerNum
-							  	})
-							  })
+	//this will get the currently selected customer from the db
+	getCustomerData = () => {
+		this.setState({
+			customerNum: this.props.selectedCustomer.customerNum
+		})
+		// this.unsubscribe =  db.collection('agent1')
+		// 					  .doc(id)
+		// 					  .onSnapshot(snapshot => {
+		// 					  	this.setState({
+		// 					  		customerNum:snapshot.data().customerNum
+		// 					  	})
+		// 					  })
 	}
+
+	//get all messages between this customer and the agent
+	// getAllMessages = id => {
+	// 	this.cleanMessageListener = db.collection('agent1')
+	// 								  .doc(id)
+	// 								  .collection('messages')
+	// 								  .orderBy('timestamp', 'asc')
+	// 								  .onSnapshot(snapshot => {
+	// 								  	this.setState({
+	// 								  		chats: snapshot.docs.map(doc => doc.data())
+	// 								  	})
+	// 								  })
+	// }
+
 
 	componentDidMount() {
-		const { id } = this.props.selectedCustomer
-		this.getCustomerData(id)
+		this.getCustomerData()
+		//const { id } = this.props.selectedCustomer
+		// if (id) {
+			
+		// 	//this.getAllMessages(id)
+		// }
 	}
 
-	componentDidUpdate(prevProps) {
-		const { id } = this.props.selectedCustomer
-		if (id !== prevProps.id) {
-			this.getCustomerData(id)
+	componentDidUpdate(prevProps, prevState) {
+		//const { id, customerNum } = this.props.selectedCustomer
+		let cn = sessionStorage.getItem('cn')
+		if (cn !== prevState.customerNum) {
+			this.setState({
+				customerNum: cn
+			})
 		}
+		// if (id && (id !== prevProps.id)) {
+		// 	//this.getAllMessages(id)
+		// }
 	}
  
 	getAgentMessage = e => {
@@ -45,27 +78,45 @@ class ExpandedSingleChat extends Component {
 		})
 	}
  
-	submitAgentMessage = (e) => {
-		//show on the screen, in the left bar, and pass to the server
+	submitAgentMessage = async (e) => {
+		//send to db, pull from db and show on the screen, in the left bar, and pass to the server
 		//to server
 		e.preventDefault()
-		const { agentMessage } = this.state
-		const { From } = this.props.customerMessage
-		let customerID = From.split(':')[1]
-		this.props.agentMessageToServer({agentMessage, customerID})
+		//const { agentMessage } = this.state
+		//const { id } = this.props.selectedCustomer
+		//let agentName = sessionStorage.getItem('aun')
+		//save agent message to db which is automatically shown on the screen
+		// if (id) {
+		// 	this.sendMessage = await db.collection('agent1')
+		// 						 .doc(id)
+		// 						 .collection('messages')
+		// 						 .add({
+		// 						 	message: agentMessage,
+		// 						 	name: agentName,
+		// 						 	timestamp: firebase.firestore.FieldValue.serverTimestamp()
+		// 						 })
+								 
+		// }
+		//send to server then to twilio
+		// const { From } = this.props.customerMessage
+		// let customerID = From.split(':')[1]
+		// this.props.agentMessageToServer({agentMessage, customerID})
 		this.setState({
 			agentMessage: ""
 		})
 	} 
 
-	componentWillUnmount() {
-		this.unsubscribe()
-	}
+	// componentWillUnmount() {
+	// 	//this.unsubscribe()
+	// 	//this.cleanMessageListener()
+	// 	//this.sendMessage()
+	// }
 
 	render() {
-		const { agentMessage, customerNum } = this.state
+		const { agentMessage, customerNum, chats } = this.state
 		//const { customerMessage } = this.props
 		//const { Body, From } = customerMessage //destructure the customer message
+		//pull the customer message from the db and display on the screen
 
 		return(
 			<div className="singlechat"> 
@@ -85,10 +136,12 @@ class ExpandedSingleChat extends Component {
 					</div>
 			    </div>
 			    <div className="chat__body"> 
-			    	<p className={`chat__message ${true && "chat__receiver"}`}>
-			    		Hey Guys
-			    		<span className="chat__timestamp">3:52pm</span> 
+			    { chats.map((chat, idx) => (
+			    	<p key={idx} className={`chat__message ${true && "chat__receiver"}`}>
+			    		{ chat.message }
+			    		<span className="chat__timestamp">{  }</span> 
 			    	</p>
+			    )) }
 			    </div>
 			    <div className="chat__footer"> 
 			    	<IconButton>

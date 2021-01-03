@@ -8,8 +8,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	console.log(req.body)
+	const { From, Body } = req.body
+	let customerNumber = Number(From.split('+')[1])
+	//send the message to all connected agents
+
+	//check for the agent that responds and send all subsequent messages to only that agent
+
 	res.status(200).send('new csteam post home')
 });
 
-exports.MessageRouter = router; 
+exports.MessageRouter = router;  
