@@ -1,9 +1,9 @@
 const config = {
 	"dev":{
-		"username":"deepworkdev",
-		"password":"winifreDj0ju",
-		"database":"deepworkdevtest",
-		"host":"deepworkdev.cj2vcfmrr3ls.us-east-2.rds.amazonaws.com", //DB Instance
+		"username":"",
+		"password":"",
+		"database":"",
+		"host":"", //DB Instance
 		"dialect":"postgres",
 		"aws_region":"us-east-2",
 		"aws_profile":"default"

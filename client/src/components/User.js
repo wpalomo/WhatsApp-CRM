@@ -4,7 +4,6 @@ import LeftBar from "./LeftSideBar/LeftBar";
 import ExpandedSingleChat from "./ExpandedSingleChat";
 import './styles/user.css';
 
-//import db from '../firebase'
 import { db } from '../firebase'
 
 class User extends Component {
