@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import history from "./History";
 import "./styles/login.css"
 import whatsapp from './media/whatsapp.png';
+import { db } from '../firebase.js';
 
 class Login extends Component { 
 
@@ -28,13 +29,26 @@ class Login extends Component {
 	onSubmitSignin =  e => {
 		e.preventDefault()
 		const { signinUsername } = this.state;
+		const agentsRef = db.collection('agents')
 		//send to backend for auth and map the username to a socket if auth is successful
 
 		//- change route to user if auth is true
-		history.push('/customers') 
-
-		//send the usernmae to the user socket
+		//history.push('/customers') 
 		sessionStorage.setItem('aun', signinUsername)
+		//save the username
+		agentsRef
+			.get()
+			.then(snapshot => {
+				let loggedIn = snapshot.docs.map(doc => {
+					return {id:doc.id, data:doc.data()}
+				}).filter(obj => (obj.data.loggedin === 'yes' && obj.data.agentname === signinUsername))
+				if(loggedIn) {
+					let user = loggedIn[0].id
+					sessionStorage.setItem('aid', user)
+					history.push('/customers') 
+				}
+			})
+		
 
 		//clear the form
 		this.setState({

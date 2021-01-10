@@ -5,12 +5,15 @@ import "../styles/singleclient.css";
 import { db } from '../../firebase';
 
 const SingleClient = ({ dbObj, id, currentCustomer }) => {
-	const { customerNum } = dbObj
+	const { name } = dbObj
 	const [customerMessage, setCustomerMessage] = useState([])
+	let agentID = sessionStorage.getItem('aid')
 
 	useEffect(() => {
 		if (id) {
-			db.collection('agent1')
+			db.collection('agents')
+				.doc(agentID)
+				.collection('customers')
 			    .doc(id)
 			    .collection('messages')
 				.orderBy('timestamp', 'desc')
@@ -18,11 +21,11 @@ const SingleClient = ({ dbObj, id, currentCustomer }) => {
 					setCustomerMessage(snapshot.docs.map(doc => doc.data()))
 				})					
 		}
-	}, [id])
+	}, [id, agentID])
 
 	const getCustomer = () => {
-		currentCustomer({id, customerNum})
-		sessionStorage.setItem('cn', customerNum)
+		currentCustomer({id, name})
+		sessionStorage.setItem('cn', name)
 		sessionStorage.setItem('cid', id)
 	}
 	
@@ -31,7 +34,7 @@ const SingleClient = ({ dbObj, id, currentCustomer }) => {
 			<div className="singleclient" onClick={getCustomer}>
 				<Avatar src=""/>
 				<div className="singleclient__info">
-				<h2>{ customerNum }</h2>
+				<h2>{ name }</h2>
 				<p>{ customerMessage[0]?.message }</p> 
 				</div>  
 			</div> 

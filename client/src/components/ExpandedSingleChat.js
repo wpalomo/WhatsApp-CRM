@@ -8,7 +8,6 @@ import { db, serverTimestamp } from '../firebase';
 import "./styles/chat.css";
 
 
-
 class ExpandedSingleChat extends Component {
 
 	constructor(props) {
@@ -28,9 +27,11 @@ class ExpandedSingleChat extends Component {
 	}
 
 	//get all messages between this customer and the agent
-	getAllMessages = id => {
-		this.cleanMessageListener = db.collection('agent1')
-									  .doc(id)
+	getAllMessages = (id, agentID) => {
+		this.cleanMessageListener = db.collection('agents')
+									  .doc(agentID)
+									  .collection('customers')
+								      .doc(id)
 									  .collection('messages')
 									  .orderBy('timestamp', 'asc')
 									  .onSnapshot(snapshot => {
@@ -44,17 +45,21 @@ class ExpandedSingleChat extends Component {
 	componentDidMount() {
 		this.getCustomerData()
 		const id  = sessionStorage.getItem('cid')
-		if (id) {
-			this.getAllMessages(id)
+		let agentID = sessionStorage.getItem('aid')
+		if (id && agentID) {
+			this.getAllMessages(id, agentID)
+		} else {
+			console.log('no id present')
 		}
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.selectedCustomer.customerNum !== this.props.selectedCustomer.customerNum) {
+		if (prevProps.selectedCustomer.name !== this.props.selectedCustomer.name) {
 			this.getCustomerData()
 			let id = this.props.selectedCustomer.id
+			let agentID = sessionStorage.getItem('aid')
 			if (id) {
-				this.getAllMessages(id)
+				this.getAllMessages(id, agentID)
 			}
 		}
 	}
@@ -64,26 +69,89 @@ class ExpandedSingleChat extends Component {
 			agentMessage: e.target.value
 		})
 	}
+
+	// saveResponder = async (client, agentid, clientid, agentMessage, agentName, serverTimestamp) => {
+	// 	let currentResponder = await db.collection('response').get()
+	// 	if (currentResponder.empty) {//nobody has responded
+	// 		db.collection('response').add({ customer:Number(client), agentid:agentid })
+	// 	} else {
+	// 		let data = currentResponder.docs.map(doc => {
+	// 			return doc.data()
+	// 		}).filter(obj => obj.customer === Number(client))
+	// 		if (data.length !== 0) { //someone has responded
+	// 			//check who responded
+	// 			let responder = data[0].agentid
+	// 			if (responder === agentid) {
+	// 				this.sendResponse(agentid, clientid, agentMessage, agentName, serverTimestamp)
+	// 			} else {
+	// 				alert('an agent already responded to this customer!')
+	// 			}
+	// 		} else {//no one has responded
+	// 			this.sendResponse(agentid, clientid, agentMessage, agentName, serverTimestamp)
+	// 			db.collection('response').add({ customer:Number(client), agentid:agentid })
+	// 		}
+	// 	}
+	// }
+
+	saveResponder = (client, agentid, clientid, agentMessage, agentName, serverTimestamp) => {
+		db.collection('response')
+		  .get()
+		  .then(snapshot => {
+		  	let data = snapshot.docs.map(doc => {
+		  		return doc.data()
+		  	}).filter(obj => obj.customer === Number(client))
+		  	
+		  	if (data.length !== 0) { //someone has responded
+				//check who responded
+				let responder = data[0].agentid
+				if (responder === agentid) {
+					this.sendResponse(agentid, clientid, agentMessage, agentName, serverTimestamp)
+				} else {
+					alert('an agent already responded to this customer!')
+				}
+			} else {//no one has responded
+				this.sendResponse(agentid, clientid, agentMessage, agentName, serverTimestamp)
+				db.collection('response').add({ customer:Number(client), agentid:agentid })
+			}
+		  })
+	}
+
+	sendResponse = (agentID, id, agentMessage, agentName, serverTimestamp) => {
+		db.collection('agents')
+		  .doc(agentID)
+		  .collection('customers')
+		  .doc(id)
+		  .collection('messages')
+		  .add({
+			message: agentMessage,
+			name: agentName,
+			timestamp: serverTimestamp
+		})							  
+	}
  
 	submitAgentMessage = async (e) => {
 		//send to db, pull from db and show on the screen, in the left bar, and pass to the server
 		//to server
 		e.preventDefault()
-		const { agentMessage } = this.state
+		const { agentMessage, customerNum } = this.state
 		let id  = sessionStorage.getItem('cid')
 		let agentName = sessionStorage.getItem('aun')
+		let agentID = sessionStorage.getItem('aid')
 		//save agent message to db which is automatically shown on the screen
 		if (id) {
-			this.sendMessage = await db.collection('agent1')
-								 .doc(id)
-								 .collection('messages')
-								 .add({
-								 	message: agentMessage,
-								 	name: agentName,
-								 	timestamp: serverTimestamp
-								 })
-								 
+			// this.sendMessage = db.collection('agents')
+			// 						  .doc(agentID)
+			// 						  .collection('customers')
+			// 					      .doc(id)
+			// 						  .collection('messages')
+			// 						  .add({
+			// 						  	 message: agentMessage,
+			// 						 	 name: agentName,
+			// 						 	 timestamp: serverTimestamp
+			// 						  })
+			this.saveResponder(customerNum, agentID, id, agentMessage, agentName, serverTimestamp)
 		}
+		//send to twilio as a response
 		this.setState({
 			agentMessage: ""
 		})
