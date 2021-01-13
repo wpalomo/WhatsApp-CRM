@@ -1,28 +1,56 @@
 import React from "react";
-import { Redirect, Switch, Route } from 'react-router-dom';
-import Register1 from './Register-1';
-import Register2 from './Register-2';
-import Register3 from './Register-3';
 import '../styles/register.css';
 
 
 const Register = () => {
+	const submitRegister = e => {
+		e.preventDefault()
+		console.log('registered new firm')
+	}
 	return (
 		<div>
 			<p id="brand__name">Sauceflow</p>
 			<div className="register__body">
-				<Switch>
-					<Route path="/register/step-1">
-						<Register1 />
-					</Route>
-					<Route path="/register/step-2">
-						<Register2 />
-					</Route>
-					<Route path="/register/step-3">
-						<Register3 />
-					</Route>
-					<Redirect from="/register" to="/register/step-1" exact/>
-				</Switch>
+				<div className="register1__body">
+					<p>Register</p>
+					<div className="form__container">
+						<div className="owner__names">
+							<div className="firstname__input">
+								<label className="field__label" htmlFor="owner__fn">First name</label>
+								<div className="firstname__container">
+									<input type="text" name="owner__fn" className="first__name" required/>
+								</div>
+							</div>
+							<div className="lastname__input">
+								<label className="field__label" htmlFor="owner__ln">Last name</label>
+								<div className="lastname__container">
+									<input type="text" name="owner__ln" className="last__name" required/>
+								</div>
+							</div>
+						</div>
+						<div className="phonenumber__input">
+								<label className="field__label" htmlFor="owner__number">Email</label>
+								<div className="number__container">
+									<input type="text" name="owner__number" className="number" required/>
+								</div>
+							</div>
+							<div className="phonenumber__input">
+								<label className="field__label" htmlFor="owner__number">Company</label>
+								<div className="number__container">
+									<input type="text" name="owner__number" className="number" required/>
+								</div>
+							</div>
+							<div className="phonenumber__input">
+								<label className="field__label" htmlFor="owner__number">Phone number</label>
+								<div className="number__container">
+									<input type="text" name="owner__number" className="number" required/>
+								</div>
+							</div>
+						<div className="submit__container">
+							<button onClick={submitRegister} type="submit" className="button">Sign Up</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	)

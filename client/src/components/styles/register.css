@@ -1,12 +1,13 @@
 #brand__name {
 	margin-bottom: 20px;
+	font-size: 1.5rem;
 }
 
 .register__body {
 	display: flex;
 	background-color: #fff;
-	height: 70vh;
-	width: 40vw;
+	height: 90vh;
+	width: 45vw;
 	box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.55);
 }
 
