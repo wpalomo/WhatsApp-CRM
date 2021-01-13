@@ -3,7 +3,7 @@ import React from 'react';
 import { Router, Switch, Route } from "react-router-dom";
 import history from "./History";
 
-import Register from "./Register";
+import Register from "./Register/Register";
 import Login from "./Login";
 import User from "./User";
 import ProtectedRoute from "./ProtectedRoute";
