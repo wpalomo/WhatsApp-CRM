@@ -1,7 +1,9 @@
 import React from 'react';
-import { Router, Switch, Route, Redirect } from "react-router-dom";
+// import { Router, Switch, Route, Redirect } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
 import history from "./History";
 
+import Register from "./Register";
 import Login from "./Login";
 import User from "./User";
 import ProtectedRoute from "./ProtectedRoute";
@@ -10,8 +12,12 @@ const Routes = () => {
 	return(
 		<Router history={history}>
 			<Switch>
-				<Route exact path="/" render={() => (<Redirect to={{ pathname: '/login' }}/>)}/>
+				{
+					//<Route exact path="/" render={() => (<Redirect to={{ pathname: '/login' }}/>)}/>
+			}
+				<Route exact path="/" />
 				<Route path="/login" component={Login}/>
+				<Route path="/register" component={Register}/>
 				<ProtectedRoute path="/customers" component={User}/>
 			</Switch>
 		</Router> 
