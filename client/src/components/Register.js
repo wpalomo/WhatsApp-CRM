@@ -1,7 +1,13 @@
 import React from "react";
+import './styles/register.css';
+
 
 const Register = () => {
-	return <div> This is the register page</div>
+	return (
+		<div className="register__body">
+	
+		</div>
+	)
 }
 
 export default Register;
