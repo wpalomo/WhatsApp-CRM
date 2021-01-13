@@ -4,6 +4,7 @@ import { Router, Switch, Route } from "react-router-dom";
 import history from "./History";
 
 import Register from "./Register/Register";
+import Admin from "./Admin";
 import Login from "./Login";
 import User from "./User";
 import ProtectedRoute from "./ProtectedRoute";
@@ -16,6 +17,7 @@ const Routes = () => {
 					//<Route exact path="/" render={() => (<Redirect to={{ pathname: '/login' }}/>)}/>
 			}
 				<Route exact path="/" />
+				<Route path="/admin" component={Admin}/>
 				<Route path="/login" component={Login}/>
 				<Route path="/register" component={Register}/>
 				<ProtectedRoute path="/customers" component={User}/>

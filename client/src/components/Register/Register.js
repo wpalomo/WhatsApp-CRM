@@ -1,11 +1,12 @@
 import React from "react";
+import history from "../History";
 import '../styles/register.css';
 
 
 const Register = () => {
 	const submitRegister = e => {
 		e.preventDefault()
-		console.log('registered new firm')
+		history.push('/admin')
 	}
 	return (
 		<div>
