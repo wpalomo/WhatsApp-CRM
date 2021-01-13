@@ -3,7 +3,7 @@ import "./styles/admin.css";
 
 const Admin = () => {
 	return(
-		<div>Business Owner Area</div>
+		<div className="admin__area">Business Owner Area</div>
 	)
 }
 

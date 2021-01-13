@@ -7,6 +7,7 @@ const Register = () => {
 	const submitRegister = e => {
 		e.preventDefault()
 		history.push('/admin')
+		//send a email to confirm the submitted email address
 	}
 	return (
 		<div>
