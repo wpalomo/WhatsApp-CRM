@@ -10,7 +10,8 @@ html, body {
 .app {
 	display: grid;
 	place-items: center;
-	background-color: #dadbd3;
+	background-color: #fff;
+	/*background-color: #dadbd3;*/
 	height: 100vh;
 }
 
