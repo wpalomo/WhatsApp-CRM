@@ -4,23 +4,7 @@ const router = express.Router();
 const { db, serverTimestamp } = require("../../../../firebase"); 
 
 
-// const saveResponder = async (agent, client, agentid) => {
-// 	let currentResponder = await db.collection('response').get()
-// 	if (currentResponder.empty) {//nobody has responded
-// 		db.collection('response').add({ customer:client, agentid:agentid })
-// 	} else {
-// 		for (let doc of currentResponder.docs) {
-// 			if (doc.data().customer === Number(client)) {
-// 				alert('an agent already responded!')
-// 				break;
-// 			} else {
-// 				db.collection('response').add({ customer:client, agentid:agentid })
-// 				break;
-// 			}
-// 		}
-// 	}
-// }
-
+//https://www.freecodecamp.org/news/the-firestore-tutorial-for-2020-learn-by-example/
 
 
 router.get('/', (req, res) => {
@@ -31,58 +15,123 @@ router.post('/', async (req, res) => {
 	const { From, Body } = req.body
 	let customerNumber = Number(From.split('+')[1])
 	try {
-		let activeAgents = []
-		//get all connected agents and message only the logged in agents
 		let agentsRef = db.collection('agents')
+
+		let activeAgents = []
+		//get all agents and message only the logged in agents
 		let onlineAgents = await agentsRef.where('loggedin', '==', 'yes').get()
 		onlineAgents.forEach(doc => {
 			activeAgents.push(doc.id)
 		})
 
-		let agentMsgMap = []
-		//check if each agent has the customer
-		for (let agent of activeAgents) {
-			let clientList = await agentsRef.doc(agent).collection('customers').where('name', '==', customerNumber).get()
-			let data = {
+		//customer message
+		let data = {
 					message: Body,
 					name: customerNumber,
 					timestamp: serverTimestamp
-			}
-			if (clientList.empty) {//new customer to be added
-				let newCustomer = await agentsRef.doc(agent).collection('customers').add({name: customerNumber})
-				let newCustomerMsg = await agentsRef.doc(agent).collection('customers').doc(newCustomer.id).collection('messages').add(data)
-				agentMsgMap.push({agentid:agent, customerid:newCustomer.id})
-			} else {//existing customer
-				for (let doc of clientList.docs) {
-					let oldCustomerMsg = await agentsRef.doc(agent).collection('customers').doc(doc.id).collection('messages').add(data)
-					agentMsgMap.push({agentid:agent, customerid:doc.id})
 				}
+		//check for current responders
+		let responders = await db.collection('response').get()
+		if (responders.empty) { //send to all active agents
+			for (let agent of activeAgents) {
+				let clientList = await agentsRef.doc(agent).collection('customers').where('name', '==', customerNumber).get()
+				if (clientList.empty) {//new customer to be added
+					let newCustomer = await agentsRef.doc(agent).collection('customers').add({name: customerNumber})
+					let newCustomerMsg = agentsRef.doc(agent).collection('customers').doc(newCustomer.id).collection('messages').add(data)
+				} else {//existing customer
+					for (let doc of clientList.docs) {
+						let oldCustomerMsg = agentsRef.doc(agent).collection('customers').doc(doc.id).collection('messages').add(data)
+					}
+				}
+			} 
+			//wait for an agent response
+			db.collection('response')
+			  .onSnapshot(snapshot => {
+			  	let repliers = snapshot.docs.map(doc => {
+			  		return doc.data()
+			  	}).filter(obj => obj.customer === customerNumber)
+			  	if (repliers.length !== 0) {//someone responded, get the response
+			  		let respondingAgentId = repliers[0].agentid
+					let customerResponded = repliers[0].customerid
+					agentsRef.doc(respondingAgentId).collection('customers').doc(customerResponded).collection('messages').orderBy('timestamp', 'desc')
+							 .get()
+							 .then(snapshot => {
+							 	let message = snapshot.docs.map(doc => {
+							 		return doc.data()
+							 	})
+							 	let firstResponse = message[0].message
+							 	res.status(200).send(firstResponse) 
+							 })
+			  	} else {
+			  		console.log('waiting for top-level reply')
+			  	}
+			  })
+		} else {
+			let responderList = responders.docs.map(doc => {
+				return doc.data()
+			}).filter(obj => obj.customer === customerNumber)
+			if (responderList.length === 0) {//this is the first time this customer is sending a message and none of the current responders has responded to them before..send to all agents
+				for (let agent of activeAgents) {
+					let clientList = await agentsRef.doc(agent).collection('customers').where('name', '==', customerNumber).get()
+					if (clientList.empty) {//new customer to be added
+						let newCustomer = await agentsRef.doc(agent).collection('customers').add({name: customerNumber})
+						let newCustomerMsg = agentsRef.doc(agent).collection('customers').doc(newCustomer.id).collection('messages').add(data)
+					} else {//existing customer
+						for (let doc of clientList.docs) {
+							let oldCustomerMsg = agentsRef.doc(agent).collection('customers').doc(doc.id).collection('messages').add(data)
+						}
+					}
+				} 
+				//wait for an agent response
+				db.collection('response')
+				  .onSnapshot(snapshot => {
+				  	let repliers = snapshot.docs.map(doc => {
+				  		return doc.data()
+				  	}).filter(obj => obj.customer === customerNumber)
+				  	if (repliers.length !== 0) {//someone responded, get the response
+				  		let respondingAgentId = repliers[0].agentid
+						let customerResponded = repliers[0].customerid
+						agentsRef.doc(respondingAgentId).collection('customers').doc(customerResponded).collection('messages').orderBy('timestamp', 'desc')
+								 .get()
+								 .then(snapshot => {
+								 	let message = snapshot.docs.map(doc => {
+								 		return doc.data()
+								 	})
+								 	let firstResponse = message[0].message
+								 	res.status(200).send(firstResponse) 
+								 })
+				  	} else {
+				  		console.log('waiting for mid-level reply')
+				  	}
+				  })
+			} else {//this agent was the one that responded to the customer the first time
+				//get the agent's id and message them alone
+				let respondingAgentId = responderList[0].agentid
+				let customerResponded = responderList[0].customerid
+				//message the agent alone
+				agentsRef.doc(respondingAgentId).collection('customers').doc(customerResponded).collection('messages').add(data)
+			
+				//listen for the agent's response and send to twilio
+				let unsubscribe = agentsRef.doc(respondingAgentId).collection('customers').doc(customerResponded).collection('messages').orderBy('timestamp', 'desc').limit(5)
+						 .onSnapshot(snapshot => {
+						 	if (!snapshot.docs[0].metadata.hasPendingWrites) {
+						 		const lastMessage = snapshot.docs[0].data()
+						 		if (lastMessage.name === customerNumber) {
+						 			console.log('waiting for the agent to respond')
+						 		} else {
+						 			let subsequentResponse = lastMessage.message
+						 			res.status(200).send(subsequentResponse)
+						 			unsubscribe()//this will prevent res.send() from running multiple times
+						 		}
+						 	}
+						 }, (err) => {
+						 	console.log('an error occurred in the subsequent level >>>', err)
+						 })
 			}
-		}  
-		
-		//check which agent responded - once an agent responds, it will save a reference 
-		//somewhere that the backend can access. on the backend, check if that reference exists and map all future
-		//messages to the first reponding agent
-
-
-
-
-		// for (let item of agentMsgMap) {
-		// 	const { agentid, customerid } = item
-		// 	let msgQuery = agentsRef.doc(agentid).collection('customers').doc(customerid).collection('messages').orderBy('timestamp', 'desc')
-		// 	msgQuery.onSnapshot(snapshot => {
-		// 		const data = snapshot.docs.map(doc => {
-		// 			 return doc.data()
-		// 		})	
-		// 		//let agentMsg = data.filter(obj => obj.name !== customerNumber)
-		// 		console.log(data)
-		// 	})
-		// }
-
+		}
 	} catch(err) {
 		return res.status(400).json({ error: err.toString() });
 	}
-	res.status(200).send('new csteam post home') 
 });
 
 exports.MessageRouter = router;  

@@ -93,14 +93,14 @@ class ExpandedSingleChat extends Component {
 	// 	}
 	// }
 
-	saveResponder = (client, agentid, clientid, agentMessage, agentName, serverTimestamp) => {
+	saveResponder = (client, agentid, clientid, agentMessage, agentName, serverTimestamp, cid) => {
 		db.collection('response')
 		  .get()
 		  .then(snapshot => {
 		  	let data = snapshot.docs.map(doc => {
 		  		return doc.data()
 		  	}).filter(obj => obj.customer === Number(client))
-		  	
+
 		  	if (data.length !== 0) { //someone has responded
 				//check who responded
 				let responder = data[0].agentid
@@ -111,7 +111,7 @@ class ExpandedSingleChat extends Component {
 				}
 			} else {//no one has responded
 				this.sendResponse(agentid, clientid, agentMessage, agentName, serverTimestamp)
-				db.collection('response').add({ customer:Number(client), agentid:agentid })
+				db.collection('response').add({ customer:Number(client), agentid:agentid, customerid:clientid })
 			}
 		  })
 	}
