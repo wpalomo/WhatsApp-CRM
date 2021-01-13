@@ -1,7 +1,12 @@
 import React from "react";
+import history from "../History";
 import '../styles/register.css';
 
 const Register2 = () => {
+	const submitReg2 = e => {
+		e.preventDefault()
+		history.push('/register/step-3') 
+	}
 	return(
 		<div className="register1__body">
 			<p>Step 2 of 3</p>
@@ -27,7 +32,7 @@ const Register2 = () => {
 						</div>
 					</div>
 				<div className="submit__container">
-					<button type="submit" className="button">Next</button>
+					<button onClick={submitReg2} type="submit" className="button">Next</button>
 				</div>
 			</div>
 		</div>
