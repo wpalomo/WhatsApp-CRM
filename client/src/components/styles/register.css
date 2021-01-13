@@ -28,11 +28,11 @@
 	overflow: visible;
 }
 
-.email__input, .submit__container {
+.email__input, .submit__container, .phonenumber__input {
 	width: 100%;
 }
 
-.email__input {
+.email__input, .phonenumber__input, .firstname__input, .lastname__input {
 	margin: 0 0 20px;
 	display: flex;
 	flex-direction: column;
@@ -47,11 +47,21 @@
 	margin-bottom: .25rem;
 }
 
-.email__container > input {
+.email__container > input, .number__container > input, .firstname__container > input,  
+.lastname__container > input
+{
 	height: 40px;
 	padding: 5px 15px;
 	box-sizing: border-box;
 	width: 100%;
+}
+
+.firstname__container {
+	margin-right: 10px;
+} 
+
+.lastname__container {
+	margin-left: 10px;
 }
 
 .submit__container > button {
@@ -69,4 +79,13 @@
 
 .submit__container > button:hover {
 	cursor: pointer;
+}
+
+.owner__names {
+	display: flex;
+	justify-content: space-between;
+}
+
+.lastname__input > .field__label {
+	margin-left: 10px;
 }

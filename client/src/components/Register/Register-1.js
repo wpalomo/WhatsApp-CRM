@@ -1,6 +1,11 @@
 import React from "react";
+import history from "../History";
 
 const Register1 = () => {
+	const submitReg1 = e => {
+		e.preventDefault()
+		history.push('/register/step-2') 
+	}
 	return (
 		<div className="register1__body">
 			<p>Step 1 of 3</p>
@@ -12,9 +17,7 @@ const Register1 = () => {
 					</div>
 				</div>
 				<div className="submit__container">
-					<button type="submit" className="button">
-						Next
-					</button>
+					<button onClick={submitReg1} type="submit" className="button">Next</button>
 				</div>
 			</div>
 		</div>
