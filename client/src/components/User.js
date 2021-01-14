@@ -17,15 +17,6 @@ class User extends Component {
 		}
 	} 
 
-	// getMessages = () => {
-	// 	let agentID = sessionStorage.getItem('aid')
-	// 	this.unsubscribe = db.collection('agents').doc(agentID).collection('customers').onSnapshot(snapshot => {
-	// 		 let d = snapshot.docs.map(obj => {
-	// 		 	return {id:obj.id, data:obj.data()}
-	// 		 })
-	// 		 console.log(d)
-	// 	})
-	// }
 	getMessages = () => {
 		let agentID = sessionStorage.getItem('aid')
 		this.unsubscribe = db.collection('agents').doc(agentID).collection('customers').onSnapshot(snapshot => (

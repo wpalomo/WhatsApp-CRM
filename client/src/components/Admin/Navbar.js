@@ -3,7 +3,7 @@ import "./styles/navbar.css";
 
 const Navbar = ({ sidebarOpen, openSideBar }) => {
 	return (
-		<nav classNmae="navbar">
+		<nav className="navbar">
 			<div className="nav_icon" onClick={openSideBar}>
 				<i className="fa fa-bars"></i>
 			</div>
@@ -18,6 +18,9 @@ const Navbar = ({ sidebarOpen, openSideBar }) => {
 				</a>
 				<a href="#">
 					<i className="fa fa-clock-o"></i>
+				</a>
+				<a href="#">
+					<i className="fa fa-user-circle"></i>
 				</a>
 			</div>
 		</nav>
