@@ -1,5 +1,5 @@
 import React from "react";
-import "./adminstyles.css";
+import "./styles/navbar.css";
 
 const Navbar = ({ sidebarOpen, openSideBar }) => {
 	return (
