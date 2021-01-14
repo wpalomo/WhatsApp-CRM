@@ -13,7 +13,9 @@ const Admin = () => {
 
 	return(
 		<div className="admin__container">
-			<h1>Admin Dashboard</h1>
+			<div className="admin__parent">
+				<h1>Admin Dashboard</h1>
+			</div>
 		</div>
 	)
 }
