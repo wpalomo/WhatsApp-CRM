@@ -4,7 +4,7 @@ import { Router, Switch, Route } from "react-router-dom";
 import history from "./History";
 
 import Register from "./Register/Register";
-import Admin from "./Admin";
+import Admin from "./Admin/Admin";
 import Login from "./Login";
 import User from "./User";
 import ProtectedRoute from "./ProtectedRoute";
