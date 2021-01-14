@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Navbar from './Navbar';
 import "../styles/admin.css";
 
 const Admin = () => {
@@ -14,6 +15,7 @@ const Admin = () => {
 	return(
 		<div className="admin__container">
 			<div className="admin__parent">
+				<Navbar sidebarOpen={sidebarOpen} openSideBar={openSideBar}/>
 				<h1>Admin Dashboard</h1>
 			</div>
 		</div>
