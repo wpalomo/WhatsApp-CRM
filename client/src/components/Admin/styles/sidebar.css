@@ -45,10 +45,14 @@
 }
 
 .sidebar__link {
-	color: #f3f4f6;
+	color: grey;
 	padding: 10px;
 	border-radius: 3px;
 	margin-bottom: 5px;
+}
+
+.sidebar__link:hover {
+	color: #f3f4f6;
 }
 
 .active_menu_link {

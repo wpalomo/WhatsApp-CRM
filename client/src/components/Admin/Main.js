@@ -17,15 +17,15 @@ const Main = () => {
 						<div className="card">
 							<i className="fa fa-user-o fa-2x text-lightblue"></i>
 							<div className="card_inner">
-								<p className="text-primary-p">Number of Subscribers</p>
-								<span className="font-bold text-title">578</span>
+								<p className="text-primary-p">Active Agents</p>
+								<span className="font-bold text-title">3 of 5</span>
 							</div>
 						</div>
 						<div className="card">
-							<i className="fa fa-calendar fa-2x text-red"></i>
+							<i className="fa fa-commenting fa-2x text-red"></i>
 							<div className="card_inner">
-								<p className="text-primary-p">Times of Watching</p>
-								<span className="font-bold text-title">2467</span>
+								<p className="text-primary-p">Ongoing Chats</p>
+								<span className="font-bold text-title">12</span>
 							</div>
 						</div>
 						<div className="card">
@@ -61,7 +61,7 @@ const Main = () => {
 									<h1>Stats Reports</h1>
 									<p>Cupertino, California, USA</p>
 								</div>
-								<i className="fa fa-use"></i>
+								<i className="fa fa-usd"></i>
 							</div>
 							<div className="charts__right__cards">
 								<div className="card1">

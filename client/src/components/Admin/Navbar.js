@@ -7,6 +7,9 @@ const Navbar = ({ sidebarOpen, openSideBar }) => {
 			<div className="nav_icon" onClick={openSideBar}>
 				<i className="fa fa-bars"></i>
 			</div>
+			{
+				//this navbar__left div has been hidden in the css file with display:none
+			}
 			<div className="navbar__left">
 				<a href="#">Subscribers</a>
 				<a href="#">Video Mgt</a>

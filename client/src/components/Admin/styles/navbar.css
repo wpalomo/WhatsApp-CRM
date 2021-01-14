@@ -24,6 +24,7 @@
 	color: #a5aaad;
 	font-size: 15px;
 	font-weight: 700;
+	display: none;
 }
 
 .navbar__left .active_link {
