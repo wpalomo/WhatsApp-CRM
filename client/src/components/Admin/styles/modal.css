@@ -18,10 +18,29 @@
 	pointer-events: visible;
 }
 
+.agent__modal__container.enter-done {
+	opacity: 1;
+	pointer-events: visible;
+}
+
+.agent__modal__container.exit {
+	opacity: 0;
+}
+
 
 .aa_modal__content {
 	width: 500px;
 	background: #fff;
+	transform: translateY(-200px);
+	transition: all 0.3s ease-in-out;
+}
+
+.agent__modal__container.enter-done .aa_modal__content {
+	transform: translateY(0);
+}
+
+.agent__modal__container.exit .aa_modal__content {
+	transform: translateY(-200px);
 }
 
 .aa_modal__header, .aa__modal__footer {
