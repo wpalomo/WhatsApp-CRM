@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import AddAgentModal from "./AddAgent";
+import AgentList from "./AgentList";
 import "./styles/agents.css";
 
 class Agents extends Component {
@@ -39,7 +40,9 @@ class Agents extends Component {
 					<AddAgentModal show={this.state.show} closeModal={this.closeOpenModal}/>
 				</div>
 				<div className="agents__bottom__area">
-					Coming Soon!
+					<div className="agentlist__area">
+						<AgentList />
+					</div>
 				</div>
 			</div>
 		)
