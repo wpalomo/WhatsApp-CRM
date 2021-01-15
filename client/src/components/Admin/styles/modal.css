@@ -58,6 +58,10 @@
 	border-bottom: 1px solid #eee;
 }
 
+.aa_modal__body > div {
+	margin-bottom: 10px;
+}
+
 .aa__modal__footer > button {
 	margin-right: 5px;
 	margin-left: 5px;
