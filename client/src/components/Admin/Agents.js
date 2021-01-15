@@ -18,7 +18,7 @@ class Agents extends Component {
 		})
 	}
 
-	closeOpenModal = e => {
+	closeOpenModal = () => {
 		this.setState({
 			show: !this.state.show
 		})

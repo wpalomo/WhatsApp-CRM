@@ -3,20 +3,26 @@ import "./styles/modal.css";
 
 class AddAgentModal extends Component {
 
-	closeModal = e => {
-		this.props.closeModal && this.props.closeModal(e)
-	}
-
 	render() {
 		if (!this.props.show) {
 			return null
 		}
 		return(
-			<div className="agent__modal__container">
-				<div>This is a modal</div>
-				<div className="agent__modal__button">
-					<button onClick={e => this.closeModal(e)}>Cancel</button>
-					<button>Invite</button>
+			<div onClick={this.props.closeModal} className="agent__modal__container">
+				<div className="aa_modal__content">
+					<div className="aa_modal__header">
+						<h4 className="aa_modal__title">Invite Agents</h4>
+					</div>
+					<div className="aa_modal__body">
+						<label className="aa__agent__email" htmlFor="aa__agent__email">Email</label>
+						<div className="aa__email__container">
+							<input type="email" name="new_agent__email" className="new_agent__email" required/>
+						</div>					
+					</div>
+					<div className="aa__modal__footer">
+						<button  onClick={this.props.closeModal}>Cancel</button>
+						<button>Invite</button>
+					</div>
 				</div>
 			</div>
 		)
