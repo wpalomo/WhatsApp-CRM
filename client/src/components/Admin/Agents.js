@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles/agents.css";
 
 const Agents = () => {
 	return(
