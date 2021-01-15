@@ -59,7 +59,7 @@ class User extends Component {
 					<Redirect from="/customers" to="/customers/all" exact/>
 				</Switch>
 		   	</div>
-		  ); 
+		  );  
 	} 
 }
 

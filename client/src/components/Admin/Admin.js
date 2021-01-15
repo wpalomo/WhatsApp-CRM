@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { Redirect, Switch, Route } from 'react-router-dom';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import Main from "./Main";
+import Agents from "./Agents";
 import "../styles/admin.css";
 
 //https://www.fontawesomecheatsheet.com/
@@ -19,9 +21,19 @@ const Admin = () => {
 	return(
 		<div className="admin__container"> 
 			<div className="admin__parent">
-				<Navbar sidebarOpen={sidebarOpen} openSideBar={openSideBar}/>
-				<Main />
-				<Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar}/>
+				<Switch>
+					<Route path="/admin/home">
+						<Navbar sidebarOpen={sidebarOpen} openSideBar={openSideBar}/>
+						<Main />
+						<Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar}/>
+					</Route>
+					<Route path="/admin/agents">
+						<Navbar sidebarOpen={sidebarOpen} openSideBar={openSideBar}/>
+						<Agents />
+						<Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar}/>
+					</Route>
+						<Redirect from="/admin" to="/admin/home" exact/>
+				</Switch>
 			</div>
 		</div>
 	)

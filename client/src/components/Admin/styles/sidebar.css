@@ -53,6 +53,7 @@
 
 .sidebar__link:hover {
 	color: #f3f4f6;
+	cursor: pointer;
 }
 
 .active_menu_link {

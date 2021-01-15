@@ -11,20 +11,20 @@ const Navbar = ({ sidebarOpen, openSideBar }) => {
 				//this navbar__left div has been hidden in the css file with display:none
 			}
 			<div className="navbar__left">
-				<a href="#">Subscribers</a>
-				<a href="#">Video Mgt</a>
-				<a href="#" className="active_link">Admin</a>
+				<a href="foo">Subscribers</a>
+				<a href="foo">Video Mgt</a>
+				<a href="foo" className="active_link">Admin</a>
 			</div>
 			<div className="navbar__right">
 				{
-					// <a href="#">
+					// <a href="foo">
 					// 				<i className="fa fa-search"></i>
 					// 			</a>
-					// 			<a href="#">
+					// 			<a href="foo">
 					// 				<i className="fa fa-clock-o"></i>
 					// 			</a>
 							}
-				<a href="#">
+				<a href="foo">
 					<i className="fa fa-user-circle"></i>
 				</a>
 			</div>

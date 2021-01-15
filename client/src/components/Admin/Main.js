@@ -7,7 +7,7 @@ const Main = () => {
 		<main>
 				<div className="main__container">
 					<div className="main__title">
-						<img src=""/>
+						<img src="" alt=""/>
 						<div className="main__greeting">
 							<h1>Hey AdminPerson!</h1>
 							<p>Welcome to your admin dashboard</p>
