@@ -1,0 +1,38 @@
+.agents__container {
+	grid-area:main;
+	display: flex;
+	flex-direction: column;
+}
+
+.agents__top__row {
+	background: #fff;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 30px 0 30px;
+	border-bottom: 1px solid lightgray;
+}
+
+.add__agent {
+	display: flex;
+	flex-wrap: wrap;
+	-webkit-box-align: center;
+	align-items: center;
+}
+
+.add__agent > button {
+	font-size: 15px;
+	padding: 4px 16px;
+	min-width: 32px;
+	min-height: 32px;
+	background-color: #3ea175;
+	color: #fff;
+    border: 1px solid #3ea175;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+	

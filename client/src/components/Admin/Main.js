@@ -4,7 +4,7 @@ import Chart from "./Chart";
 
 const Main = () => {
 	return(
-		<main>
+		<main> 
 				<div className="main__container">
 					<div className="main__title">
 						<img src="" alt=""/>
