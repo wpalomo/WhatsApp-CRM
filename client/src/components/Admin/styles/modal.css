@@ -31,6 +31,7 @@
 .aa_modal__content {
 	width: 500px;
 	background: #fff;
+	border-radius: 5px;
 	transform: translateY(-200px);
 	transition: all 0.3s ease-in-out;
 }
@@ -55,4 +56,29 @@
 	padding: 10px;
 	border-top: 1px solid #eee;
 	border-bottom: 1px solid #eee;
+}
+
+.aa__modal__footer > button {
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+.aa__modal__footer > .aa__cancel {
+	margin-left: auto;
+	background-color: #fff;
+	border: 1px solid #eee;
+	color: black;
+}
+
+.aa_modal__body > .aa__agent__email {
+	display: block;
+	text-align: left;
+	margin-bottom: .25rem;
+}
+
+.aa__email__container > input {
+	height: 40px;
+	padding: 5px 15px;
+	box-sizing: border-box;
+	width: 100%;
 }

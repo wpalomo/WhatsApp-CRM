@@ -9,7 +9,7 @@ const Register = () => {
 		history.push('/admin')
 		//send a email to confirm the submitted email address
 	}
-	return (
+	return ( 
 		<div>
 			<p id="brand__name">Sauceflow</p>
 			<div className="register__body">
