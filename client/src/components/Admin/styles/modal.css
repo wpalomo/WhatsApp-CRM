@@ -8,7 +8,16 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	opacity: 0;
+	transition: all 0.3s ease-in-out;
+	pointer-events: none;
 }
+
+.agent__modal__container.show {
+	opacity: 1;
+	pointer-events: visible;
+}
+
 
 .aa_modal__content {
 	width: 500px;

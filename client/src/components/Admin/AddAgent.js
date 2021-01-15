@@ -4,12 +4,9 @@ import "./styles/modal.css";
 class AddAgentModal extends Component {
 
 	render() {
-		if (!this.props.show) {
-			return null
-		}
 		return(
-			<div onClick={this.props.closeModal} className="agent__modal__container">
-				<div className="aa_modal__content">
+			<div onClick={this.props.closeModal} className={`agent__modal__container ${this.props.show ? "show": ""}`}>
+				<div onClick={e => e.stopPropagation()} className="aa_modal__content">
 					<div className="aa_modal__header">
 						<h4 className="aa_modal__title">Invite Agents</h4>
 					</div>
