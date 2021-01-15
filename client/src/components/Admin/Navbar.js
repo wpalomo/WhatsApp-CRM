@@ -16,12 +16,14 @@ const Navbar = ({ sidebarOpen, openSideBar }) => {
 				<a href="#" className="active_link">Admin</a>
 			</div>
 			<div className="navbar__right">
-				<a href="#">
-					<i className="fa fa-search"></i>
-				</a>
-				<a href="#">
-					<i className="fa fa-clock-o"></i>
-				</a>
+				{
+					// <a href="#">
+					// 				<i className="fa fa-search"></i>
+					// 			</a>
+					// 			<a href="#">
+					// 				<i className="fa fa-clock-o"></i>
+					// 			</a>
+							}
 				<a href="#">
 					<i className="fa fa-user-circle"></i>
 				</a>

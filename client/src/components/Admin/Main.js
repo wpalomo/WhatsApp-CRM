@@ -28,21 +28,23 @@ const Main = () => {
 								<span className="font-bold text-title">12</span>
 							</div>
 						</div>
-						<div className="card">
-							<i className="fa fa-video-camera fa-2x text-yellow"></i>
-							<div className="card_inner">
-								<p className="text-primary-p">Number of Videos</p>
-								<span className="font-bold text-title">340</span>
-							</div>
-						</div>
-
-						<div className="card">
-							<i className="fa fa-thumbs-up fa-2x text-green"></i>
-							<div className="card_inner">
-								<p className="text-primary-p">Number of Likes</p>
-								<span className="font-bold text-title">645</span>
-							</div>
-						</div>
+						{
+							// <div className="card">
+							// 						<i className="fa fa-video-camera fa-2x text-yellow"></i>
+							// 						<div className="card_inner">
+							// 							<p className="text-primary-p">Number of Videos</p>
+							// 							<span className="font-bold text-title">340</span>
+							// 						</div>
+							// 					</div>
+						
+							// 					<div className="card">
+							// 						<i className="fa fa-thumbs-up fa-2x text-green"></i>
+							// 						<div className="card_inner">
+							// 							<p className="text-primary-p">Number of Likes</p>
+							// 							<span className="font-bold text-title">645</span>
+							// 						</div>
+							// 					</div>
+											}
 					</div>
 					<div className="charts">
 						<div className="charts__left">

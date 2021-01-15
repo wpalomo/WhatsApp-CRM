@@ -24,21 +24,23 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 					<a href="#">Chats</a>
 				</div>
 				<div className="sidebar__link">
-					<i className="fa fa-building-o"></i>
-					<a href="#">Company Management</a>
+					<i className="fa fa-users"></i>
+					<a href="#">Agents</a>
 				</div>
 				<div className="sidebar__link">
-					<i className="fa fa-wrench"></i>
-					<a href="#">Employee Management</a>
+					<i className="fa fa-line-chart"></i>
+					<a href="#">Reports</a>
 				</div>
 				<div className="sidebar__link">
-					<i className="fa fa-archive"></i>
-					<a href="#">Warehouse</a>
+					<i className="fa fa-credit-card"></i>
+					<a href="#">Subscription</a>
 				</div>
-				<div className="sidebar__link">
-					<i className="fa fa-handshake-o"></i>
-					<a href="#">Contracts</a>
-				</div>
+				{
+					// <div className="sidebar__link">
+					// 				<i className="fa fa-handshake-o"></i>
+					// 				<a href="#">Contracts</a>
+					// 			</div>
+							}
 				{
 					// <h2>LEAVE</h2>
 					// 			<div className="sidebar__link">
