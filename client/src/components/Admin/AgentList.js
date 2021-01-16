@@ -12,8 +12,11 @@ import "./styles/agentlist.css";
 
 
 const useStyles = makeStyles({
-	table: {
-		minWidth: 650
+	root: {
+		width: '100%',
+	}, 
+	container: {
+		maxHeight: 440
 	}
 })
 
@@ -26,33 +29,36 @@ const rows = [
     createData('Winifred Robb', 'winifred@gmail.com', '3:29pm', 'active'),
     createData('Funke Sausage', 'funke@gmail.com', 'no', 'active'),
     createData('Joke Nuttycah', 'joke@gmail.com', 'no', 'deleted'),
+    createData('Jessica Cocha', 'jess@gmail.com', 'no', 'pending'),
 ]
 
 const AgentList = () => {
 	const classes = useStyles()
 	return(
-		<TableContainer component={Paper}>
-			<Table className={classes.table} aria-label="simple table">
-				<TableHead>
-					<TableRow>
-						<TableCell>Name</TableCell>
-			            <TableCell align="center">Email</TableCell>
-			            <TableCell align="center">Loggedin</TableCell>
-			            <TableCell align="center">Status</TableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{ rows.map(row => (
-						<TableRow key={row.name}>
-							<TableCell component="th" scope="row">{ row.name }</TableCell>
-							<TableCell align="center">{row.email}</TableCell>
-				            <TableCell align="center">{row.loggedin}</TableCell>
-				            <TableCell align="center">{row.status}</TableCell>
+		<Paper className={classes.root}>
+			<TableContainer className={classes.container}>
+				<Table stickyHeader aria-label="sticky table">
+					<TableHead>
+						<TableRow>
+							<TableCell>Name</TableCell>
+				            <TableCell align="center">Email</TableCell>
+				            <TableCell align="center">Loggedin</TableCell>
+				            <TableCell align="center">Status</TableCell>
 						</TableRow>
-					)) }
-				</TableBody>
-			</Table>
-		</TableContainer>
+					</TableHead>
+					<TableBody>
+						{ rows.map(row => (
+							<TableRow key={row.name}>
+								<TableCell component="th" scope="row">{ row.name }</TableCell>
+								<TableCell align="center">{row.email}</TableCell>
+					            <TableCell align="center">{row.loggedin}</TableCell>
+					            <TableCell align="center">{row.status}</TableCell>
+							</TableRow>
+						)) }
+					</TableBody>
+				</Table>
+			</TableContainer>
+		</Paper>
 	)
 }
 
