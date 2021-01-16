@@ -50,4 +50,18 @@
 
 .expanded__downright {
 	grid-area: mainarea;
+	padding: 30px;
+	overflow-y: scroll;
+}
+
+.payment__container {
+	border: 1px solid lightgray;
+	height: 100%;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 0.5fr 1fr 1.5fr;
+	grid-template-areas:
+		"payment-top"
+		"payment-mid"
+		"payment-bottom";
 }
