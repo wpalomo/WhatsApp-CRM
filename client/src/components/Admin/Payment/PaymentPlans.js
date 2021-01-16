@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import CreditCardModal from "./CreditCardModal";
 
 class PaymentPlans extends Component {
 
@@ -8,7 +9,8 @@ class PaymentPlans extends Component {
 			totalBill: 0,
 			selectedRadio: "monthly",
 			currentAgentEntered: 0,
-			showError: false
+			showError: false,
+			creditCardModal: false
 		}
 	}
 
@@ -49,7 +51,9 @@ class PaymentPlans extends Component {
 				showError: true
 			})
 		} else {
-			console.log(totalBill)
+			this.setState({
+				creditCardModal: true
+			})
 		}
 	}
 
@@ -81,7 +85,7 @@ class PaymentPlans extends Component {
 	
 
 	render() {
-		const { totalBill, selectedRadio, showError } = this.state
+		const { totalBill, selectedRadio, showError, creditCardModal, currentAgentEntered } = this.state
 			return(
 			<div className="expanded__downright">
 				<div className="payment__container">
@@ -154,6 +158,7 @@ class PaymentPlans extends Component {
 						<div className="submit__payment__plan">
 							{ showError ? <div className="bill__error"><p>Error:please enter a number in the Agents field</p></div> : null}
 							<button onClick={this.getTotalCost}>Subscribe Now</button>
+							<CreditCardModal creditCardModal={creditCardModal} totalBill={totalBill} agents={currentAgentEntered}/>
 						</div>
 					</div>	
 				</div>
