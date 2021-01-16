@@ -1,24 +1,43 @@
-import React from "react";
+import React, { Component } from "react";
 import "./styles/subscription.css";
 
 
-const Subscription = () => {
-	return(
-		<div className="subscr__container">
-			<div className="billing__heading">
-				<p>Billing</p>
+class Subscription extends Component {
+
+	constructor() {
+		super()
+		this.state = {
+			selectorClass: true
+		}
+	}
+
+	changeClass = () => {
+		this.setState({
+			selectorClass: !this.state.selectorClass
+		})
+	}
+
+
+	render() {
+		const { selectorClass } = this.state
+		return(
+			<div className="subscr__container">
+				<div className="billing__heading">
+					<p>Billing</p>
+				</div>
+				<div className="billing__footer">
+					<p onClick={this.changeClass} className={selectorClass ? "active__tab" : ""}>Your Subscription</p>
+					<p onClick={this.changeClass} className={selectorClass ? "" : "active__tab"}>Account details</p>
+				</div>
+				<div className="expanded__topright">
+					<p>Your Subscription</p>
+				</div>
+				<div className="expanded__downright">
+					<p>RightDown</p>
+				</div>
 			</div>
-			<div className="billing__footer">
-				<h3>Bottom</h3>
-			</div>
-			<div className="expanded__topright">
-				<h3>RightTop</h3>
-			</div>
-			<div className="expanded__downright">
-				<h3>RightDown</h3>
-			</div>
-		</div>
-	)
+		)
+	}
 }
 
 export default Subscription;

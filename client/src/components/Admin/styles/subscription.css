@@ -13,6 +13,9 @@
 	border-right: 1px solid lightgray;
 	border-bottom: 1px solid lightgray;
 	background-color: #e3fbe3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .billing__footer {
@@ -21,12 +24,30 @@
 	background-color: #e3fbe3;
 }
 
+.billing__footer > p {
+	text-align: center;
+	margin: 10px;
+	padding: 10px;
+}
+
+.billing__footer > p:hover {
+	color: #006b38ff;
+	cursor: pointer;
+}
+
+.active__tab {
+	color: #006b38ff;
+	font-weight: 700;
+}
+
 .expanded__topright {
 	grid-area: toprow;
 	border-bottom: 1px solid lightgray;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .expanded__downright {
 	grid-area: mainarea;
-	
 }

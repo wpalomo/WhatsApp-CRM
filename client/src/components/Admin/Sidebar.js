@@ -41,10 +41,12 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 					<i className="fa fa-users"></i>
 					<a href={getAgentsPage}>Agents</a>
 				</div>
-				<div className="sidebar__link">
-					<i className="fa fa-line-chart"></i>
-					<a href="foo">Reports</a>
-				</div>
+				{
+					// <div className="sidebar__link">
+					// 				<i className="fa fa-line-chart"></i>
+					// 				<a href="foo">Reports</a>
+					// 			</div>
+							}
 				<div onClick={subscriptionPage} className="sidebar__link">
 					<i className="fa fa-credit-card"></i>
 					<a href={subscriptionPage}>Subscription</a>
