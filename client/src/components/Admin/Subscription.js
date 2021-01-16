@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Billhead from "./Payment/Billhead";
 import "./styles/subscription.css";
 
 
@@ -22,9 +23,7 @@ class Subscription extends Component {
 		const { selectorClass } = this.state
 		return(
 			<div className="subscr__container">
-				<div className="billing__heading">
-					<p>Billing</p>
-				</div>
+				<Billhead />
 				<div className="billing__footer">
 					<p onClick={this.changeClass} className={selectorClass ? "active__tab" : ""}>Your Subscription</p>
 					<p onClick={this.changeClass} className={selectorClass ? "" : "active__tab"}>Account details</p>
