@@ -15,7 +15,7 @@
 }
 
 .add__agent {
-	display: flex;
+	display: flex; 
 	flex-wrap: wrap;
 	-webkit-box-align: center;
 	align-items: center;

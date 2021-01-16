@@ -20,7 +20,7 @@ const Main = () => {
 								<p className="text-primary-p">Active Agents</p>
 								<span className="font-bold text-title">3 of 5</span>
 							</div>
-						</div>
+						</div> 
 						<div className="card">
 							<i className="fa fa-commenting fa-2x text-red"></i>
 							<div className="card_inner">
