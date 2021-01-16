@@ -1,33 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 import Billhead from "./Payment/Billhead";
+import Billfoot from "./Payment/Billfoot";
 import "./styles/subscription.css";
 
 
-class Subscription extends Component {
-
-	constructor() {
-		super()
-		this.state = {
-			selectorClass: true
-		}
-	}
-
-	changeClass = () => {
-		this.setState({
-			selectorClass: !this.state.selectorClass
-		})
-	}
-
-
-	render() {
-		const { selectorClass } = this.state
-		return(
+const Subscription = () => {
+	return(
 			<div className="subscr__container">
 				<Billhead />
-				<div className="billing__footer">
-					<p onClick={this.changeClass} className={selectorClass ? "active__tab" : ""}>Your Subscription</p>
-					<p onClick={this.changeClass} className={selectorClass ? "" : "active__tab"}>Account details</p>
-				</div>
+				<Billfoot />
 				<div className="expanded__topright">
 					<p>Your Subscription</p>
 				</div>
@@ -35,8 +16,7 @@ class Subscription extends Component {
 					<p>RightDown</p>
 				</div>
 			</div>
-		)
-	}
+	)
 }
 
 export default Subscription;
