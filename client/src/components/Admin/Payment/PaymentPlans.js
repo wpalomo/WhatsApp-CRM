@@ -7,7 +7,8 @@ class PaymentPlans extends Component {
 		this.state = {
 			totalBill: 0,
 			selectedRadio: "monthly",
-			currentAgentEntered: 0
+			currentAgentEntered: 0,
+			showError: false
 		}
 	}
 
@@ -41,8 +42,15 @@ class PaymentPlans extends Component {
 				}})
 	}
 
-	getInput = e => {
-		return e.target.value
+	getTotalCost = () => {
+		const { totalBill } = this.state
+		if (totalBill < 1) {
+			this.setState({
+				showError: true
+			})
+		} else {
+			console.log(totalBill)
+		}
 	}
 
 
@@ -55,7 +63,8 @@ class PaymentPlans extends Component {
 			if (!isNaN(totalCost)) {
 				this.setState({
 					totalBill: totalCost,
-					currentAgentEntered: agentCount
+					currentAgentEntered: agentCount,
+					showError: false
 				})
 			}
 		} else {
@@ -63,7 +72,8 @@ class PaymentPlans extends Component {
 			if (!isNaN(totalCost)) {
 				this.setState({
 					totalBill: totalCost,
-					currentAgentEntered: agentCount
+					currentAgentEntered: agentCount,
+					showError: false
 				})
 			}
 		}
@@ -71,7 +81,7 @@ class PaymentPlans extends Component {
 	
 
 	render() {
-		const { totalBill, selectedRadio } = this.state
+		const { totalBill, selectedRadio, showError } = this.state
 			return(
 			<div className="expanded__downright">
 				<div className="payment__container">
@@ -142,7 +152,8 @@ class PaymentPlans extends Component {
 							</div>
 						</div>
 						<div className="submit__payment__plan">
-							<button>Subscribe Now</button>
+							{ showError ? <div className="bill__error"><p>Error:please enter a number in the Agents field</p></div> : null}
+							<button onClick={this.getTotalCost}>Subscribe Now</button>
 						</div>
 					</div>	
 				</div>
