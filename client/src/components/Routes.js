@@ -22,7 +22,7 @@ const Routes = () => {
 				<Route path="/register" component={Register}/>
 				<ProtectedRoute path="/customers" component={User}/>
 			</Switch>
-		</Router> 
+		</Router>  
 	) 
 }
 

@@ -1,11 +1,11 @@
 import React from "react";
 
-const Billdownright = () => {
+const PaymentPlans = () => {
 	return(
 		<div className="expanded__downright">
-			<p>RightDown</p>
+			<p>Subscription Options</p>
 		</div>
 	)
 }
 
-export default Billdownright;
+export default PaymentPlans;

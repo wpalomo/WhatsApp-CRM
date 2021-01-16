@@ -8,7 +8,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 		history.push('/admin/agents') 
 	}
 
-	const adminHome = () => {
+	const adminHome = () => { 
 		history.push('/admin/home') 
 	}
 

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import history from "../../History";
 
 class Billfoot extends Component {
 
@@ -15,12 +16,22 @@ class Billfoot extends Component {
 		})
 	}
 
+	subcriptionPage = () => {
+		history.push('/admin/subscription/home')
+		this.changeClass()
+	}
+
+	accountsPage = () => {
+		history.push('/admin/subscription/account-details')
+		this.changeClass()
+	}
+
 	render() {
 		const { selectorClass } = this.state
 		return(
 			<div className="billing__footer">
-				<p onClick={this.changeClass} className={selectorClass ? "active__tab" : ""}>Your Subscription</p>
-				<p onClick={this.changeClass} className={selectorClass ? "" : "active__tab"}>Account details</p>
+				<p onClick={this.subcriptionPage} className={selectorClass ? "active__tab" : ""}>Your Subscription</p>
+				<p onClick={this.accountsPage} className={selectorClass ? "" : "active__tab"}>Account details</p>
 			</div>
 		)
 	}
