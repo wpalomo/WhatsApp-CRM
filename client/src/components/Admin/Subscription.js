@@ -1,9 +1,12 @@
 import React from "react";
+import "./styles/subscription.css";
 
 
 const Subscription = () => {
 	return(
-		<h1>Pay</h1>
+		<div className="subscr__container">
+			<h1>Pay</h1>
+		</div>
 	)
 }
 

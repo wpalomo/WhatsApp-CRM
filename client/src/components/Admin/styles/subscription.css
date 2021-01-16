@@ -1,0 +1,4 @@
+.subscr__container {
+	grid-area:main;
+	border: 1px solid red;
+}
