@@ -1,4 +1,32 @@
 .subscr__container {
 	grid-area:main;
-	border: 1px solid red;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-rows: 0.3fr 3fr;
+	grid-template-areas:
+		"topleft toprow toprow toprow"
+		"leftbar mainarea mainarea mainarea";
+}
+
+.billing__heading {
+	grid-area: topleft;
+	border-right: 1px solid lightgray;
+	border-bottom: 1px solid lightgray;
+	background-color: #e3fbe3;
+}
+
+.billing__footer {
+	grid-area: leftbar;
+	border-right: 1px solid lightgray;
+	background-color: #e3fbe3;
+}
+
+.expanded__topright {
+	grid-area: toprow;
+	border-bottom: 1px solid lightgray;
+}
+
+.expanded__downright {
+	grid-area: mainarea;
+	
 }
