@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import Main from "./Main";
 import Agents from "./Agents";
+import Subscription from "./Subscription";
 import "../styles/admin.css";
 
 //https://www.fontawesomecheatsheet.com/
@@ -30,6 +31,11 @@ const Admin = () => {
 					<Route path="/admin/agents">
 						<Navbar sidebarOpen={sidebarOpen} openSideBar={openSideBar}/>
 						<Agents />
+						<Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar}/>
+					</Route>
+					<Route path="/admin/subscription">
+						<Navbar sidebarOpen={sidebarOpen} openSideBar={openSideBar}/>
+						<Subscription />
 						<Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar}/>
 					</Route>
 						<Redirect from="/admin" to="/admin/home" exact/>

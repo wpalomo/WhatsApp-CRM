@@ -12,6 +12,10 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 		history.push('/admin/home') 
 	}
 
+	const subscriptionPage = () => {
+		history.push('/admin/subscription') 
+	}
+
 	return(
 		<div id="sidebar" className={sidebarOpen ? "sidebar_responsive" : ""}>
 			<div className="sidebar__title">
@@ -41,9 +45,9 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 					<i className="fa fa-line-chart"></i>
 					<a href="foo">Reports</a>
 				</div>
-				<div className="sidebar__link">
+				<div onClick={subscriptionPage} className="sidebar__link">
 					<i className="fa fa-credit-card"></i>
-					<a href="foo">Subscription</a>
+					<a href={subscriptionPage}>Subscription</a>
 				</div>
 				{
 					// <div className="sidebar__link">
