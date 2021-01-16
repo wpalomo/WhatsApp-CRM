@@ -96,7 +96,17 @@
 	border: none;
 }
 
-.payment__mid__card:hover {
+.plan__clicked {
+	text-align: center;
+	padding: 30px;
+	border-radius: 5px;
+	box-shadow: 5px 5px 13px #e3fbe3, -5px -5px 13px #e3fbe3;
+	font-weight: 700;
+	color: green;
+	border: none;
+}
+
+.payment__mid__card:hover, .plan__clicked:hover {
 	cursor: pointer;
 }
 
@@ -114,12 +124,19 @@
 	font-weight: 700;
 	border-bottom: 1px solid lightgray;
 	padding-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.agent__count > .label__text1 {
+	width: 100%;
+	text-align: center;
 }
 
 .agent__count > input {
 	padding: 5px;
 	width: 10%;
-	margin-left: 170px; 
 }
 
 .billing__cycle {
@@ -128,6 +145,12 @@
 	padding-bottom: 20px;
 	display: flex;
 	justify-content: flex-end;
+}
+
+.billing__cycle > .label__text2 {
+	width: 65%;
+	text-align: center;
+	font-weight: 700;
 }
 
 .billing__radio {
@@ -149,20 +172,23 @@
 
 .billing__cycle > p {
 	font-weight: 700;
-	margin-right: 50px;
 }
 
 .total__bill {
 	margin: 10px;
 	display: flex;
-	justify-content: flex-end;
 	align-items: center;
+	justify-content: space-between;
 }
 
-.total__bill p {
+
+.bill__estimate {
 	font-weight: 700;
-	margin-right: 130px;
+	width: 57%;
+	text-align: right;
 }
+
+
 
 .submit__payment__plan {
 	margin: 10px;
@@ -181,6 +207,11 @@
     border-radius: 4px;
     font-weight: 600;
     line-height: 1.5;
+}
+
+.label__text {
+	border: 1px solid red;
+	text-align: center;
 }
 
 
