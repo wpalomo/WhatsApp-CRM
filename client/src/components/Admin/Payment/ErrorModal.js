@@ -1,6 +1,9 @@
 import React from "react";
 
-const ErrorModal = () => {
+const ErrorModal = ({ show }) => {
+	if (!show) {
+		return null
+	}
 	return(
 		<div>
 			<div className="error__mtop">
