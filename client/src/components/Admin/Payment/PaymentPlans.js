@@ -10,6 +10,7 @@ class PaymentPlans extends Component {
 			selectedRadio: "monthly",
 			currentAgentEntered: 0,
 			showError: false,
+			defaultInput: ''
 		}
 	}
 
@@ -54,6 +55,9 @@ class PaymentPlans extends Component {
 
 	getAgentInput = (e) => {
 		const { selectedRadio } = this.state
+		this.setState({
+			defaultInput: e.target.value
+		})
 		let agentCount = Math.abs(Number(e.target.value))
 		let totalCost;
 		if (selectedRadio === 'monthly') {
@@ -79,7 +83,7 @@ class PaymentPlans extends Component {
 	
 
 	render() {
-		const { totalBill, selectedRadio, showError, currentAgentEntered } = this.state
+		const { totalBill, selectedRadio, showError, currentAgentEntered, defaultInput } = this.state
 			return(
 			<div className="expanded__downright">
 				<div className="payment__container">
@@ -116,7 +120,7 @@ class PaymentPlans extends Component {
 							<div className="label__text1">
 								<label htmlFor="agent_number">Agents</label>
 							</div>
-							<input onChange={this.getAgentInput} type="text" name="agent_number" placeholder="E.g. 1"/>
+							<input onChange={this.getAgentInput} type="text" name="agent_number" value={defaultInput} placeholder="E.g. 1"/>
 						</div>
 						<div className="billing__cycle">
 							<div className="label__text2">
