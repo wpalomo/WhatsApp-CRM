@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/cardModal.css";
 
 const SuccessModal = ({ show }) => {
 	if (!show) {

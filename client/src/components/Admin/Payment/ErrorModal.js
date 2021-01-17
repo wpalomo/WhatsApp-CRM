@@ -1,4 +1,6 @@
 import React from "react";
+import "../styles/cardModal.css";
+
 
 const ErrorModal = ({ show }) => {
 	if (!show) {
