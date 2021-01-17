@@ -10,7 +10,6 @@ class PaymentPlans extends Component {
 			selectedRadio: "monthly",
 			currentAgentEntered: 0,
 			showError: false,
-			creditCardModal: false
 		}
 	}
 
@@ -44,15 +43,10 @@ class PaymentPlans extends Component {
 				}})
 	}
 
-	getTotalCost = () => {
-		const { totalBill } = this.state
-		if (totalBill < 1) {
+	getPaymentError = value => {
+		if (value < 1) {
 			this.setState({
 				showError: true
-			})
-		} else {
-			this.setState({
-				creditCardModal: true
 			})
 		}
 	}
@@ -85,7 +79,7 @@ class PaymentPlans extends Component {
 	
 
 	render() {
-		const { totalBill, selectedRadio, showError, creditCardModal, currentAgentEntered } = this.state
+		const { totalBill, selectedRadio, showError, currentAgentEntered } = this.state
 			return(
 			<div className="expanded__downright">
 				<div className="payment__container">
@@ -157,8 +151,7 @@ class PaymentPlans extends Component {
 						</div>
 						<div className="submit__payment__plan">
 							{ showError ? <div className="bill__error"><p>Error:please enter a number in the Agents field</p></div> : null}
-							<button onClick={this.getTotalCost}>Subscribe Now</button>
-							<CreditCardModal creditCardModal={creditCardModal} totalBill={totalBill} agents={currentAgentEntered}/>
+							<CreditCardModal getError={this.getPaymentError} totalBill={totalBill} agents={currentAgentEntered}/>
 						</div>
 					</div>	
 				</div>

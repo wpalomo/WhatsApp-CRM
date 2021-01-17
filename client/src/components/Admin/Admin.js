@@ -38,7 +38,7 @@ const Admin = () => {
 						<Subscription />
 						<Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar}/>
 					</Route>
-						<Redirect from="/admin" to="/admin/home" exact/>
+						<Redirect from="/admin" to="/admin/agents" exact/>
 				</Switch>
 			</div>
 		</div>

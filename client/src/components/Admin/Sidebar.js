@@ -9,7 +9,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 	}
 
 	const adminHome = () => { 
-		history.push('/admin/home') 
+		history.push('/admin/agents') 
 	}
 
 	const subscriptionPage = () => {
