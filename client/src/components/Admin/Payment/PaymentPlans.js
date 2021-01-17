@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import history from "../../History";
 import CreditCardModal from "./CreditCardModal";
 import SuccessModal from "./SuccessModal";
 import ErrorModal from "./ErrorModal";
@@ -14,13 +15,28 @@ class PaymentPlans extends Component {
 			showError: false,
 			defaultInput: '',
 			showSuccessModal: false,
-			showErrorModal: false
+			showErrorModal: false,
+			amountPaid: 0
 		}
 	}
 
 	getCycle = e => {
 		this.setState({
 			selectedRadio: e.target.value
+		})
+	}
+
+	closeSuccessModal = () => {
+		this.setState({
+			showSuccessModal: false
+		}, () => {
+			history.push('/admin/agents')
+		})
+	}
+
+	closeErrorModal = () => {
+		this.setState({
+			showErrorModal: false
 		})
 	}
 
@@ -57,18 +73,21 @@ class PaymentPlans extends Component {
 	}
 
 	paymentStatus = value => {
-		const { status } = value
+		const { status, amount } = value
 		if (status === "successful") {
 			//clear the input form and show a success message modal
 			this.setState({
 				defaultInput: "",
-				totalBill: 0
+				totalBill: 0,
+				showSuccessModal: true,
+				amountPaid: Number(amount)
 			})
 		} else {
 			//clear the input form and show an error message modal
 			this.setState({
 				defaultInput: "",
-				totalBill: 0
+				totalBill: 0,
+				showErrorModal: true
 			})
 		}
 	}
@@ -104,7 +123,7 @@ class PaymentPlans extends Component {
 	
 
 	render() {
-		const { totalBill, selectedRadio, showError, currentAgentEntered, defaultInput, showSuccessModal, showErrorModal } = this.state
+		const { totalBill, selectedRadio, showError, currentAgentEntered, defaultInput, showSuccessModal, showErrorModal, amountPaid } = this.state
 			return(
 			<div className="expanded__downright">
 				<div className="payment__container">
@@ -177,8 +196,8 @@ class PaymentPlans extends Component {
 						<div className="submit__payment__plan">
 							{ showError ? <div className="bill__error"><p>Error:please enter a number in the Agents field</p></div> : null}
 							<CreditCardModal getPaymentStatus={this.paymentStatus} getError={this.getPaymentError} totalBill={totalBill} agents={currentAgentEntered}/>
-							<SuccessModal show={showSuccessModal}/>
-							<ErrorModal show={showErrorModal}/>
+							<SuccessModal onClose={this.closeSuccessModal} show={showSuccessModal} amountPaid={amountPaid}/>
+							<ErrorModal closeErr={this.closeErrorModal} showErr={showErrorModal}/>
 						</div>
 					</div>	
 				</div>
