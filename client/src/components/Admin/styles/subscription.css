@@ -193,20 +193,6 @@
 	margin-top: 30px;
 }
 
-.submit__payment__plan > button {
-	font-size: 15px;
-	padding: 4px 16px;
-	min-width: 32px;
-	min-height: 32px;
-	background-color: #3ea175;
-	color: #fff;
-    border: 1px solid #3ea175;
-    cursor: pointer;
-    border-radius: 4px;
-    font-weight: 600;
-    line-height: 1.5;
-}
-
 .label__text {
 	border: 1px solid red;
 	text-align: center;
