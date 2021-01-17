@@ -6,16 +6,18 @@ const SuccessModal = ({ show }) => {
 		return null
 	}
 	return(
-		<div>
-			<div className="success__mtop">
-				
-			</div>
-			<div className="success__mid">
-				<p>You have successfully subscribed for 5 agents for 1 month!</p>
-				<p>You can now add agents to your account</p>
-			</div>
-			<div className="success__bottom">
-				<button>OK</button>
+		<div className="all__modal">
+			<div className="all__modal__content">
+				<div className="all__modal__content__header">
+					<h4 className="all__modal__title modal__success">Success</h4>
+				</div>
+				<div className="all__modal__body">
+					<p>You have successfully subscribed for 5 agents for 1 month!</p>
+					<p>You can now add agents to your account</p>
+				</div>
+				<div className="all__modal__footer">
+					<button className="all__modal__button">OK</button>
+				</div>
 			</div>
 		</div>
 	)
