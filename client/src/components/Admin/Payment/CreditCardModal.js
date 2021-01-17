@@ -6,6 +6,7 @@ import "../styles/cardModal.css";
 const CreditCardModal = ({ totalBill, agents, getError }) => {
 	
 	let ftwKey = process.env.REACT_APP_FLUTTERWAVE_PUBLIC_KEY
+	
 	const config = {
     public_key: ftwKey,
     tx_ref: Date.now(),
