@@ -52,6 +52,23 @@ class PaymentPlans extends Component {
 		}
 	}
 
+	paymentStatus = value => {
+		const { status } = value
+		if (status === "successful") {
+			//clear the input form and show a success message modal
+			this.setState({
+				defaultInput: "",
+				totalBill: 0
+			})
+		} else {
+			//clear the input form and show an error message modal
+			this.setState({
+				defaultInput: "",
+				totalBill: 0
+			})
+		}
+	}
+
 
 	getAgentInput = (e) => {
 		const { selectedRadio } = this.state
@@ -155,7 +172,7 @@ class PaymentPlans extends Component {
 						</div>
 						<div className="submit__payment__plan">
 							{ showError ? <div className="bill__error"><p>Error:please enter a number in the Agents field</p></div> : null}
-							<CreditCardModal getError={this.getPaymentError} totalBill={totalBill} agents={currentAgentEntered}/>
+							<CreditCardModal getPaymentStatus={this.paymentStatus} getError={this.getPaymentError} totalBill={totalBill} agents={currentAgentEntered}/>
 						</div>
 					</div>	
 				</div>

@@ -3,7 +3,7 @@ import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 
 import "../styles/cardModal.css";
 
-const CreditCardModal = ({ totalBill, agents, getError }) => {
+const CreditCardModal = ({ totalBill, agents, getError, getPaymentStatus }) => {
 	
 	let ftwKey = process.env.REACT_APP_FLUTTERWAVE_PUBLIC_KEY
 
@@ -33,7 +33,8 @@ const CreditCardModal = ({ totalBill, agents, getError }) => {
   	} else {
   		handleFlutterPayment({
   			callback: response => {
-  				console.log('from flutterwave', response);
+  				const { status, amount } = response;
+  				getPaymentStatus({ status, amount }) //pass the response as a prop to the parent component
   				closePaymentModal()
   			},
   			onClose: () => {}
