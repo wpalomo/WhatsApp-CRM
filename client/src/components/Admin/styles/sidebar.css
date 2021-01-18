@@ -78,8 +78,12 @@
 
 .sidebar__logout {
 	margin-top: 20px;
-	padding: 10px;
+	padding: 10px; 
 	color: #e65061;
+}
+
+.sidebar__logout:hover {
+	cursor: pointer;
 }
 
 .sidebar__logout > a {

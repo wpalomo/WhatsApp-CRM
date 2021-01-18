@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Redirect, Switch, Route } from 'react-router-dom';
+import Chats from "./Chats";
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import Main from "./Main";
@@ -26,6 +27,11 @@ const Admin = () => {
 					<Route path="/admin/home">
 						<Navbar sidebarOpen={sidebarOpen} openSideBar={openSideBar}/>
 						<Main />
+						<Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar}/>
+					</Route>
+					<Route path="/admin/chats">
+						<Navbar sidebarOpen={sidebarOpen} openSideBar={openSideBar}/>
+						<Chats />
 						<Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar}/>
 					</Route>
 					<Route path="/admin/agents">

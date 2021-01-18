@@ -8,12 +8,20 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 		history.push('/admin/agents') 
 	}
 
+	const chatsPage = () => {
+		history.push('/admin/chats') 
+	}
+
 	const adminHome = () => { 
 		history.push('/admin/agents') 
 	}
 
 	const subscriptionPage = () => {
 		history.push('/admin/subscription') 
+	}
+
+	const logOut = () => {
+		history.push('/')
 	}
 
 	return(
@@ -33,9 +41,9 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 				{
 					//<h2>MNG</h2>
 				}
-				<div className="sidebar__link">
+				<div onClick={chatsPage} className="sidebar__link">
 					<i className="fa fa-comments"></i>
-					<a href="foo">Chats</a>
+					<a href={chatsPage}>Chats</a>
 				</div>
 				<div onClick={getAgentsPage} className="sidebar__link">
 					<i className="fa fa-users"></i>
@@ -85,9 +93,9 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 					// 				<a href="foo">Paygrade</a>
 					// 			</div>
 							}
-				<div className="sidebar__logout">
+				<div onClick={logOut} className="sidebar__logout">
 					<i className="fa fa-power-off"></i>
-					<a href="foo">Log out</a>
+					<a href={logOut}>Log out</a>
 				</div>
 			</div>
 		</div>
