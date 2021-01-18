@@ -10,7 +10,7 @@ class Agents extends Component {
 		this.state = {
 			show: false
 		}
-	}
+	} 
 
 	
 	showModal = () => {

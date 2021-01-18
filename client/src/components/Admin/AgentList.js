@@ -48,7 +48,7 @@ const AgentList = () => {
 						)) }
 					</TableBody>
 				</Table>
-			</TableContainer>
+			</TableContainer> 
 		</Paper>
 	)
 }

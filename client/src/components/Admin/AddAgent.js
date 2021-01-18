@@ -4,6 +4,32 @@ import "./styles/modal.css";
 
 class AddAgentModal extends Component {
 
+	constructor() {
+		super()
+		this.state = {
+			newAgentName:"",
+			newAgentEmail:"",
+			showError: false,
+		}
+	}
+
+	getAgentName = e => {
+		this.setState({
+			newAgentName: e.target.value
+		})
+	}
+
+	getAgentEmail = e => {
+		this.setState({
+			newAgentEmail: e.target.value
+		})
+	}
+
+	getAgentDetails = () => {
+		const { newAgentEmail, newAgentName } = this.state
+		console.log({ newAgentEmail, newAgentName })
+	}
+
 	render() {
 		const nodeRef = React.createRef(null)
 		return(
@@ -22,19 +48,19 @@ class AddAgentModal extends Component {
 							<div className="aa_modal__name">
 								<label className="aa__agent__email" htmlFor="aa__agent__email">Name</label>
 								<div className="aa__email__container">
-									<input placeholder="Enter new agent name e.g. Eve Adams" type="email" name="new_agent__email" className="new_agent__email" required/>
+									<input onChange={this.getAgentName} placeholder="Enter new agent name e.g. Eve Adams" type="email" name="new_agent__email" className="new_agent__email" required/>
 								</div>	
 							</div>
 							<div className="aa_modal__email">
 								<label className="aa__agent__email" htmlFor="aa__agent__email">Email</label>
 								<div className="aa__email__container">
-									<input placeholder="Enter new agent email address" type="email" name="new_agent__email" className="new_agent__email" required/>
+									<input onChange={this.getAgentEmail} placeholder="Enter new agent email address" type="email" name="new_agent__email" className="new_agent__email" required/>
 								</div>	
 							</div>					
 						</div>
 						<div className="aa__modal__footer add__agent">
 							<button  className="aa__cancel" onClick={this.props.closeModal}>Cancel</button>
-							<button>Invite</button>
+							<button onClick={this.getAgentDetails}>Invite</button>
 						</div>
 					</div>
 				</div>
