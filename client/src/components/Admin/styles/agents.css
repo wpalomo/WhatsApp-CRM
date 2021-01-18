@@ -16,7 +16,7 @@
 
 .add__agent {
 	display: flex; 
-	flex-wrap: wrap;
+	flex-wrap: wrap; 
 	-webkit-box-align: center;
 	align-items: center;
 }
@@ -40,6 +40,10 @@
 	padding: 25px;
 	height: 100%;
 	z-index: 0;
+}
+
+.chat__area {
+	border: 1px solid red;
 }
 
 	

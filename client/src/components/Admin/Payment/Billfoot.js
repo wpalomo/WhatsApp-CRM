@@ -20,7 +20,7 @@ class Billfoot extends Component {
 		history.push('/admin/subscription/home')
 		this.changeClass()
 	}
-
+ 
 	accountsPage = () => {
 		history.push('/admin/subscription/account-details')
 		this.changeClass()
