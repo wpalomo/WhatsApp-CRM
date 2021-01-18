@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { team, customers } from "./team";
 import "./styles/agents.css";
 
 class Chats extends Component {
@@ -6,7 +7,8 @@ class Chats extends Component {
 	constructor() {
 		super() 
 		this.state = {
-			agentList: [{name:'Jomi Oni', activeAgent: false}, {name:'Winifred Robb', activeAgent: false}, {name:'Funke Sausage', activeAgent: false}]
+			agentList: [],
+			customerList: []
 		}
 	}
 
@@ -20,7 +22,8 @@ class Chats extends Component {
 			return obj
 		})
 		this.setState({
-			agentList: singleActive
+			agentList: singleActive,
+			customerList: customers
 		}, () => {
 			const { agentList } = this.state 
 			let newList = agentList.map(obj => {
@@ -35,10 +38,42 @@ class Chats extends Component {
 		})
 	}
 
+	setActiveNum = e => {
+		const { customerList } = this.state
+		let currentClicked = e.target.id
+		let singleActive = customerList.map(obj => {
+			if (obj.num === currentClicked) {
+				return { ...obj, activeNum: !obj.activeNum}
+			}
+			return obj
+		})
+		this.setState({
+			customerList: singleActive,
+		}, () => {
+			const { customerList } = this.state 
+			let newCusList = customerList.map(obj => {
+				if (obj.num !== currentClicked) {
+					return { ...obj, activeNum: false}
+				}
+				return obj
+			})
+			this.setState({
+				customerList: newCusList
+			})		
+		})
+	}
+
+	componentDidMount() {
+		let agents = team.filter(obj => (obj.role === 'Agent' && obj.status === 'active'))
+		this.setState({
+			agentList: agents
+		})
+	}
+
 	
 
 	render() {
-		const { agentList } = this.state
+		const { agentList, customerList } = this.state
 		return(
 			<div className="agents__container">
 					<div className="agents__top__row">
@@ -65,10 +100,11 @@ class Chats extends Component {
 									<p>Customer</p>
 								</div>
 								<div className="agent__customers__body">
-									<p>+2347030117552</p>
-									<p>+2348152258413</p>
-									<p>+2348060338847</p>
-									<p>+2348060338847</p>
+									{
+										customerList.map((obj, idx) => (
+											<p onClick={this.setActiveNum} key={idx} id={obj.num} className={obj.activeNum ? "active__num" : ""}>{ obj.num }</p>
+										))
+									}
 								</div>
 							</div>
 							<div className="agent__chat">

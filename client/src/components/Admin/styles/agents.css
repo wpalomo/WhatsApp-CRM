@@ -68,8 +68,12 @@
 	padding-right: 20px;
 }
 
-.agents__area__body > p, .agent__customers__body > p {
+.agents__area__body > p {
 	margin: 15px;
+}
+
+.agent__customers__body > p {
+	margin-top: 15px;
 }
 
 .agents__area__body > p:hover, .agent__customers__body > p:hover {
@@ -77,6 +81,15 @@
 }
 
 .active__agent {
+	font-weight: 700;
+	color: #3ea175;
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 5px 5px 13px #3ea175;
+	border: none;
+}
+
+.active__num {
 	font-weight: 700;
 	color: #3ea175;
 	padding: 10px;
