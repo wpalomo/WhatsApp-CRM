@@ -15,23 +15,38 @@ class AddAgentModal extends Component {
 
 	getAgentName = e => {
 		this.setState({
-			newAgentName: e.target.value
+			newAgentName: e.target.value,
+			showError: false
 		})
 	}
 
 	getAgentEmail = e => {
 		this.setState({
-			newAgentEmail: e.target.value
+			newAgentEmail: e.target.value,
+			showError: false
 		})
 	}
 
+
 	getAgentDetails = () => {
 		const { newAgentEmail, newAgentName } = this.state
-		console.log({ newAgentEmail, newAgentName })
+		if (newAgentName === "" || newAgentEmail === "") {
+			this.setState({
+				showError: true
+			})
+		} else {
+			this.props.newAgent({ newAgentEmail, newAgentName }) //pass it out as props or save to db and send email to email address with a link to set password
+			this.props.closeModal()//close the modal
+			this.setState({
+				newAgentName:"",
+				newAgentEmail:""
+			})
+		}
 	}
 
 	render() {
 		const nodeRef = React.createRef(null)
+		const { showError } = this.state
 		return(
 			<CSSTransition
 				in={this.props.show}
@@ -56,7 +71,8 @@ class AddAgentModal extends Component {
 								<div className="aa__email__container">
 									<input onChange={this.getAgentEmail} placeholder="Enter new agent email address" type="email" name="new_agent__email" className="new_agent__email" required/>
 								</div>	
-							</div>					
+							</div>
+							{ showError ? <div className="bill__error"><p>please enter a name and email</p></div> : null}					
 						</div>
 						<div className="aa__modal__footer add__agent">
 							<button  className="aa__cancel" onClick={this.props.closeModal}>Cancel</button>

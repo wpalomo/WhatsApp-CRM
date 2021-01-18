@@ -25,6 +25,10 @@ class Agents extends Component {
 		})
 	}
 
+	getNewAgent = value => {
+		console.log('na >>>', value)
+	}
+
 	render() {
 		return(
 			<div className="agents__container">
@@ -37,7 +41,7 @@ class Agents extends Component {
 							<div>+ Add</div>
 						</button> 
 					</div>
-					<AddAgentModal show={this.state.show} closeModal={this.closeOpenModal}/>
+					<AddAgentModal newAgent={this.getNewAgent} show={this.state.show} closeModal={this.closeOpenModal}/>
 				</div>
 				<div className="agents__bottom__area">
 					<div className="agentlist__area">
