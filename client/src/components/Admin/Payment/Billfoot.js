@@ -31,7 +31,9 @@ class Billfoot extends Component {
 		return(
 			<div className="billing__footer">
 				<p onClick={this.subcriptionPage} className={selectorClass ? "active__tab" : ""}>Your Subscription</p>
-				<p onClick={this.accountsPage} className={selectorClass ? "" : "active__tab"}>Account details</p>
+				{
+					//<p onClick={this.accountsPage} className={selectorClass ? "" : "active__tab"}>Account details</p>
+			}
 			</div>
 		)
 	}
