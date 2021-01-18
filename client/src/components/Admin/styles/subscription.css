@@ -50,7 +50,7 @@
 
 .expanded__downright {
 	grid-area: mainarea;
-	padding: 30px;
+	padding: 30px; 
 	overflow-y: scroll;
 }
 
