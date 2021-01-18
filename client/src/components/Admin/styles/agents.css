@@ -51,7 +51,7 @@
 .agents__area, .agent__customers, .agent__chat {
 	border: 1px solid lightgray;
 	display: grid;
-	grid-template-rows: 0.1fr 0.8fr;
+	grid-template-rows: 0.1fr 1fr;
 }
 
 .agents__area__heading, .agent__customers__heading, .agent__chat__heading {
@@ -64,6 +64,8 @@
 .agents__area__body, .agent__customers__body {
 	overflow-y: scroll;
 	text-align: center;
+	padding-left: 20px;
+	padding-right: 20px;
 }
 
 .agents__area__body > p, .agent__customers__body > p {
@@ -72,6 +74,15 @@
 
 .agents__area__body > p:hover, .agent__customers__body > p:hover {
 	cursor: pointer;
+}
+
+.active__agent {
+	font-weight: 700;
+	color: #3ea175;
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 5px 5px 13px #3ea175;
+	border: none;
 }
 
 	
