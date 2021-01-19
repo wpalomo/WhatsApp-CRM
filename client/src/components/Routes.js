@@ -23,7 +23,7 @@ const Routes = () => {
 				<ProtectedRoute path="/customers" component={User}/>
 			</Switch>
 		</Router>  
-	) 
+	)  
 }
 
 
