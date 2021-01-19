@@ -1,18 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wgh@300;400;700&display=swap");
+
+.register__container {
+	font-family: "Lato", sans-serif;
+}
+
 #brand__name {
 	margin-bottom: 20px;
-	font-size: 1.5rem;
+	font-size: 1.8rem;
+	font-weight: 700;
 }
 
 .register__body {
 	display: flex;
+	flex-direction: column;
 	background-color: #fff;
-	height: 90vh;
+	height: 50vh;
 	width: 45vw;
 	box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.55);
 }
 
-.register1__body {
-	height: 100%;
+.form__heading {
+	text-align: center;
+	padding: 15px;
+}
+
+.form__heading > p {
+	font-size: 1.25rem;
+}
+
+.form__container {
+	padding: 20px;
+}
+
+.form__container > .email__container, .form__container > .password__container {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.email__container__input, .password__container, .submit__container {
+	width: 100%;
+}
+
+.email__container__input > input, .password__container__input > input {
+	height: 40px;
+	padding: 5px 15px;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.submit__container > button {
+	background-color: #4FCE5D;
+	border: 2px solid #4FCE5D;
+	color: #fff;
+	font-size: 1.125rem;
+	line-height: 1.5625rem;
+	padding: 5px 15px;
+	box-sizing: border-box;
+	width: 100%;
+	height: 40px;
+	margin-top: 20px;
+}
+
+.submit__container > button:hover {
+	cursor: pointer;
+}
+
+/*.register1__body {
+	height: 100%; 
 	width: 100%;
 	padding: 4.5rem 4.5rem 6rem;
 }
@@ -90,3 +144,4 @@
 .lastname__input > .field__label {
 	margin-left: 10px;
 }
+*/

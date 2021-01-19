@@ -3,7 +3,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Routes from "./Routes";
 import '../index.css';
 
+
 const App = () => {
+	
   return (
   	<div className="app">
 	   	<Router>
@@ -12,4 +14,6 @@ const App = () => {
     </div>
   );
 }
+
 export default App;
+ 
