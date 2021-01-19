@@ -18,6 +18,18 @@
 .home__header {
 	grid-area: h;
 	background-color: #96ceb4;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding-right: 5px;
+}
+
+.home__header p {
+	margin-right: 10px;
+}
+
+.home__header p:hover {
+	cursor: pointer;
 }
 
 .home__menu {

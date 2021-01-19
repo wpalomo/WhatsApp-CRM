@@ -6,7 +6,8 @@ const HomePage = () => {
 		<div className="homepage__container">
 			<div className="home__container">
 				<div className="home__header">
-					Header
+					<p>Sign In</p>
+					<p>Sign Up</p>		
 				</div>
 				<div className="home__menu">
 					Menu
