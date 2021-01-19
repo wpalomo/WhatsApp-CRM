@@ -68,7 +68,7 @@ class RegisterFormBase extends Component {
 		firebase.doCreateUserWithEmailAndPassword(email, password)
 				.then(authUser => {
 					//add the user to the admins collections in firestore
-					adminRef.set({
+					adminRef.add({
 						company:companyName,
 						email:email
 					})
