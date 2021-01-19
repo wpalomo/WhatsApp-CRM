@@ -1,21 +1,30 @@
 import React, { Component } from "react";
-import { FirebaseContext } from "../../firebase/index";
+import { withFirebase } from "../../firebase/index";
 //import history from "../History";
 import '../styles/register.css';
 
-const SignUpPage = () => {
-	return(
-		<div>
-			<FirebaseContext.Consumer>
-				{ firebase => <Register firebase={firebase}/> } 
-			</FirebaseContext.Consumer>
-		</div>
-	)
-}
+//DON'T DELETE - code has been replaced with withFirebase below
+// const SignUpPage = () => {
+// 	return(
+// 		<div>
+// 			<FirebaseContext.Consumer>
+// 				{ firebase => <Register firebase={firebase}/> } 
+// 			</FirebaseContext.Consumer>
+// 		</div>
+// 	)
+// }
 
 //fire above refers to a new instance of the class defined in the context provider, similar to const firebase = new Firebase()
 //and this instance has access to all the methods defined in the Firebase class in firebase.js file
 //it is used as a prop her to access the class methods
+
+
+const SignUpPage = () => (
+	<div>
+		<Register />
+	</div>
+)
+
 
 const initialState = {
 			email: '',
@@ -23,7 +32,7 @@ const initialState = {
 			error: null
 		}
 
-class Register extends Component {
+class RegisterFormBase extends Component {
 
 	constructor() {
 		super()
@@ -88,6 +97,8 @@ class Register extends Component {
 		)
 	}
 }
+
+const Register = withFirebase(RegisterFormBase)
 
 export default SignUpPage;
 
