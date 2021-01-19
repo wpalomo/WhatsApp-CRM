@@ -30,10 +30,11 @@ class Login extends Component {
 		e.preventDefault()
 		const { signinUsername } = this.state;
 		const agentsRef = db.collection('agents')
-		//send to backend for auth and map the username to a socket if auth is successful
+		//get the admins collection and check where the signin email is the saved email. if it does not exist, it's an agent
+		//if true, its an admin
 
 		//- change route to user if auth is true
-		//history.push('/customers') 
+		//history.push('/customers')  or (/admin)
 		sessionStorage.setItem('aun', signinUsername)
 		//save the username
 		agentsRef

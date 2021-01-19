@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withFirebase } from "../../firebase/index";
 import { withRouter } from 'react-router-dom';
 import history from "../History";
+import { db } from "../../firebase";
 import '../styles/register.css';
 
 //DON'T DELETE - code has been replaced with withFirebase below
@@ -61,9 +62,19 @@ class RegisterFormBase extends Component {
 
 	submitRegister = () => {
 		const { email, password, company } = this.state
+		let companyName = company.replace(/\s+/g, "__").toLowerCase() //replace all spaces with underscore
+		let adminRef = db.collection('admins');
 		const { firebase } = this.props
 		firebase.doCreateUserWithEmailAndPassword(email, password)
 				.then(authUser => {
+					//add the user to the admins collections in firestore
+					adminRef.set({
+						company:companyName,
+						email:email
+					})
+					.catch(err => {
+						console.log('Something went wrong with added user to firestore: ', err);
+					})
 					this.setState({ ...initialState })
 					history.push("/admin")
 				})

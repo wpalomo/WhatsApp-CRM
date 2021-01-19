@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
 		let onlineAgents = await agentsRef.where('loggedin', '==', 'yes').get()
 		onlineAgents.forEach(doc => {
 			activeAgents.push(doc.id)
-		})
+		}) 
 
 		//customer message
 		let data = {
