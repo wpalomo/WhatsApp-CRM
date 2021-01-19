@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withFirebase } from "../../firebase/index";
-//import history from "../History";
+import history from "../History";
 import '../styles/register.css';
 
 //DON'T DELETE - code has been replaced with withFirebase below
@@ -51,17 +51,20 @@ class RegisterFormBase extends Component {
 		})
 	}
 
-	submitRegister = () => {
+	submitRegister = async () => {
 		const { email, password } = this.state
-		this.props.firebase
-			.doCreateUserWithEmailAndPassword(email, password)
-			.then(authUser => {
-				this.setState({ ...initialState })
-			})
-			.catch(error => {
-				this.setState({ error })
-			})
-		
+		const { firebase } = this.props
+		let res = await firebase.doCreateUserWithEmailAndPassword(email, password)
+		console.log('from firebase >>', res)
+			
+			// .then(authUser => {
+			// 	console.log('from firebase >>', authUser)
+			// 	this.setState({ ...initialState })
+			// 	history.push("/admin")
+			// })
+			// .catch(error => {
+			// 	this.setState({ error })
+			// })
 	}
 
 	render() {
