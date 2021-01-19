@@ -30,6 +30,7 @@ const SignUpPage = () => (
 const initialState = {
 			email: '',
 			password: '',
+			company:'',
 			error: null
 		}
 
@@ -52,8 +53,14 @@ class RegisterFormBase extends Component {
 		})
 	}
 
+	onCompanyChange = e => {
+		this.setState({
+			company: e.target.value
+		})
+	}
+
 	submitRegister = () => {
-		const { email, password } = this.state
+		const { email, password, company } = this.state
 		const { firebase } = this.props
 		firebase.doCreateUserWithEmailAndPassword(email, password)
 				.then(authUser => {
@@ -66,8 +73,8 @@ class RegisterFormBase extends Component {
 	}
 
 	render() {
-		const { email, password, error } = this.state
-		const isInvalid = email === "" || password === ""
+		const { email, password, company, error } = this.state
+		const isInvalid = email === "" || password === "" || company === ""
 		return ( 
 			<div className="register__container">  
 				<p id="brand__name">Sauceflow</p>
@@ -76,6 +83,12 @@ class RegisterFormBase extends Component {
 						<p>Register</p>
 					</div>
 						<div className="form__container">
+								<div className="company__container">
+									<label className="field__label" htmlFor="company__name">Company Name</label>
+									<div className="company__container__input">
+										<input onChange={this.onCompanyChange} value={company} type="text" name="company" className="company" required/>
+									</div>
+								</div>
 								<div className="email__container">
 									<label className="field__label" htmlFor="owner__email">Email</label>
 									<div className="email__container__input">
