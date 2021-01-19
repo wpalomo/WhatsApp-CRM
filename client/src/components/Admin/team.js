@@ -62,3 +62,30 @@ export const customers = [
 	{num:'+2348060338847', activeNum:false},
 	{num:'+2348105965717', activeNum:false}
 ]
+
+export const chats = [
+	{
+		name:'+2347030117552',
+		message:'Hello', 
+		timestamp: '3:54pm',
+		user:'customer'
+	},
+	{
+		name:'Jomi Oni',
+		message:'Good afternoon',
+		timestamp: '3:55pm',
+		user:'agent'
+	},
+	{
+		name:'+2347030117552',
+		message:'I need shoes',
+		timestamp: '3:56pm',
+		user:'customer'
+	},
+	{
+		name:'Jomi Oni',
+		message:'What sizes?',
+		timestamp: '3:58pm',
+		user:'agent'
+	}
+]

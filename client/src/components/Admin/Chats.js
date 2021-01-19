@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { team, customers } from "./team";
+import { team, customers, chats } from "./team";
 import "./styles/agents.css";
 
 class Chats extends Component {
@@ -8,7 +8,8 @@ class Chats extends Component {
 		super() 
 		this.state = {
 			agentList: [],
-			customerList: []
+			customerList: [],
+			chatHistory:[]
 		}
 	}
 
@@ -18,25 +19,45 @@ class Chats extends Component {
 		let singleActive = agentList.map(obj => {
 			if (obj.name === currentClicked) {
 				return { ...obj, activeAgent: !obj.activeAgent}
+			} else {
+				return obj
 			}
-			return obj
 		})
 		this.setState({
-			agentList: singleActive,
-			customerList: customers
+			agentList: singleActive
 		}, () => {
-			const { agentList } = this.state 
-			let newList = agentList.map(obj => {
+			let newList = this.state.agentList.map(obj => {
 				if (obj.name !== currentClicked) {
-					return { ...obj, activeAgent: false}
+					return { ...obj, activeAgent: false }
+				} else {
+					return obj
 				}
-				return obj
 			})
 			this.setState({
 				agentList: newList
-			})		
+			}, () => {
+				let selectedAgent = this.state.agentList.filter(obj => obj.activeAgent === true)
+				if (selectedAgent.length === 1) {
+					this.setState({
+						customerList: customers
+					}, () => {
+						let selectedCustomer = this.state.customerList.filter(obj => obj.activeNum === true)
+						if (selectedCustomer.length === 0) {
+							this.setState({
+								chatHistory:[]
+							})
+						}
+					})
+				} else {
+					this.setState({
+						customerList: [],
+						chatHistory:[]
+					})
+				}
+			})
 		})
 	}
+
 
 	setActiveNum = e => {
 		const { customerList } = this.state
@@ -48,10 +69,9 @@ class Chats extends Component {
 			return obj
 		})
 		this.setState({
-			customerList: singleActive,
+			customerList: singleActive
 		}, () => {
-			const { customerList } = this.state 
-			let newCusList = customerList.map(obj => {
+			let newCusList = this.state.customerList.map(obj => {
 				if (obj.num !== currentClicked) {
 					return { ...obj, activeNum: false}
 				}
@@ -59,6 +79,17 @@ class Chats extends Component {
 			})
 			this.setState({
 				customerList: newCusList
+			}, () => {
+				let selectedCustomer = this.state.customerList.filter(obj => obj.activeNum === true)
+				if (selectedCustomer.length === 1) {
+					this.setState({
+						chatHistory: chats
+					})
+				} else {
+					this.setState({
+						chatHistory: []
+					})
+				}
 			})		
 		})
 	}
@@ -73,7 +104,7 @@ class Chats extends Component {
 	
 
 	render() {
-		const { agentList, customerList } = this.state
+		const { agentList, customerList, chatHistory } = this.state
 		return(
 			<div className="agents__container">
 					<div className="agents__top__row">
@@ -112,8 +143,15 @@ class Chats extends Component {
 									<p>Chat History</p>
 								</div>
 								<div className="agent__chat__body">
-									
-								</div>
+									{
+										chatHistory.map((obj, idx) => (
+											<p key={idx} className={`chat__message ${obj.user === 'agent' && "chat__receiver"}`}>
+												{ obj.message }
+												<span className="chat__timestamp">{ obj.user }</span>
+											</p>
+										))
+									}
+								</div> 
 							</div>
 						</div>
 					</div>

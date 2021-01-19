@@ -195,7 +195,7 @@ class ExpandedSingleChat extends Component {
 			    	</p>
 			    )) }
 			    </div>
-			    <div className="chat__footer"> 
+			    <div className="chat__footer">  
 			    	<IconButton>
 			    		<InsertEmoticonIcon />
 			    	</IconButton>
