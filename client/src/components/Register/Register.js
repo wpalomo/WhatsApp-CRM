@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withFirebase } from "../../firebase/index";
+import { withRouter } from 'react-router-dom';
 import history from "../History";
 import '../styles/register.css';
 
@@ -51,20 +52,17 @@ class RegisterFormBase extends Component {
 		})
 	}
 
-	submitRegister = async () => {
+	submitRegister = () => {
 		const { email, password } = this.state
 		const { firebase } = this.props
-		let res = await firebase.doCreateUserWithEmailAndPassword(email, password)
-		console.log('from firebase >>', res)
-			
-			// .then(authUser => {
-			// 	console.log('from firebase >>', authUser)
-			// 	this.setState({ ...initialState })
-			// 	history.push("/admin")
-			// })
-			// .catch(error => {
-			// 	this.setState({ error })
-			// })
+		firebase.doCreateUserWithEmailAndPassword(email, password)
+				.then(authUser => {
+					this.setState({ ...initialState })
+					history.push("/admin")
+				})
+				.catch(error => {
+					this.setState({ error })
+				})
 	}
 
 	render() {
@@ -101,7 +99,7 @@ class RegisterFormBase extends Component {
 	}
 }
 
-const Register = withFirebase(RegisterFormBase)
+const Register = withRouter(withFirebase(RegisterFormBase))
 
 export default SignUpPage;
 
