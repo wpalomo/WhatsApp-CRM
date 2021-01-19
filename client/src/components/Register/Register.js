@@ -1,17 +1,33 @@
 import React, { Component } from "react";
+import { FirebaseContext } from "../../firebase/index";
 //import history from "../History";
 import '../styles/register.css';
 
+const SignUpPage = () => {
+	return(
+		<div>
+			<FirebaseContext.Consumer>
+				{ firebase => <Register firebase={firebase}/> } 
+			</FirebaseContext.Consumer>
+		</div>
+	)
+}
+
+//fire above refers to a new instance of the class defined in the context provider, similar to const firebase = new Firebase()
+//and this instance has access to all the methods defined in the Firebase class in firebase.js file
+//it is used as a prop her to access the class methods
+
+const initialState = {
+			email: '',
+			password: '',
+			error: null
+		}
 
 class Register extends Component {
 
 	constructor() {
 		super()
-		this.state = {
-			email: '',
-			password: '',
-			error: null
-		}
+		this.state = { ...initialState }
 	}
 
 	onEmailChange = e => {
@@ -28,11 +44,15 @@ class Register extends Component {
 
 	submitRegister = () => {
 		const { email, password } = this.state
-		console.log(email, password)
-		this.setState({
-			email: "",
-			password:""
-		})
+		this.props.firebase
+			.doCreateUserWithEmailAndPassword(email, password)
+			.then(authUser => {
+				this.setState({ ...initialState })
+			})
+			.catch(error => {
+				this.setState({ error })
+			})
+		
 	}
 
 	render() {
@@ -69,4 +89,6 @@ class Register extends Component {
 	}
 }
 
-export default Register;
+export default SignUpPage;
+
+export { Register };

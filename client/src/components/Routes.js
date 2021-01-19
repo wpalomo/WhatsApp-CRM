@@ -4,8 +4,8 @@ import { Router, Switch, Route } from "react-router-dom";
 import history from "./History";
 
 import HomePage from "./HomePage/HomePage";
-import Register from "./Register/Register";
-import Admin from "./Admin/Admin";
+import SignUpPage from "./Register/Register";
+import Admin from "./Admin/Admin"; 
 import Login from "./Login";
 import User from "./User";
 import ProtectedRoute from "./ProtectedRoute";
@@ -20,7 +20,7 @@ const Routes = () => {
 				<Route exact path="/" component={HomePage}/>
 				<Route path="/admin" component={Admin}/>
 				<Route path="/login" component={Login}/>
-				<Route path="/register" component={Register}/>
+				<Route path="/register" component={SignUpPage}/>
 				<ProtectedRoute path="/customers" component={User}/>
 			</Switch>
 		</Router>  
