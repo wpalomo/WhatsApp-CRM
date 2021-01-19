@@ -1,0 +1,36 @@
+.homepage__container {
+	width: 100vw;
+	height: 100vh;
+	background-color: #ffeead;
+}
+
+.home__container {
+	height: 100%;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: 0.1fr 1fr 0.1fr;
+	grid-template-areas: 
+		"h h h h"
+		"m m c c"
+		"f f f f";
+}
+
+.home__header {
+	grid-area: h;
+	background-color: #96ceb4;
+}
+
+.home__menu {
+	grid-area: m;
+	background-color: #88d8b0;
+}
+
+.home__content {
+	grid-area: c;
+	background-color: #ff6f69;
+}
+
+.home__footer {
+	grid-area: f;
+	background-color: #ffcc5c;
+}
