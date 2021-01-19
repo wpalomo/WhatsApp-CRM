@@ -2,10 +2,11 @@ import firebaseConfig, { auth } from "./firebase";
 
 
 export const authMethods = {
-	signup: (email, password, setErrors) => {
+	signup: (email, password, setErrors, setToken) => {
 		auth.createUserWithEmailAndPassword(email, password)
-			.then(res => {
-				console.log(res)
+			.then(async res => {
+				const token = await Object.entries(res.user)[5][1].b
+				console.log('token >>', token)
 			})
 			.catch(err => {
 				setErrors(prev => ([...prev, err.message]))

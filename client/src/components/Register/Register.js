@@ -21,7 +21,7 @@ const Register = () => {
 	}
 
 	return ( 
-		<form onSubmit={submitRegister} className="register__container">  
+		<div className="register__container">  
 			<p id="brand__name">Sauceflow</p>
 			<div className="register__body">
 				<div className="form__heading">
@@ -42,11 +42,11 @@ const Register = () => {
 							</div>
 							<div className="submit__container">
 								{ errors.length > 0 ? errors.map((error, idx) => <p key={idx} style={{color: 'red'}}>{ error }</p>) : null }
-								<button type="submit" className="button">Sign Up</button>
+								<button onClick={submitRegister} type="submit" className="button">Sign Up</button>
 							</div>
 					</div>
 			</div>
-		</form>
+		</div>
 	)
 }
 

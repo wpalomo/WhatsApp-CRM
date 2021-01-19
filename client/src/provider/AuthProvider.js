@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(null)
 
 	const handleSignup = () => {
-		return authMethods.signup(newUserInput.email, newUserInput.password, setErrors)
+		return authMethods.signup(newUserInput.email, newUserInput.password, setErrors, setToken)
 	}
 
 	return(
