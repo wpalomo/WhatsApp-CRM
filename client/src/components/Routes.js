@@ -7,7 +7,7 @@ import HomePage from "./HomePage/HomePage";
 import SignUpPage from "./Register/Register";
 import Admin from "./Admin/Admin"; 
 import Login from "./Login";
-import User from "./User";
+import User from "./User"; 
 import ProtectedRoute from "./ProtectedRoute";
 
 const Routes = () => {
