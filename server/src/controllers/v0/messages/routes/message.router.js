@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
 				} else {//existing customer
 					for (let doc of clientList.docs) {
 						let oldCustomerMsg = agentsRef.doc(agent).collection('customers').doc(doc.id).collection('messages').add(data)
-					}
+					} 
 				}
 			} 
 			//wait for an agent response

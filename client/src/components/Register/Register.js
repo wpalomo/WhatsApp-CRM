@@ -67,7 +67,7 @@ class RegisterFormBase extends Component {
 		let companyRef = db.collection('companies');
 		const { firebase } = this.props
 		firebase.doCreateUserWithEmailAndPassword(email, password)
-				.then(authUser => {
+				.then(async authUser => {
 					//add the user to the admins collections in firestore
 					adminRef.add({
 						company:companyName,
@@ -77,12 +77,12 @@ class RegisterFormBase extends Component {
 						console.log('Something went wrong with added user to firestore: ', err);
 					})
 					//add the company to the company list and get the doc id
-					companyRef.add({ 
-						name:companyName
-					})  
-					.catch(err => {
+					try {
+						let newCompany = await companyRef.add({ name:companyName })
+						let newCompanyId = newCompany.id
+					} catch (err) {
 						console.log('Something went wrong with added company to firestore: ', err);
-					})
+					}
 					this.setState({ ...initialState })
 					history.push("/admin")
 				})

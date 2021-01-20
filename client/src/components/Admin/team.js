@@ -3,8 +3,8 @@ export const team = [
 		name: 'Tunde Oduguwa',
 		role: 'Owner',
 		email: 'tunde@gmail.com',
-		loggedin: '3:14pm',
-		status: 'active'
+		loggedin: '',
+		status: ''
 	},
 	{
 		name: 'Jomi Oni',

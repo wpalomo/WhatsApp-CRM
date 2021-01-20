@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { db } from "../../firebase";
 import { team } from "./team"; //replace with a db call
 
 
@@ -63,7 +64,9 @@ class AgentList extends Component {
 	}
 
 	// getUsers = () => {
-
+	// 	let companyRef = db.collection('companies');
+	// 	//get the coy id from the register route
+	// 	let unsubscribe = companyRef.doc().collection('users')
 	// }
 
 	// componentDidMount() {
