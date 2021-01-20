@@ -1,17 +1,29 @@
 import React, { Component } from "react";
+import { withFirebase } from "../firebase/index";
+import { withRouter } from 'react-router-dom';
 import history from "./History";
 import "./styles/login.css"
 import whatsapp from './media/whatsapp.png';
 import { db } from '../firebase.js';
 
-class Login extends Component { 
+const SignInPage = () => (
+	<div>
+		<SignIn />
+	</div>
+)
+
+const initialState = {
+			signinUsername:"",
+			signinPassword:"",
+			error: null
+		}
+
+
+class LoginFormBase extends Component { 
 
 	constructor(props) {
 		super(props)
-		this.state = {
-			signinUsername:"",
-			signinPassword:""  
-		} 
+		this.state = { ...initialState }
 	} 
  
 	getSigninUsername = e => {
@@ -26,42 +38,60 @@ class Login extends Component {
 		})
 	}
 
-	onSubmitSignin =  e => {
-		e.preventDefault()
-		const { signinUsername } = this.state;
-		const agentsRef = db.collection('agents')
-		//get the admins collection and check where the signin email is the saved email. if it does not exist, it's an agent
-		//if true, its an admin
+	// onSubmitSignin =  e => {
+	// 	e.preventDefault()
+	// 	const { signinUsername } = this.state;
+	// 	const agentsRef = db.collection('agents')
+	// 	//get the admins collection and check where the signin email is the saved email. if it does not exist, it's an agent
+	// 	//if true, its an admin
 
-		//- change route to user if auth is true
-		//history.push('/customers')  or (/admin)
-		sessionStorage.setItem('aun', signinUsername)
-		//save the username 
-		agentsRef
-			.get()
-			.then(snapshot => {
-				let loggedIn = snapshot.docs.map(doc => {
-					return {id:doc.id, data:doc.data()}
-				}).filter(obj => (obj.data.loggedin === 'yes' && obj.data.agentname === signinUsername))
-				if(loggedIn) {
-					let user = loggedIn[0].id
-					sessionStorage.setItem('aid', user)
-					history.push('/customers') 
-				}
-			})
+	// 	//- change route to user if auth is true
+	// 	//history.push('/customers')  or (/admin)
+	// 	sessionStorage.setItem('aun', signinUsername)
+	// 	//save the username 
+	// 	agentsRef
+	// 		.get()
+	// 		.then(snapshot => {
+	// 			let loggedIn = snapshot.docs.map(doc => {
+	// 				return {id:doc.id, data:doc.data()}
+	// 			}).filter(obj => (obj.data.loggedin === 'yes' && obj.data.agentname === signinUsername))
+	// 			if(loggedIn) {
+	// 				let user = loggedIn[0].id
+	// 				sessionStorage.setItem('aid', user)
+	// 				history.push('/customers') 
+	// 			}
+	// 		})
 		
 
-		//clear the form
-		this.setState({
-			signinUsername:"",
-			signinPassword:""
-		})
+	// 	//clear the form
+	// 	this.setState({
+	// 		signinUsername:"",
+	// 		signinPassword:""
+	// 	})
+	// }
+
+	onSubmitSignin =  e => {
+		e.preventDefault()
+		const { firebase } = this.props
+		const { signinUsername, signinPassword } = this.state
+		firebase.doSignInWithEmailAndPassword(signinUsername, signinPassword)
+				.then((user) => {
+					console.log('from firebase >>', user.user.uid)
+					//clear the form
+					this.setState({ ...initialState })
+					history.push('/admin') 
+					//check if admin or agent
+				})
+				.catch(error => {
+					this.setState({ error })
+				})
 	}
 
 	
  
 	render() {
-		const { signinUsername, signinPassword } = this.state
+		const { signinUsername, signinPassword, error } = this.state
+		const isInvalid = signinUsername === "" || signinPassword === "" 
 		return(
 			<div className="signin">
 				<div className="signin__container">
@@ -78,7 +108,8 @@ class Login extends Component {
 								<input value={signinPassword} onChange={this.getSigninPassword} type="password" name="psw" id="psw" placeholder="Password"/>
 							</div>
 							<div className="control">
-								<input type="submit" value="Login" onClick={this.onSubmitSignin}/>
+								{ error && <p className="error__message">{ error.message }</p> }
+								<input disabled={isInvalid} type="submit" value="Login" onClick={this.onSubmitSignin}/>
 							</div>
 						</form>
 						<div className="link">
@@ -91,4 +122,8 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+const SignIn = withRouter(withFirebase(LoginFormBase))
+
+export default SignInPage;
+
+export { SignIn };

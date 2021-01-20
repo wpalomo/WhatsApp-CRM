@@ -6,27 +6,59 @@ import history from "./History";
 import HomePage from "./HomePage/HomePage";
 import SignUpPage from "./Register/Register";
 import Admin from "./Admin/Admin"; 
-import Login from "./Login";
+import SignInPage from "./Login";
 import User from "./User"; 
 import ProtectedRoute from "./ProtectedRoute";
+
+// const Routes = () => {
+// 	return(
+// 		<Router history={history}>
+// 			<Switch>
+// 				{
+// 					//<Route exact path="/" render={() => (<Redirect to={{ pathname: '/login' }}/>)}/>
+// 			}
+// 				<Route exact path="/" component={HomePage}/>
+// 				<Route path="/admin" component={Admin}/>
+// 				<Route path="/login" component={Login}/>
+// 				<Route path="/register" component={SignUpPage}/>
+// 				<ProtectedRoute path="/customers" component={User}/>
+// 			</Switch>
+// 		</Router>  
+// 	)  
+// }
+
+// const Routes = ({ authUser }) => {
+// 	return(
+// 		<Router history={history}>
+// 			<Switch>
+// 				<Route exact path="/" component={HomePage}/>
+// 				<Route 
+// 					path="/login" 
+// 					render={(props) => (
+// 						<SignInPage {...props} isAuth={authUser}/>
+// 					)} 
+// 				/>
+// 				<Route path="/admin" component={Admin}/>
+// 				<Route path="/register" component={SignUpPage}/>
+// 				<ProtectedRoute path="/customers" component={User}/>
+// 			</Switch>
+// 		</Router>  
+// 	)  
+// }
 
 const Routes = () => {
 	return(
 		<Router history={history}>
 			<Switch>
-				{
-					//<Route exact path="/" render={() => (<Redirect to={{ pathname: '/login' }}/>)}/>
-			}
 				<Route exact path="/" component={HomePage}/>
+				<Route path="/login" component={SignInPage}/>
 				<Route path="/admin" component={Admin}/>
-				<Route path="/login" component={Login}/>
 				<Route path="/register" component={SignUpPage}/>
 				<ProtectedRoute path="/customers" component={User}/>
 			</Switch>
 		</Router>  
 	)  
 }
-
 
 
 

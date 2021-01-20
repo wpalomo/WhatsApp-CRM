@@ -8,7 +8,7 @@ import '../styles/register.css';
 //DON'T DELETE - code has been replaced with withFirebase below
 // const SignUpPage = () => {
 // 	return(
-// 		<div>
+// 		<div> 
 // 			<FirebaseContext.Consumer>
 // 				{ firebase => <Register firebase={firebase}/> } 
 // 			</FirebaseContext.Consumer>
@@ -16,7 +16,7 @@ import '../styles/register.css';
 // 	)
 // }
 
-//fire above refers to a new instance of the class defined in the context provider, similar to const firebase = new Firebase()
+//firebase above refers to a new instance of the class defined in the context provider, similar to const firebase = new Firebase()
 //and this instance has access to all the methods defined in the Firebase class in firebase.js file
 //it is used as a prop her to access the class methods
 
@@ -42,7 +42,7 @@ class RegisterFormBase extends Component {
 		super()
 		this.state = { ...initialState }
 	}
-
+ 
 	componentDidMount() {
 		this._isMounted = true;
 	}
