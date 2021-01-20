@@ -41,7 +41,7 @@ class AgentList extends Component {
 				})
 			})
 		))
-	}
+	} 
 
 	componentDidMount() {
 		this.getUsers()

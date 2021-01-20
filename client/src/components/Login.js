@@ -76,7 +76,8 @@ class LoginFormBase extends Component {
 		const { signinUsername, signinPassword } = this.state
 		firebase.doSignInWithEmailAndPassword(signinUsername, signinPassword)
 				.then((user) => {
-					console.log('from firebase >>', user.user.uid)
+					let currentUser = user.user.uid
+					//check the admin collection if the currentUser is there
 					//clear the form
 					this.setState({ ...initialState })
 					history.push('/admin') 

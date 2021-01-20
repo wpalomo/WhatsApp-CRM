@@ -11,7 +11,7 @@ import '../styles/register.css';
 // 		<div> 
 // 			<FirebaseContext.Consumer>
 // 				{ firebase => <Register firebase={firebase}/> } 
-// 			</FirebaseContext.Consumer>
+// 			</FirebaseContext.Consumer> 
 // 		</div>
 // 	)
 // }
@@ -74,9 +74,12 @@ class RegisterFormBase extends Component {
 		firebase.doCreateUserWithEmailAndPassword(email, password)
 				.then(async authUser => {
 					//add the user to the admins collections in firestore
+					let newUserId = authUser.uid
+					console.log('newUserId >>', newUserId)
 					adminRef.add({
 						company:companyName,
-						email:email
+						email:email,
+						adminId: newUserId
 					})
 					.catch(err => {
 						console.log('Something went wrong with added user to firestore: ', err);
@@ -89,7 +92,7 @@ class RegisterFormBase extends Component {
 						//add to the users collection
 						companyRef.doc(newCompanyId).collection('users').add({ name:"", role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
 
-						//go to the admin route and pass the new coy id as props
+						//go to the admin route 
 						history.push("/admin")
 					} catch (err) {
 						console.log('Something went wrong with added company to firestore: ', err);

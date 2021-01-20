@@ -32,30 +32,30 @@ class Admin extends Component {
 	}
  
  	render() {
- 		 		
+ 		 const { sidebarOpen } = this.state
  		return(
 			<div className="admin__container"> 
 				<div className="admin__parent">
 					<Switch>
 						<Route path="/admin/home">
-							<Navbar sidebarOpen={this.sidebarOpen} openSideBar={this.openSideBar}/>
+							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<Main />
-							<Sidebar sidebarOpen={this.sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Sidebar sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/chats">
-							<Navbar sidebarOpen={this.sidebarOpen} openSideBar={this.openSideBar}/>
+							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<Chats />
-							<Sidebar sidebarOpen={this.sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Sidebar sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/agents">
-							<Navbar sidebarOpen={this.sidebarOpen} openSideBar={this.openSideBar}/>
+							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<Agents />
-							<Sidebar sidebarOpen={this.sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Sidebar sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/subscription">
-							<Navbar sidebarOpen={this.sidebarOpen} openSideBar={this.openSideBar}/>
+							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<Subscription />
-							<Sidebar sidebarOpen={this.sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Sidebar sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 							<Redirect from="/admin" to="/admin/agents" exact/>
 					</Switch>
