@@ -10,7 +10,7 @@ class Login extends Component {
 		super(props)
 		this.state = {
 			signinUsername:"",
-			signinPassword:"" 
+			signinPassword:""  
 		} 
 	} 
  

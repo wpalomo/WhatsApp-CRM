@@ -34,7 +34,7 @@ class AgentList extends Component {
 		let companyRef = db.collection('companies');
 		//get the coy id from the register route
 		let companyId = 'UHDtRviMydCFJZCBbYFf'
-		let unsubscribe = companyRef.doc(companyId).collection('users').onSnapshot(snapshot => (
+		this.unsubscribe = companyRef.doc(companyId).collection('users').onSnapshot(snapshot => (
 			this.setState({
 				team: snapshot.docs.map(obj => {
 					return obj.data()
@@ -47,14 +47,14 @@ class AgentList extends Component {
 		this.getUsers()
 	}
 
-	// componentWillUnmount() {
-	// 	this.unsubscribe()
-	// }
+	componentWillUnmount() {
+		this.unsubscribe()
+	}
 	
 	render() {
 		const { classes } = this.props;
 		const { team } = this.state;
-		
+
 		return(
 			<Paper className={classes.root}>
 				<TableContainer className={classes.container}>
