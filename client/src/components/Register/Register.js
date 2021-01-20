@@ -36,10 +36,15 @@ const initialState = {
 		}
 
 class RegisterFormBase extends Component {
+	_isMounted = false;
 
 	constructor() {
 		super()
 		this.state = { ...initialState }
+	}
+
+	componentDidMount() {
+		this._isMounted = true;
 	}
 
 	onEmailChange = e => {
@@ -80,15 +85,12 @@ class RegisterFormBase extends Component {
 					try {
 						let newCompany = await companyRef.add({ name:companyName })
 						let newCompanyId = newCompany.id
-						
+
 						//add to the users collection
 						companyRef.doc(newCompanyId).collection('users').add({ name:"", role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
 
 						//go to the admin route and pass the new coy id as props
-						this.props.history.push({
-							pathname: "/admin",
-							state: { companyId: newCompanyId }
-						})
+						history.push("/admin")
 					} catch (err) {
 						console.log('Something went wrong with added company to firestore: ', err);
 					}
@@ -97,6 +99,10 @@ class RegisterFormBase extends Component {
 				.catch(error => {
 					this.setState({ error })
 				})
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	render() {

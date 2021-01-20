@@ -73,6 +73,7 @@ class Admin extends Component {
 	}
  
  	render() {
+ 		 		
  		return(
 			<div className="admin__container"> 
 				<div className="admin__parent">

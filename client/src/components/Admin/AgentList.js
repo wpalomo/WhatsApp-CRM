@@ -54,6 +54,7 @@ class AgentList extends Component {
 	render() {
 		const { classes } = this.props;
 		const { team } = this.state;
+		
 		return(
 			<Paper className={classes.root}>
 				<TableContainer className={classes.container}>
