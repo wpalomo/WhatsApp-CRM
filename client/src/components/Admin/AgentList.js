@@ -8,7 +8,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { db } from "../../firebase";
-//import { team } from "./team"; //replace with a db call
 
 
 
@@ -21,38 +20,6 @@ const styles = theme => ({
 	}
 })
 
-
-// const AgentList = () => {
-// 	const classes = useStyles()
-// 	return(
-// 		<Paper className={classes.root}>
-// 			<TableContainer className={classes.container}>
-// 				<Table stickyHeader aria-label="sticky table">
-// 					<TableHead>
-// 						<TableRow>
-// 							<TableCell>Name</TableCell>
-// 							<TableCell align="center">Role</TableCell>
-// 				            <TableCell align="center">Email</TableCell>
-// 				            <TableCell align="center">Loggedin</TableCell>
-// 				            <TableCell align="center">Status</TableCell>
-// 						</TableRow>
-// 					</TableHead>
-// 					<TableBody> 
-// 						{ team.map(row => (
-// 							<TableRow key={row.name}>
-// 								<TableCell component="th" scope="row">{ row.name }</TableCell>
-// 								<TableCell align="center">{row.role}</TableCell>
-// 								<TableCell align="center">{row.email}</TableCell>
-// 					            <TableCell align="center">{row.loggedin}</TableCell>
-// 					            <TableCell align="center">{row.status}</TableCell>
-// 							</TableRow>
-// 						)) }
-// 					</TableBody>
-// 				</Table>
-// 			</TableContainer> 
-// 		</Paper>
-// 	)
-// }
 
 class AgentList extends Component {
 
@@ -80,9 +47,9 @@ class AgentList extends Component {
 		this.getUsers()
 	}
 
-	componentWillUnmount() {
-		this.unsubscribe()
-	}
+	// componentWillUnmount() {
+	// 	this.unsubscribe()
+	// }
 	
 	render() {
 		const { classes } = this.props;

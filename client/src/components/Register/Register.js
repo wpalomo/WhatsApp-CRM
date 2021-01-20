@@ -80,13 +80,19 @@ class RegisterFormBase extends Component {
 					try {
 						let newCompany = await companyRef.add({ name:companyName })
 						let newCompanyId = newCompany.id
+						
 						//add to the users collection
 						companyRef.doc(newCompanyId).collection('users').add({ name:"", role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
+
+						//go to the admin route and pass the new coy id as props
+						this.props.history.push({
+							pathname: "/admin",
+							state: { companyId: newCompanyId }
+						})
 					} catch (err) {
 						console.log('Something went wrong with added company to firestore: ', err);
 					}
 					this.setState({ ...initialState })
-					history.push("/admin")
 				})
 				.catch(error => {
 					this.setState({ error })
