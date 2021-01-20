@@ -12,7 +12,7 @@ export const team = [
 		email: 'joju@gmail.com',
 		loggedin: '3:14pm',
 		status: 'active',
-		activeAgent: false
+		activeAgent: false 
 	},
 	{
 		name: 'Winifred Robb',

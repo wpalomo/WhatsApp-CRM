@@ -15,7 +15,7 @@ class ExpandedSingleChat extends Component {
 		this.state = { 
 			agentMessage:"",
 			customerNum: "",
-			chats:[]
+			chats:[] 
 		}
 	}  
 

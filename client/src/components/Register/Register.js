@@ -64,6 +64,7 @@ class RegisterFormBase extends Component {
 		const { email, password, company } = this.state
 		let companyName = company.replace(/\s+/g, "__").toLowerCase() //replace all spaces with underscore
 		let adminRef = db.collection('admins');
+		let companyRef = db.collection('companies');
 		const { firebase } = this.props
 		firebase.doCreateUserWithEmailAndPassword(email, password)
 				.then(authUser => {
@@ -74,6 +75,13 @@ class RegisterFormBase extends Component {
 					})
 					.catch(err => {
 						console.log('Something went wrong with added user to firestore: ', err);
+					})
+					//add the company to the company list and get the doc id
+					companyRef.add({ 
+						name:companyName
+					})  
+					.catch(err => {
+						console.log('Something went wrong with added company to firestore: ', err);
 					})
 					this.setState({ ...initialState })
 					history.push("/admin")

@@ -13,7 +13,7 @@ class Login extends Component {
 			signinPassword:"" 
 		} 
 	} 
-
+ 
 	getSigninUsername = e => {
 		this.setState({
 			signinUsername: e.target.value
@@ -36,7 +36,7 @@ class Login extends Component {
 		//- change route to user if auth is true
 		//history.push('/customers')  or (/admin)
 		sessionStorage.setItem('aun', signinUsername)
-		//save the username
+		//save the username 
 		agentsRef
 			.get()
 			.then(snapshot => {
@@ -71,11 +71,11 @@ class Login extends Component {
 						<form>
 							<div className="control">
 								<label htmlFor="name">Email</label>
-								<input value={signinUsername} onChange={this.getSigninUsername} type="text" name="name" id="name"/>
+								<input value={signinUsername} onChange={this.getSigninUsername} type="text" name="name" id="name" placeholder="Email address"/>
 							</div>
 							<div className="control">
 								<label htmlFor="psw">Password</label>
-								<input value={signinPassword} onChange={this.getSigninPassword} type="password" name="psw" id="psw"/>
+								<input value={signinPassword} onChange={this.getSigninPassword} type="password" name="psw" id="psw" placeholder="Password"/>
 							</div>
 							<div className="control">
 								<input type="submit" value="Login" onClick={this.onSubmitSignin}/>

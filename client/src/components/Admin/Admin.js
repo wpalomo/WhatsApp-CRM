@@ -16,10 +16,10 @@ const Admin = () => {
 	const openSideBar = () => {
 		setSideBarOpen(true)
 	}
-	const closeSideBar = () => {
+	const closeSideBar = () => { 
 		setSideBarOpen(false)
 	}
-
+ 
 	return(
 		<div className="admin__container"> 
 			<div className="admin__parent">

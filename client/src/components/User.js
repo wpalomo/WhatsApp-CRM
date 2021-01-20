@@ -11,7 +11,6 @@ class User extends Component {
 	constructor() {
 		super()
 		this.state = {
-			customerChatFromServer:"", 
 			allChats:[],
 			selectedCustomer:{} 
 		}
@@ -26,8 +25,8 @@ class User extends Component {
 				})
 			})
 		))
-	}
-
+	} 
+ 
 	componentDidMount() { 
 		// get exisitng chats for this agent - replace agent1 with the logged in agent
 		this.getMessages()
@@ -45,7 +44,7 @@ class User extends Component {
 	}
 	
 	render() {
-		const { customerChatFromServer, allChats, selectedCustomer } = this.state
+		const { allChats, selectedCustomer } = this.state
 		return (
 			<div className="app__body">
 				<Switch>
@@ -54,7 +53,7 @@ class User extends Component {
 					</Route>
 					<Route path="/customers/:customerId">
 						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
-						<ExpandedSingleChat selectedCustomer={selectedCustomer} customerMessage={customerChatFromServer} agentMessageToServer={this.handleAgentMessage}/>
+						<ExpandedSingleChat selectedCustomer={selectedCustomer} agentMessageToServer={this.handleAgentMessage}/>
 					</Route>
 					<Redirect from="/customers" to="/customers/all" exact/>
 				</Switch>
