@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { db } from "../../firebase";
-import { team } from "./team"; //replace with a db call
+//import { team } from "./team"; //replace with a db call
 
 
 
@@ -63,18 +63,30 @@ class AgentList extends Component {
 		}
 	}
 
-	// getUsers = () => {
-	// 	let companyRef = db.collection('companies');
-	// 	//get the coy id from the register route
-	// 	let unsubscribe = companyRef.doc().collection('users')
-	// }
+	getUsers = () => {
+		let companyRef = db.collection('companies');
+		//get the coy id from the register route
+		let companyId = 'UHDtRviMydCFJZCBbYFf'
+		let unsubscribe = companyRef.doc(companyId).collection('users').onSnapshot(snapshot => (
+			this.setState({
+				team: snapshot.docs.map(obj => {
+					return obj.data()
+				})
+			})
+		))
+	}
 
-	// componentDidMount() {
-	// 	this.getUsers()
-	// }
+	componentDidMount() {
+		this.getUsers()
+	}
+
+	componentWillUnmount() {
+		this.unsubscribe()
+	}
 	
 	render() {
 		const { classes } = this.props;
+		const { team } = this.state;
 		return(
 			<Paper className={classes.root}>
 				<TableContainer className={classes.container}>

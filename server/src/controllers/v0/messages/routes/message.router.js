@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
 						let oldCustomerMsg = agentsRef.doc(agent).collection('customers').doc(doc.id).collection('messages').add(data)
 					} 
 				}
-			} 
+			}  
 			//wait for an agent response
 			db.collection('response')
 			  .onSnapshot(snapshot => {

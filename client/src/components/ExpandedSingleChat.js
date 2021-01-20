@@ -156,7 +156,7 @@ class ExpandedSingleChat extends Component {
 			agentMessage: ""
 		})
 	} 
-
+ 
 	componentWillUnmount() {
 		this.cleanMessageListener()
 	}

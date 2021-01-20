@@ -80,6 +80,8 @@ class RegisterFormBase extends Component {
 					try {
 						let newCompany = await companyRef.add({ name:companyName })
 						let newCompanyId = newCompany.id
+						//add to the users collection
+						companyRef.doc(newCompanyId).collection('users').add({ name:"", role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
 					} catch (err) {
 						console.log('Something went wrong with added company to firestore: ', err);
 					}
