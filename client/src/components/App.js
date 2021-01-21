@@ -1,18 +1,45 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { withFirebase } from "../firebase/index";
+import { AuthUserContext } from "../session/index";
 import Routes from "./Routes";
 import '../index.css';
 
 
-const App = () => {
-  return (
-  	<div className="app">
-	   	<Router>
-	       <Routes /> 
-	    </Router>
-    </div>
-  );
+class App extends Component {
+
+	constructor() {
+		super()
+		this.state = {
+			authUser: null
+		}
+	}
+
+	componentDidMount() {
+		this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
+			authUser
+				? this.setState({ authUser })
+				: this.setState({ authUser: null })
+		})
+	}
+
+	componentWillUnmount() {
+		this.listener()
+	}
+
+	render() {
+		const { authUser } = this.state
+		 return (
+		 	<AuthUserContext.Provider value={authUser}>
+			  	<div className="app">
+				   	<Router>
+				       <Routes /> 
+				    </Router>
+			    </div>
+			</AuthUserContext.Provider>
+		  );
+	}
 }
 
-export default App;
+export default withFirebase(App);
  

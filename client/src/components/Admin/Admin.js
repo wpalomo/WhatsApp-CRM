@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Redirect, Switch, Route } from 'react-router-dom';
-import { withFirebase } from "../../firebase/index";
 import Chats from "./Chats";
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
@@ -16,8 +15,7 @@ class Admin extends Component {
 	constructor() {
 		super()
 		this.state = {
-			sidebarOpen: false,
-			authUser: null
+			sidebarOpen: false
 		}
 	}
 
@@ -31,18 +29,6 @@ class Admin extends Component {
 		this.setState({
 			sidebarOpen: false
 		})
-	}
-
-	componentDidMount() {
-		this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
-			authUser
-				? this.setState({ authUser })
-				: this.setState({ authUser: null })
-		})
-	}
-
-	componentWillUnmount() {
-		this.listener()
 	}
 
  
@@ -82,4 +68,4 @@ class Admin extends Component {
 }
 
 
-export default withFirebase(Admin);
+export default Admin;
