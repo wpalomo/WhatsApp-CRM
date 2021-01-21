@@ -9,7 +9,8 @@ class Agents extends Component {
 	constructor() {
 		super()
 		this.state = {
-			show: false
+			show: false,
+			companyid:""
 		}
 	}  
 
@@ -26,11 +27,15 @@ class Agents extends Component {
 		})
 	}
 
-	getNewAgent = value => {
-		console.log('na >>>', value)
+	sendCoyID = value => {
+		this.setState({
+			companyid: value
+		})
 	}
 
+
 	render() {
+		const { companyid } = this.state
 		return(
 			<div className="agents__container">
 				<div className="agents__top__row">
@@ -40,14 +45,14 @@ class Agents extends Component {
 					<div onClick={this.showModal} className="add__agent">
 						<button>
 							<div>+ Add</div>
-						</button> 
+						</button>  
 					</div>
-					<AddAgentModal newAgent={this.getNewAgent} show={this.state.show} closeModal={this.closeOpenModal}/>
+					<AddAgentModal companyid={companyid} show={this.state.show} closeModal={this.closeOpenModal}/> 
 				</div>
 				<div className="agents__bottom__area">
 					<div className="agentlist__area">
 						<AuthUserContext.Consumer>
-							{ authUser => <AgentList authUser={authUser}/> }
+							{ authUser => <AgentList companyID={this.sendCoyID} authUser={authUser}/> }
 						</AuthUserContext.Consumer>
 					</div>
 				</div>

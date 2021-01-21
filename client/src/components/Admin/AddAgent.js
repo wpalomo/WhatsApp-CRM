@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { CSSTransition } from "react-transition-group";
+import { withFirebase } from "../../firebase/index";
+import { db } from "../../firebase";
 import "./styles/modal.css";
 
 class AddAgentModal extends Component {
@@ -9,6 +11,7 @@ class AddAgentModal extends Component {
 		this.state = {
 			newAgentName:"",
 			newAgentEmail:"",
+			password: 'password', //default password
 			showError: false,
 		}
 	}
@@ -28,19 +31,38 @@ class AddAgentModal extends Component {
 	}
 
 
-	getAgentDetails = () => {
-		const { newAgentEmail, newAgentName } = this.state
+	registerAgent = () => {
+		const { newAgentEmail, newAgentName, password } = this.state
+		const { companyid, firebase } = this.props;
+		let companyRef = db.collection('companies').doc(companyid).collection('users');
 		if (newAgentName === "" || newAgentEmail === "") {
 			this.setState({
 				showError: true
-			})
+			}) 
 		} else {
-			this.props.newAgent({ newAgentEmail, newAgentName }) //pass it out as props or save to db and send email to email address with a link to set password
-			this.props.closeModal()//close the modal
-			this.setState({
-				newAgentName:"",
-				newAgentEmail:""
-			})
+			//firebase register
+			firebase.doCreateUserWithEmailAndPassword(newAgentEmail, password)
+					.then(user => {
+						//add user to company users collection
+						companyRef.add({
+							name:newAgentName, 
+							role:'Agent', 
+							email:newAgentEmail, 
+							loggedin:"No", 
+							status:"Pending", 
+							activeAgent:false
+						})
+
+						//send email to verify account
+						this.props.closeModal()//close the modal
+						this.setState({
+							newAgentName:"",
+							newAgentEmail:""
+						})
+					})
+					.catch(err => {
+						console.log('Something went wrong with added user to firestore: ', err);
+					})
 		}
 	}
 
@@ -76,7 +98,7 @@ class AddAgentModal extends Component {
 						</div>
 						<div className="aa__modal__footer add__agent">
 							<button  className="aa__cancel" onClick={this.props.closeModal}>Cancel</button>
-							<button onClick={this.getAgentDetails}>Invite</button>
+							<button onClick={this.registerAgent}>Invite</button>
 						</div>
 					</div>
 				</div>
@@ -85,4 +107,4 @@ class AddAgentModal extends Component {
 	}
 }
 
-export default AddAgentModal;
+export default withFirebase(AddAgentModal);

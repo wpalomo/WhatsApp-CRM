@@ -77,7 +77,7 @@ class RegisterFormBase extends Component {
 				.then(async authUser => {
 					//add the user to the admins collections in firestore
 					let newUserId = authUser.user.uid
-					adminRef.add({
+					adminRef.add({ 
 						name:name,
 						company:companyName,
 						email:email,

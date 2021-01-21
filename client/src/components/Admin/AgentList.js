@@ -34,7 +34,6 @@ class AgentList extends Component {
 		let companyRef = db.collection('companies');
 		let adminRef = db.collection('admins');
 		const { authUser } = this.props //this is received from the auth user context
-		console.log('in agentlist page >>', authUser)
 		let adminID;
 		authUser ? adminID = authUser.uid : adminID = authUser //check that there's a signed in user before getting the id
 		if (adminID) {
@@ -54,6 +53,7 @@ class AgentList extends Component {
 					})
 				}
 			}
+			this.props.companyID(companyId) //send it out to be used when adding new agents to the company
 			this.unsubscribe = companyRef.doc(companyId).collection('users').onSnapshot(snapshot => (
 			this.setState({
 					team: snapshot.docs.map(obj => {
