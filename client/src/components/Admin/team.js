@@ -20,7 +20,7 @@ export const team = [
 		email: 'winifred@gmail.com',
 		loggedin: '3:23pm',
 		status: 'active',
-		activeAgent: false
+		activeAgent: false 
 	},
 	{
 		name: 'Funke Sausage',

@@ -67,9 +67,9 @@ class AgentList extends Component {
 		this.getUsers()
 	}
 
-	componentWillUnmount() {
-		this.unsubscribe()
-	}
+	// componentWillUnmount() {
+	// 	this.unsubscribe()
+	// }
 	
 	render() {
 		const { classes } = this.props;

@@ -29,6 +29,7 @@ const SignUpPage = () => (
 
 
 const initialState = {
+			name:'',
 			email: '',
 			password: '',
 			company:'',
@@ -40,6 +41,12 @@ class RegisterFormBase extends Component {
 	constructor() {
 		super()
 		this.state = { ...initialState }
+	}
+
+	onNameChange = e => {
+		this.setState({
+			name: e.target.value
+		})
 	}
 
 	onEmailChange = e => {
@@ -61,7 +68,7 @@ class RegisterFormBase extends Component {
 	}
 
 	submitRegister = () => {
-		const { email, password, company } = this.state
+		const { name, email, password, company } = this.state
 		let companyName = company.replace(/\s+/g, "__").toLowerCase() //replace all spaces with underscore
 		let adminRef = db.collection('admins');
 		let companyRef = db.collection('companies');
@@ -71,6 +78,7 @@ class RegisterFormBase extends Component {
 					//add the user to the admins collections in firestore
 					let newUserId = authUser.user.uid
 					adminRef.add({
+						name:name,
 						company:companyName,
 						email:email,
 						adminId: newUserId
@@ -84,7 +92,7 @@ class RegisterFormBase extends Component {
 						let newCompanyId = newCompany.id
 
 						//add to the users collection
-						companyRef.doc(newCompanyId).collection('users').add({ name:"", role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
+						companyRef.doc(newCompanyId).collection('users').add({ name:name, role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
 
 						//go to the admin route 
 						history.push("/admin")
@@ -105,8 +113,8 @@ class RegisterFormBase extends Component {
 	}
 
 	render() {
-		const { email, password, company, error } = this.state
-		const isInvalid = email === "" || password === "" || company === ""
+		const { name, email, password, company, error } = this.state
+		const isInvalid = name === "" || email === "" || password === "" || company === ""
 		return ( 
 			<div className="register__container">  
 				<p id="brand__name">Sauceflow</p>
@@ -115,6 +123,12 @@ class RegisterFormBase extends Component {
 						<p>Register</p>
 					</div>
 						<div className="form__container">
+								<div className="name__container">
+									<label className="field__label" htmlFor="owner__name">Name</label>
+									<div className="company__container__input">
+										<input onChange={this.onNameChange} value={name} type="text" name="name" className="name" placeholder="e.g. Eve Adams" required/>
+									</div>
+								</div>
 								<div className="company__container">
 									<label className="field__label" htmlFor="company__name">Company Name</label>
 									<div className="company__container__input">
