@@ -52,8 +52,9 @@ class AddAgentModal extends Component {
 							status:"Pending", 
 							activeAgent:false
 						})
+						//send email to verify agent 
 
-						//send email to verify account
+						
 						this.props.closeModal()//close the modal
 						this.setState({
 							newAgentName:"",

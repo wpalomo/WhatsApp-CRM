@@ -44,7 +44,7 @@ class AgentList extends Component {
 					companyName = doc.data().company
 				})
 			}
-			let companyId;
+			let companyId; 
 			if (companyName) {
 				let companySnapshot = await companyRef.where('name', '==', companyName).get()
 				if (!companySnapshot.empty) {
@@ -66,6 +66,13 @@ class AgentList extends Component {
 
 	componentDidMount() {
 		this.getUsers()
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.authUser !== this.props.authUser) {
+			this.getUsers()
+			console.log('where are all my agents ):')
+		}
 	}
 	
 	render() {
