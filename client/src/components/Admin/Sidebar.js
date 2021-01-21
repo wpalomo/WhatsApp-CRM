@@ -20,6 +20,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 		history.push('/admin/subscription') 
 	}
 
+	//loguout with auth
 	const logOut = () => {
 		history.push('/')
 	}

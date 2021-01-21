@@ -106,6 +106,7 @@ class RegisterFormBase extends Component {
 				})
 	}
 
+	//to prevent memory leaks
 	componentWillUnmount() {
 		this.setState = (state, cb) => {
 			return;
