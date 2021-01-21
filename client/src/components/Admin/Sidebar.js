@@ -1,8 +1,9 @@
 import React from "react";
+import { withFirebase } from "../../firebase/index";
 import history from "../History";
 import "./styles/sidebar.css";
 
-const Sidebar = ({ sidebarOpen, closeSideBar }) => {
+const Sidebar = ({ sidebarOpen, closeSideBar, firebase }) => {
 
 	const getAgentsPage = () => {
 		history.push('/admin/agents') 
@@ -14,7 +15,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 
 	const adminHome = () => { 
 		history.push('/admin/agents')  
-	}
+	} 
 
 	const subscriptionPage = () => {
 		history.push('/admin/subscription') 
@@ -22,6 +23,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 
 	//loguout with auth
 	const logOut = () => {
+		firebase.doSignOut()
 		history.push('/')
 	}
 
@@ -103,4 +105,4 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 	)
 }
 
-export default Sidebar;
+export default withFirebase(Sidebar);

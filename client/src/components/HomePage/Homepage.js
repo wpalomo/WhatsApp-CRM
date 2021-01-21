@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthUserContext } from "../../session/index";
 import history from "../History";
 import "./homepage.css";
 
 const HomePage = () => {
+	//to test logout
+	const authUser = useContext(AuthUserContext)
+	authUser ? console.log('in homepage page >>', authUser.uid) : console.log('in homepage page >> nobody home')
 
 	const getSigninPage = () => {
 		history.push('/login') 
@@ -11,7 +15,7 @@ const HomePage = () => {
 	const getRegisterPage = () => {
 		history.push('/register') 
 	}
-
+ 
 	return(
 		<div className="homepage__container">
 			<div className="home__container">

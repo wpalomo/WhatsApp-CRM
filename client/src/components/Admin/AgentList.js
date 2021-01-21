@@ -29,18 +29,19 @@ class AgentList extends Component {
 			team: []
 		}
 	}
- 
+  
 	getUsers = async () => {
 		let companyRef = db.collection('companies');
 		let adminRef = db.collection('admins');
 		const { authUser } = this.props //this is received from the auth user context
+		console.log('in agentlist page >>', authUser)
 		let adminID;
 		authUser ? adminID = authUser.uid : adminID = authUser //check that there's a signed in user before getting the id
 		if (adminID) {
 			let snapshot = await adminRef.where('adminId', '==', adminID).get()
 			let companyName;
 			if (!snapshot.empty) {
-				snapshot.forEach(doc => {
+				snapshot.forEach(doc => { 
 					companyName = doc.data().company
 				})
 			}
@@ -66,10 +67,6 @@ class AgentList extends Component {
 	componentDidMount() {
 		this.getUsers()
 	}
-
-	// componentWillUnmount() {
-	// 	this.unsubscribe()
-	// }
 	
 	render() {
 		const { classes } = this.props;

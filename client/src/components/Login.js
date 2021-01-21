@@ -63,13 +63,6 @@ class LoginFormBase extends Component {
 	// 		})
 		
 
-	// 	//clear the form
-	// 	this.setState({
-	// 		signinUsername:"",
-	// 		signinPassword:""
-	// 	})
-	// }
-
 	onSubmitSignin =  e => {
 		e.preventDefault()
 		const { firebase } = this.props
@@ -93,7 +86,12 @@ class LoginFormBase extends Component {
 				})
 	}
 
-	
+	//to prevent memory leaks
+	componentWillUnmount() {
+		this.setState = (state, cb) => {
+			return;
+		}
+	}
  
 	render() {
 		const { signinUsername, signinPassword, error } = this.state

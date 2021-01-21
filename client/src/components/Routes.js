@@ -10,6 +10,23 @@ import SignInPage from "./Login";
 import User from "./User"; 
 import ProtectedRoute from "./ProtectedRoute";
 
+//OLD DATA BELOW >> SCROLL DOWN
+const Routes = () => {
+	return(
+		<Router history={history}>
+			<Switch>
+				<Route exact path="/" component={HomePage}/>
+				<Route path="/login" component={SignInPage}/>
+				<Route path="/admin" component={Admin}/>
+				<Route path="/register" component={SignUpPage}/>
+				<ProtectedRoute path="/customers" component={User}/>
+			</Switch>
+		</Router>  
+	)  
+}
+
+export default Routes;
+
 // const Routes = () => {
 // 	return(
 // 		<Router history={history}>
@@ -45,84 +62,3 @@ import ProtectedRoute from "./ProtectedRoute";
 // 		</Router>  
 // 	)  
 // }
-
-const Routes = () => {
-	return(
-		<Router history={history}>
-			<Switch>
-				<Route exact path="/" component={HomePage}/>
-				<Route path="/login" component={SignInPage}/>
-				<Route path="/admin" component={Admin}/>
-				<Route path="/register" component={SignUpPage}/>
-				<ProtectedRoute path="/customers" component={User}/>
-			</Switch>
-		</Router>  
-	)  
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//old cose for passing username props - import Component if needed 
-// class Routes extends Component {
-
-// 	constructor() {
-// 		super()
-// 		this.state = {
-// 			agentUsername:""
-// 		}
-// 	}
-
-// 	getAgentUsername = data => {
-// 		this.setState({
-// 			agentUsername: data
-// 		})
-// 	}
-
-// 	render() {
-// 		const { agentUsername } = this.state
-// 		return(
-// 			<Router history={history}>
-// 				<Switch>
-// 					<Route 
-// 						path="/login" 
-// 						render={() => <Login agentLoginUsername={this.getAgentUsername}/>}
-// 					/>
-// 					<Route 
-// 						path="/user" 
-// 						render={() => <User agentUsername={agentUsername}/>}
-// 					/>
-// 				</Switch>
-// 			</Router>
-// 		)
-// 	}
-// }
-
-
-export default Routes;
