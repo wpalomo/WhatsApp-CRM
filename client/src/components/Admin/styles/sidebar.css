@@ -14,7 +14,7 @@
 	color: #f3f4f6;
 	margin-bottom: 30px;
 }
-
+ 
 .sidebar__img {
 	display: flex;
 	align-items: center;
@@ -71,12 +71,27 @@
 	font-weight: 700;
 }
 
+/*testing*/
+
+.sidebar__test {
+	display: flex;
+}
+
+.sidebar__test > p {
+	text-decoration: none;
+	color: #a5aaad;
+	font-weight: 700;
+}
+
+/*testing*/
+
 .sidebar__link > i {
 	margin-right: 10px;
 	font-size: 18px;
 }
 
 .sidebar__logout {
+	display: flex;
 	margin-top: 20px;
 	padding: 10px; 
 	color: #e65061;
@@ -86,7 +101,7 @@
 	cursor: pointer;
 }
 
-.sidebar__logout > a {
+.sidebar__logout > p {
 	text-decoration: none;
 	color: #e65061;
 	font-weight: 700;

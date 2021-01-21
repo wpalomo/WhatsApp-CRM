@@ -13,7 +13,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 	}
 
 	const adminHome = () => { 
-		history.push('/admin/agents') 
+		history.push('/admin/agents')  
 	}
 
 	const subscriptionPage = () => {
@@ -34,20 +34,20 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 				<i className="fa fa-times" id="sidebarIcon" onClick={closeSideBar}></i>
 			</div>
 			<div className="sidebar__menu">
-				<div onClick={adminHome} className="sidebar__link active_menu_link">
+				<div onClick={adminHome} className="sidebar__link sidebar__test active_menu_link">
 					<i className="fa fa-home"></i>
-					<a href={adminHome}>Dashboard</a>
+					<p>Dashboard</p>
 				</div>
 				{
 					//<h2>MNG</h2>
 				}
-				<div onClick={chatsPage} className="sidebar__link">
+				<div onClick={chatsPage} className="sidebar__link sidebar__test">
 					<i className="fa fa-comments"></i>
-					<a href={chatsPage}>Chats</a>
+					<p>Chats</p>
 				</div>
-				<div onClick={getAgentsPage} className="sidebar__link">
+				<div onClick={getAgentsPage} className="sidebar__link sidebar__test">
 					<i className="fa fa-users"></i>
-					<a href={getAgentsPage}>Agents</a>
+					<p>Agents</p>
 				</div>
 				{
 					// <div className="sidebar__link">
@@ -55,9 +55,9 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 					// 				<a href="foo">Reports</a>
 					// 			</div>
 							}
-				<div onClick={subscriptionPage} className="sidebar__link">
+				<div onClick={subscriptionPage} className="sidebar__link sidebar__test">
 					<i className="fa fa-credit-card"></i>
-					<a href={subscriptionPage}>Subscription</a>
+					<p>Subscription</p>
 				</div>
 				{
 					// <div className="sidebar__link">
@@ -95,7 +95,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 							}
 				<div onClick={logOut} className="sidebar__logout">
 					<i className="fa fa-power-off"></i>
-					<a href={logOut}>Log out</a>
+					<p>Log out</p>
 				</div>
 			</div>
 		</div>
