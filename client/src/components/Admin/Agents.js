@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import AddAgentModal from "./AddAgent";
+import { AuthUserContext } from "../../session/index";
 import AgentList from "./AgentList";
 import "./styles/agents.css";
 
@@ -10,7 +11,7 @@ class Agents extends Component {
 		this.state = {
 			show: false
 		}
-	} 
+	}  
 
 	
 	showModal = () => {
@@ -45,12 +46,14 @@ class Agents extends Component {
 				</div>
 				<div className="agents__bottom__area">
 					<div className="agentlist__area">
-						<AgentList />
+						<AuthUserContext.Consumer>
+							{ authUser => <AgentList authUser={authUser}/> }
+						</AuthUserContext.Consumer>
 					</div>
 				</div>
 			</div>
 		)
 	}
 }
-
+ 
 export default Agents;

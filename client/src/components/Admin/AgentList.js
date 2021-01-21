@@ -14,7 +14,7 @@ import { db } from "../../firebase";
 const styles = theme => ({
 	root: {
 		width: '100%',
-	}, 
+	},  
 	container: {
 		maxHeight: 440 
 	}
@@ -29,27 +29,41 @@ class AgentList extends Component {
 			team: []
 		}
 	}
-
-	getUsers = () => {
+ 
+	getUsers = async () => {
 		let companyRef = db.collection('companies');
-		//get the coy id from the register route
-		let companyId = 'UHDtRviMydCFJZCBbYFf'
-		this.unsubscribe = companyRef.doc(companyId).collection('users').onSnapshot(snapshot => (
-			this.setState({
-				team: snapshot.docs.map(obj => {
-					return obj.data()
+		let adminRef = db.collection('admins');
+		const { authUser } = this.props
+		let adminID;
+		authUser ? adminID = authUser.uid : adminID = authUser //check that there's a signed in user before getting the id
+		if (adminID) {
+			let snapshot = await adminRef.where('adminId', '==', adminID).get()
+			let companyName;
+			if (!snapshot.empty) {
+				snapshot.forEach(doc => {
+					companyName = doc.data().company
 				})
-			})
-		))
+			}
+			console.log('this company is >>', companyName)
+		}
+		//get the coy id from the register route
+		// let companyId = 'UHDtRviMydCFJZCBbYFf'
+		// this.unsubscribe = companyRef.doc(companyId).collection('users').onSnapshot(snapshot => (
+		// 	this.setState({
+		// 		team: snapshot.docs.map(obj => {
+		// 			return obj.data()
+		// 		})
+		// 	})
+		// ))
 	} 
 
 	componentDidMount() {
 		this.getUsers()
 	}
 
-	componentWillUnmount() {
-		this.unsubscribe()
-	}
+	// componentWillUnmount() {
+	// 	this.unsubscribe()
+	// }
 	
 	render() {
 		const { classes } = this.props;

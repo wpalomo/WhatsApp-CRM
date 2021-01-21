@@ -79,13 +79,13 @@ class LoginFormBase extends Component {
 				.then(async (user) => {
 					let currentUser = user.user.uid
 					//check the admin collection if the currentUser is there
-					let thisUser = await adminRef.where('adminId', '==', currentUser).get()
-					if (thisUser.length === 0) {//agent
+					let snapshot = await adminRef.where('adminId', '==', currentUser).get()
+					if (snapshot.empty) {//agent
 						console.log('this is an agent')
 					} else {//admin
 						history.push('/admin') 
 					}
-					//clear the form
+					//clear the form 
 					this.setState({ ...initialState })
 				})
 				.catch(error => {

@@ -13,8 +13,8 @@ import '../styles/register.css';
 // 				{ firebase => <Register firebase={firebase}/> } 
 // 			</FirebaseContext.Consumer> 
 // 		</div>
-// 	)
-// }
+// 	) 
+// } 
 
 //firebase above refers to a new instance of the class defined in the context provider, similar to const firebase = new Firebase()
 //and this instance has access to all the methods defined in the Firebase class in firebase.js file
@@ -71,11 +71,10 @@ class RegisterFormBase extends Component {
 		let adminRef = db.collection('admins');
 		let companyRef = db.collection('companies');
 		const { firebase } = this.props
-		firebase.doCreateUserWithEmailAndPassword(email, password)
+		this.listener = firebase.doCreateUserWithEmailAndPassword(email, password)
 				.then(async authUser => {
 					//add the user to the admins collections in firestore
 					let newUserId = authUser.user.uid
-					console.log('newUserId in register form >>', newUserId)
 					adminRef.add({
 						company:companyName,
 						email:email,
