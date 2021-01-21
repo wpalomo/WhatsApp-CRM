@@ -36,15 +36,10 @@ const initialState = {
 		}
 
 class RegisterFormBase extends Component {
-	_isMounted = false;
 
 	constructor() {
 		super()
 		this.state = { ...initialState }
-	}
- 
-	componentDidMount() {
-		this._isMounted = true;
 	}
 
 	onEmailChange = e => {
@@ -104,7 +99,9 @@ class RegisterFormBase extends Component {
 	}
 
 	componentWillUnmount() {
-		this._isMounted = false;
+		this.setState = (state, cb) => {
+			return;
+		}
 	}
 
 	render() {

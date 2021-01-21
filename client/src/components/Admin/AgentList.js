@@ -33,7 +33,7 @@ class AgentList extends Component {
 	getUsers = async () => {
 		let companyRef = db.collection('companies');
 		let adminRef = db.collection('admins');
-		const { authUser } = this.props
+		const { authUser } = this.props //this is received from the auth user context
 		let adminID;
 		authUser ? adminID = authUser.uid : adminID = authUser //check that there's a signed in user before getting the id
 		if (adminID) {
@@ -44,26 +44,32 @@ class AgentList extends Component {
 					companyName = doc.data().company
 				})
 			}
-			console.log('this company is >>', companyName)
+			let companyId;
+			if (companyName) {
+				let companySnapshot = await companyRef.where('name', '==', companyName).get()
+				if (!companySnapshot.empty) {
+					companySnapshot.forEach(doc => {
+						companyId = doc.id
+					})
+				}
+			}
+			this.unsubscribe = companyRef.doc(companyId).collection('users').onSnapshot(snapshot => (
+			this.setState({
+					team: snapshot.docs.map(obj => {
+						return obj.data()
+					})
+				})
+			))
 		}
-		//get the coy id from the register route
-		// let companyId = 'UHDtRviMydCFJZCBbYFf'
-		// this.unsubscribe = companyRef.doc(companyId).collection('users').onSnapshot(snapshot => (
-		// 	this.setState({
-		// 		team: snapshot.docs.map(obj => {
-		// 			return obj.data()
-		// 		})
-		// 	})
-		// ))
 	} 
 
 	componentDidMount() {
 		this.getUsers()
 	}
 
-	// componentWillUnmount() {
-	// 	this.unsubscribe()
-	// }
+	componentWillUnmount() {
+		this.unsubscribe()
+	}
 	
 	render() {
 		const { classes } = this.props;
