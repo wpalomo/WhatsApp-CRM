@@ -74,14 +74,19 @@ class LoginFormBase extends Component {
 		e.preventDefault()
 		const { firebase } = this.props
 		const { signinUsername, signinPassword } = this.state
+		let adminRef = db.collection('admins');
 		firebase.doSignInWithEmailAndPassword(signinUsername, signinPassword)
-				.then((user) => {
+				.then(async (user) => {
 					let currentUser = user.user.uid
 					//check the admin collection if the currentUser is there
+					let thisUser = await adminRef.where('adminId', '==', currentUser).get()
+					if (thisUser.length === 0) {//agent
+						console.log('this is an agent')
+					} else {//admin
+						history.push('/admin') 
+					}
 					//clear the form
 					this.setState({ ...initialState })
-					history.push('/admin') 
-					//check if admin or agent
 				})
 				.catch(error => {
 					this.setState({ error })

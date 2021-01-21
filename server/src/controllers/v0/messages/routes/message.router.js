@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 	res.status(200).send('new csteam get route home')
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res) => { 
 	const { From, Body } = req.body
 	let customerNumber = Number(From.split('+')[1])
 	try {
