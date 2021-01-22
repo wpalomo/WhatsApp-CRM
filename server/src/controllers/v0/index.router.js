@@ -2,9 +2,11 @@
 const express = require("express");
 const router = express.Router();
 const { MessageRouter } = require('./messages/routes/message.router');
+const { UserRouter } = require('./users/routes/users.router');
 
 
 router.use('/message', MessageRouter);
+router.use('/users', UserRouter);
 
 
 

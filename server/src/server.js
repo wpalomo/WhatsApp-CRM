@@ -3,11 +3,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const { IndexRouter } = require('./controllers/v0/index.router');
-const { SocketServer } = require('./socket');
 
 
 const PORT = process.env.PORT || 4000;
-const socketPort = process.env.socketPort || 4001;
 
 const app = express()
 
@@ -27,7 +25,3 @@ app.post('/', (req, res) => {
 app.listen(PORT, () => {
 	console.log(`The server is running on port ${ PORT }`)
 });
-
-SocketServer.listen(socketPort, () => {
-	console.log(`the socket server is listening on port ${socketPort}`)
-})
