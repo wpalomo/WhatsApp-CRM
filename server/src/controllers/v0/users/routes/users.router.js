@@ -48,6 +48,7 @@ router.post('/', (req, res) => {
 			password: 'password' //default password
 		})
 		.then(async user => {
+			let newAgentId = user.uid
 			//send verification link
 			adminApp
 				.auth()
@@ -58,8 +59,14 @@ router.post('/', (req, res) => {
 				.catch((error) => {
 				    console.log('error occurred when sending verification email', error)
 				});
+			//add to general agents
+			await db.collection('allagents').add({
+				agentId: newAgentId,
+				companyId: companyid
+			})	
+
 			//add to company users list (check to see the subscription status of this admin and send an error messsage if they have not paid for a plan)
-			await companyRef.add({
+			await companyRef.doc(newAgentId).set({ //this will add the new agent with a custom id which is the user id
 				name:newAgentName, 
 				role:'Agent', 
 				email:newAgentEmail, 

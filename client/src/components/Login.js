@@ -82,8 +82,7 @@ class LoginFormBase extends Component {
 							//history.push('/customers') 
 						}
 					} else {//admin
-						console.log('this is an admin user')
-						//history.push('/admin') 
+						history.push('/admin') 
 					}
 					//clear the form 
 					this.setState({ ...initialState })

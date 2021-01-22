@@ -40,7 +40,7 @@ class AgentList extends Component {
 		let adminID = adminUser
 		if (adminID) {
 			let snapshot = await adminRef.where('adminId', '==', adminID).get()
-			let companyName;
+			let companyName; 
 			if (!snapshot.empty) {
 				snapshot.forEach(doc => { 
 					companyName = doc.data().company

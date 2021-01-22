@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withFirebase } from "../../firebase/index";
 import { withRouter } from 'react-router-dom';
 import { AuthUserContext } from "../../session/index";
+import { db } from "../../firebase";
 import history from "../History";
 import "./passwordreset.css";
 
@@ -40,6 +41,8 @@ class PasswordResetFormBase extends Component {
 
 	submitResetPassword = () => {
 		const { password1, password2 } = this.state
+		const { authUser } = this.props
+		let allAgentsRef = db.collection('allagents');
 		if (password2 !== password1) {
 			this.setState({
 				error: {
@@ -48,10 +51,26 @@ class PasswordResetFormBase extends Component {
 			})
 		} else {
 			this.props.firebase.doPasswordUpdate(password2)
-				.then(() => {
+				.then(async () => {
 					this.setState({ ...initialState })
-					console.log('current user is >>', this.props.authUser)
-					//change status to active and loggedin to yes
+					let currentUser;
+					authUser ? currentUser = authUser.uid : currentUser = authUser
+					let companyid;
+					if (currentUser) {
+						let snapshot = await allAgentsRef.where('agentId', '==', currentUser).get()
+						if (!snapshot.empty) {
+							snapshot.forEach(doc => {
+								companyid = doc.data().companyId
+							})
+						}
+					}
+					if (companyid) {
+						let agentSnapshot = await db.collection('companies').doc(companyid).collection('users').doc(currentUser)
+						if (agentSnapshot) {
+							////change status to active and loggedin to yes
+							const res = await agentSnapshot.update({ loggedin: 'Yes', status: "Active" })
+						}
+					}
 					//history.push('/customers')
 				})
 				.catch(error => {
@@ -62,9 +81,7 @@ class PasswordResetFormBase extends Component {
 
 	render() {
 		const { password1, password2, error } = this.state
-		const { authUser } = this.props
 		const isInvalid = password1 === "" || password2 === ""
-		authUser ? console.log('current user is >>', authUser.uid) : console.log('nobody resetting password')
 		
 		return(
 			<div className="register__container">  
