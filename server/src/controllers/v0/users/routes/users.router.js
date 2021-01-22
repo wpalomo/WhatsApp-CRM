@@ -11,7 +11,19 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
 	//create a new user, add it to the db users list for the company and send them a mail to auth
 	let { newAgentEmail, newAgentName, companyid } = req.body.newUserData
-	console.log(companyid)
+	adminApp
+		.auth()
+		.createUser({
+			email: newAgentEmail,
+			password: 'password' //default password
+		})
+		.then(user => {
+			console.log('Successfully created new user:', user);
+		})
+		.catch((error) => {
+		    console.log('Error creating new user:', error);
+		});
+	
 	res.status(200).send('new user was created successfully')
 })
 
