@@ -64,7 +64,7 @@ router.post('/', (req, res) => {
 				role:'Agent', 
 				email:newAgentEmail, 
 				loggedin:"No", 
-				status:"Pending", 
+				status:"Pending",  
 				activeAgent: false
 			})
 			res.status(200).send('New user was created successfully')

@@ -15,7 +15,7 @@ class User extends Component {
 			selectedCustomer:{} 
 		}
 	} 
-
+ 
 	getMessages = () => {
 		let agentID = sessionStorage.getItem('aid')
 		this.unsubscribe = db.collection('agents').doc(agentID).collection('customers').onSnapshot(snapshot => (
