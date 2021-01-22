@@ -58,7 +58,7 @@ class Agents extends Component {
 				</div>
 			</div>
 		)
-	}
+	} 
 }
  
 export default Agents;

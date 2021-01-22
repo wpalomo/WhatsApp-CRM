@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from '@material-ui/core/styles';
+import { withFirebase } from "../../firebase/index";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -23,19 +24,20 @@ const styles = theme => ({
 
 class AgentList extends Component {
 
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 		this.state = {
-			team: []
+			team: [],
+			adminUser: this.props.firebase.findCurrentUser() ? this.props.firebase.findCurrentUser().uid : this.props.authUser
 		}
 	}
+
   
 	getUsers = async () => {
 		let companyRef = db.collection('companies');
 		let adminRef = db.collection('admins');
-		const { authUser } = this.props //this is received from the auth user context
-		let adminID;
-		authUser ? adminID = authUser.uid : adminID = authUser //check that there's a signed in user before getting the id
+		const { adminUser } = this.state
+		let adminID = adminUser
 		if (adminID) {
 			let snapshot = await adminRef.where('adminId', '==', adminID).get()
 			let companyName;
@@ -70,15 +72,27 @@ class AgentList extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.authUser !== this.props.authUser) {
-			this.getUsers()
-			console.log('where are all my agents ):')
+			if (this.props.authUser) {
+				this.setState({
+					adminUser: this.props.authUser.uid
+				}, () => {
+					this.getUsers()
+				})
+			}
+		}
+	}
+
+	//to prevent memory leaks
+	componentWillUnmount() {
+		this.setState = (state, cb) => {
+			return;
 		}
 	}
 	
 	render() {
 		const { classes } = this.props;
-		const { team } = this.state;
-
+		const { team, adminUser } = this.state;
+		console.log('the admin id on render is >>', adminUser)
 		return(
 			<Paper className={classes.root}>
 				<TableContainer className={classes.container}>
@@ -110,4 +124,4 @@ class AgentList extends Component {
 	}
 }
 
-export default withStyles(styles)(AgentList);
+export default withFirebase(withStyles(styles)(AgentList));
