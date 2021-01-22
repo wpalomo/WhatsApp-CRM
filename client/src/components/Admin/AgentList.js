@@ -28,7 +28,7 @@ class AgentList extends Component {
 		super(props)
 		this.state = {
 			team: [],
-			adminUser: this.props.firebase.findCurrentUser() ? this.props.firebase.findCurrentUser().uid : this.props.authUser
+			adminUser: this.props.authUser ? this.props.authUser.uid : this.props.authUser //if the auth user is not null, get the uid otherwise return the default null authuser
 		}
 	}
 
@@ -91,8 +91,7 @@ class AgentList extends Component {
 	
 	render() {
 		const { classes } = this.props;
-		const { team, adminUser } = this.state;
-		console.log('the admin id on render is >>', adminUser)
+		const { team } = this.state;
 		return(
 			<Paper className={classes.root}>
 				<TableContainer className={classes.container}>
