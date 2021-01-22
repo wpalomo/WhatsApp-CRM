@@ -1,6 +1,7 @@
 "use strict";
 const express = require("express");
 const bodyParser = require("body-parser");
+require('dotenv').config()
 
 const { IndexRouter } = require('./controllers/v0/index.router');
 

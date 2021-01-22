@@ -1,7 +1,18 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
+const nodemailer = require('nodemailer');
 const { adminApp } = require("../../../../config/config");
+
+let transport = nodemailer.createTransport({
+  host: "smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+    user: process.env.MAILTRAP_USER,
+    pass: process.env.MAILTRAP_PASSWORD
+  }
+})
+
 
 
 router.get('/', (req, res) => {
@@ -18,7 +29,19 @@ router.post('/', (req, res) => {
 			password: 'password' //default password
 		})
 		.then(user => {
-			console.log('Successfully created new user:', user);
+			//send verification link
+			adminApp
+				.auth()
+				.generateEmailVerificationLink(newAgentEmail)
+				.then(link => {
+
+				})
+				.catch((error) => {
+				    console.log('error occurred when sending verification email', error)
+				});
+
+			//add to company users list
+
 		})
 		.catch((error) => {
 		    console.log('Error creating new user:', error);
