@@ -161,6 +161,6 @@ class RegisterFormBase extends Component {
 
 const Register = withRouter(withFirebase(RegisterFormBase))
 
-export default SignUpPage;
+export default SignUpPage; 
 
 export { Register };

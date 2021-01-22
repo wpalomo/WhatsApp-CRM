@@ -6,7 +6,7 @@ import MessageCustomer from './MessageCustomer';
 const AllClientArea = ({ customerList, clickedCustomer }) => {
 	const currentCustomer = data => {
 		clickedCustomer(data)
-	}
+	} 
 	
 	return(
 		<div className="all__clients_area">

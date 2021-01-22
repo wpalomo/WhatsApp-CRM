@@ -10,7 +10,7 @@ const SingleClient = ({ dbObj, id, currentCustomer }) => {
 	let agentID = sessionStorage.getItem('aid')
 
 	useEffect(() => {
-		if (id) {
+		if (id) { 
 			db.collection('agents')
 				.doc(agentID)
 				.collection('customers')

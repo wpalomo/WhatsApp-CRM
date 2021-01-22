@@ -30,7 +30,7 @@ class User extends Component {
 	componentDidMount() { 
 		// get exisitng chats for this agent - replace agent1 with the logged in agent
 		this.getMessages()
-	}
+	} 
 
 
 	componentWillUnmount() {
