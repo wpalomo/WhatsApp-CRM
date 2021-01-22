@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AuthUserContext } from "../../session/index";
 import history from "../History";
 import "./homepage.css";
-
+ 
 const HomePage = () => {
 	//to test logout
 	const authUser = useContext(AuthUserContext)

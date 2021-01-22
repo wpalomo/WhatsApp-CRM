@@ -14,10 +14,7 @@ const AllClientArea = ({ customerList, clickedCustomer }) => {
 			{ 
 				//customerList.map(obj => (<SingleClient currentCustomer={currentCustomer} key={obj.id} id={obj.id} dbObj={obj.data}/>)) 
 			}
-			{ 
-				//<SingleClient /> 
-			}
-		</div>
+		</div> 
 	) 
 }  
 
@@ -25,3 +22,6 @@ const AllClientArea = ({ customerList, clickedCustomer }) => {
 
 
 export default AllClientArea;
+
+// const { authUser } = this.props
+// authUser ? console.log('logged in >>', authUser.uid) : console.log('nobody logged in')

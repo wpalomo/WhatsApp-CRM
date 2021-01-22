@@ -9,10 +9,11 @@ const SingleClient = ({ dbObj, id, currentCustomer }) => {
 	const [customerMessage, setCustomerMessage] = useState([])
 	let agentID = sessionStorage.getItem('aid')
 
+
 	useEffect(() => {
-		if (id) { 
+		if (id) { //if a customer sends a message, get the id of the customer and extract the message
 			db.collection('agents')
-				.doc(agentID)
+				.doc(agentID) 
 				.collection('customers')
 			    .doc(id)
 			    .collection('messages')

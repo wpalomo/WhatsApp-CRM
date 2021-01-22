@@ -19,11 +19,12 @@ const AgentPage = () => (
 
 class UserBase extends Component {
 
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 		this.state = {
 			allChats:[],
-			selectedCustomer:{} 
+			selectedCustomer:{},
+			agentID: this.props.authUser ? this.props.authUser.uid : this.props.authUser
 		}
 	} 
  
@@ -39,13 +40,11 @@ class UserBase extends Component {
 	// } 
 
 	getMessages = async () => {
-		const { authUser } = this.props
+		const { agentID } = this.state
 		let allAgentsRef = db.collection('allagents');
-		let currentUser;
-		authUser ? currentUser = authUser.uid : currentUser = authUser
 		let companyid;
-		if (currentUser) {
-			let snapshot = await allAgentsRef.where('agentId', '==', currentUser).get()
+		if (agentID) {
+			let snapshot = await allAgentsRef.where('agentId', '==', agentID).get()
 			if (!snapshot.empty) {
 				snapshot.forEach(doc => {
 						companyid = doc.data().companyId
@@ -53,7 +52,7 @@ class UserBase extends Component {
 				}
 		}
 		if (companyid) {
-			let allCustomers = await db.collection('companies').doc(companyid).collection('users').doc(currentUser).collection('customers').onSnapshot(snapshot => {
+			db.collection('companies').doc(companyid).collection('users').doc(agentID).collection('customers').onSnapshot(snapshot => {
 				this.setState({
 					allChats: snapshot.docs.map(obj => {
 						return {id:obj.id, data:obj.data()}
@@ -61,12 +60,23 @@ class UserBase extends Component {
 				})
 			})
 		}
-		
 	}  
  
 	componentDidMount() { 
 		this.getMessages()
 	} 
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.authUser !== this.props.authUser) {
+			if (this.props.authUser) {
+				this.setState({
+					agentID: this.props.authUser.uid
+				}, () => {
+					this.getMessages()
+				})
+			}
+		}
+	}
 
 
 	// componentWillUnmount() {
@@ -81,16 +91,12 @@ class UserBase extends Component {
 	
 	render() {
 		const { allChats, selectedCustomer } = this.state
-		const { authUser } = this.props
-		authUser ? console.log('logged in >>', authUser.uid) : console.log('nobody logged in')
+		console.log('daddy showkeys customer >>', allChats)
 		return (
 			<div className="app__body">
 				<Switch>
 					<Route path="/customers/all">
-						{
-							//<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
-						}
-						<LeftBar />
+						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
 					</Route>
 					<Route path="/customers/:customerId">
 						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
