@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { CSSTransition } from "react-transition-group";
-import { withFirebase } from "../../firebase/index";
-import { db } from "../../firebase";
 import "./styles/modal.css";
 
 class AddAgentModal extends Component {
@@ -33,37 +31,14 @@ class AddAgentModal extends Component {
 
 	registerAgent = () => {
 		const { newAgentEmail, newAgentName, password } = this.state
-		const { companyid, firebase } = this.props;
-		let companyRef = db.collection('companies').doc(companyid).collection('users');
+		const { companyid } = this.props;
 		if (newAgentName === "" || newAgentEmail === "") {
 			this.setState({
 				showError: true
 			}) 
 		} else {
-			//firebase register
-			firebase.doCreateUserWithEmailAndPassword(newAgentEmail, password)
-					.then(user => {
-						//add user to company users collection
-						companyRef.add({
-							name:newAgentName, 
-							role:'Agent', 
-							email:newAgentEmail, 
-							loggedin:"No", 
-							status:"Pending", 
-							activeAgent:false
-						})
-						//send email to verify agent 
-
-						
-						this.props.closeModal()//close the modal
-						this.setState({
-							newAgentName:"",
-							newAgentEmail:""
-						})
-					})
-					.catch(err => {
-						console.log('Something went wrong with added user to firestore: ', err);
-					})
+			//send data to the backend to be handled by firebase admin
+			console.log('going to the backend >>', {newAgentEmail, newAgentName, password, companyid})
 		}
 	}
 
@@ -108,4 +83,4 @@ class AddAgentModal extends Component {
 	}
 }
 
-export default withFirebase(AddAgentModal);
+export default AddAgentModal;
