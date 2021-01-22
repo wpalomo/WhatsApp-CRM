@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from 'axios';
 import { CSSTransition } from "react-transition-group";
 import "./styles/modal.css";
 
@@ -9,7 +10,6 @@ class AddAgentModal extends Component {
 		this.state = {
 			newAgentName:"",
 			newAgentEmail:"",
-			password: 'password', //default password
 			showError: false,
 		}
 	}
@@ -30,15 +30,27 @@ class AddAgentModal extends Component {
 
 
 	registerAgent = () => {
-		const { newAgentEmail, newAgentName, password } = this.state
+		const { newAgentEmail, newAgentName } = this.state
 		const { companyid } = this.props;
 		if (newAgentName === "" || newAgentEmail === "") {
 			this.setState({
 				showError: true
 			}) 
 		} else {
+			let newUserData = { newAgentEmail, newAgentName, companyid }
 			//send data to the backend to be handled by firebase admin
-			console.log('going to the backend >>', {newAgentEmail, newAgentName, password, companyid})
+			axios.post(`/api/v0/users`, { newUserData })
+				 .then(res => {
+				 	//clear the form and close the modal
+				 	this.setState({
+				 		newAgentName:"",
+						newAgentEmail:""
+				 	})
+				 	this.props.closeModal()
+				 })
+				 .catch(err => {
+				 	console.log('error when adding a new user by the admin', err)
+				 })
 		}
 	}
 
