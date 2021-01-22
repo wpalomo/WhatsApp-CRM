@@ -13,7 +13,7 @@ export const team = [
 		loggedin: '3:14pm', 
 		status: 'active',
 		activeAgent: false 
-	}, 
+	},  
 	{
 		name: 'Winifred Robb',
 		role: 'Agent',

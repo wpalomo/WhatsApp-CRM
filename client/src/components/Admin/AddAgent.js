@@ -11,6 +11,7 @@ class AddAgentModal extends Component {
 			newAgentName:"",
 			newAgentEmail:"",
 			showError: false,
+			errorMsg: "please enter a name and email"
 		}
 	}
 
@@ -49,14 +50,19 @@ class AddAgentModal extends Component {
 				 	this.props.closeModal()
 				 })
 				 .catch(err => {
-				 	console.log('error when adding a new user by the admin', err)
-				 })
+				 	if (err.response) {
+				 		this.setState({
+					 		errorMsg: err.response.data,
+					 		showError:true
+					 	})
+				 	}
+				 }) 
 		}
 	}
 
 	render() {
 		const nodeRef = React.createRef(null)
-		const { showError } = this.state
+		const { showError, errorMsg } = this.state
 		return(
 			<CSSTransition
 				in={this.props.show}
@@ -82,7 +88,7 @@ class AddAgentModal extends Component {
 									<input onChange={this.getAgentEmail} placeholder="Enter new agent email address" type="email" name="new_agent__email" className="new_agent__email" required/>
 								</div>	
 							</div>
-							{ showError ? <div className="bill__error"><p>please enter a name and email</p></div> : null}					
+							{ showError ? <div className="bill__error"><p>{ errorMsg }</p></div> : null}					
 						</div>
 						<div className="aa__modal__footer add__agent">
 							<button  className="aa__cancel" onClick={this.props.closeModal}>Cancel</button>
