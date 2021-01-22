@@ -3,7 +3,7 @@ import SingleClient from './SingleClient';
 import MessageCustomer from './MessageCustomer';
 
 
-const AllClientArea = ({ customerList, clickedCustomer }) => {
+const AllClientArea = ({ customerList, clickedCustomer, companyid }) => {
 	const currentCustomer = data => {
 		clickedCustomer(data)
 	} 
@@ -12,16 +12,10 @@ const AllClientArea = ({ customerList, clickedCustomer }) => {
 		<div className="all__clients_area">
 			<MessageCustomer />
 			{ 
-				//customerList.map(obj => (<SingleClient currentCustomer={currentCustomer} key={obj.id} id={obj.id} dbObj={obj.data}/>)) 
+				customerList.map(obj => (<SingleClient companyid={companyid} currentCustomer={currentCustomer} key={obj.id} id={obj.id} dbObj={obj.data}/>)) 
 			}
 		</div> 
 	) 
 }  
 
-  
-
-
 export default AllClientArea;
-
-// const { authUser } = this.props
-// authUser ? console.log('logged in >>', authUser.uid) : console.log('nobody logged in')

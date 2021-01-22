@@ -16,7 +16,7 @@ const HomePage = () => {
 		history.push('/register') 
 	}
  
-	return(
+	return( 
 		<div className="homepage__container">
 			<div className="home__container">
 				<div className="home__header">

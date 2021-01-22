@@ -23,21 +23,12 @@ class UserBase extends Component {
 		super(props)
 		this.state = {
 			allChats:[],
+			companyid: null,
 			selectedCustomer:{},
 			agentID: this.props.authUser ? this.props.authUser.uid : this.props.authUser
 		}
 	} 
  
-	// getMessages = () => {
-	// 	let agentID = sessionStorage.getItem('aid')
-	// 	this.unsubscribe = db.collection('agents').doc(agentID).collection('customers').onSnapshot(snapshot => (
-	// 		this.setState({
-	// 			allChats: snapshot.docs.map(obj => {
-	// 				return {id:obj.id, data:obj.data()}
-	// 			})
-	// 		})
-	// 	))
-	// } 
 
 	getMessages = async () => {
 		const { agentID } = this.state
@@ -48,8 +39,11 @@ class UserBase extends Component {
 			if (!snapshot.empty) {
 				snapshot.forEach(doc => {
 						companyid = doc.data().companyId
-					})
-				}
+				})
+				this.setState({
+					companyid:companyid
+				})
+			}
 		}
 		if (companyid) {
 			db.collection('companies').doc(companyid).collection('users').doc(agentID).collection('customers').onSnapshot(snapshot => {
@@ -90,13 +84,12 @@ class UserBase extends Component {
 	}
 	
 	render() {
-		const { allChats, selectedCustomer } = this.state
-		console.log('daddy showkeys customer >>', allChats)
+		const { allChats, selectedCustomer, companyid } = this.state
 		return (
 			<div className="app__body">
 				<Switch>
 					<Route path="/customers/all">
-						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
+						<LeftBar getCustomerData={this.getCustomer} companyid={companyid} customerList={allChats}/>
 					</Route>
 					<Route path="/customers/:customerId">
 						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>

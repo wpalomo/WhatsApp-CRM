@@ -8,7 +8,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import AllClientArea from './AllClientArea';
 import './leftbar.css';
 
-const LeftBar = ({ customerList, getCustomerData }) => { 
+const LeftBar = ({ customerList, getCustomerData, companyid }) => { 
 	const clickedCustomer = data => {
 		getCustomerData(data)
 	}
@@ -36,7 +36,7 @@ const LeftBar = ({ customerList, getCustomerData }) => {
 				</div>
 			</div>
 			<div className="leftbar__chats"> 
-				<AllClientArea customerList={customerList} clickedCustomer={clickedCustomer}/>  
+				<AllClientArea companyid={companyid} customerList={customerList} clickedCustomer={clickedCustomer}/>  
 			</div>
 		</div> 
 	)
