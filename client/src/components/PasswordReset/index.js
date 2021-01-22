@@ -6,7 +6,7 @@ import { db } from "../../firebase";
 import history from "../History";
 import "./passwordreset.css";
 
-const PassworResetPage = () => (
+const PasswordResetPage = () => (
 	<div>
 		<AuthUserContext.Consumer>
 			{ authUser => <PasswordReset authUser={authUser}/> }
@@ -68,10 +68,10 @@ class PasswordResetFormBase extends Component {
 						let agentSnapshot = await db.collection('companies').doc(companyid).collection('users').doc(currentUser)
 						if (agentSnapshot) {
 							////change status to active and loggedin to yes
-							const res = await agentSnapshot.update({ loggedin: 'Yes', status: "Active" })
+							await agentSnapshot.update({ loggedin: 'Yes', status: "Active" })
+							history.push('/customers')
 						}
 					}
-					//history.push('/customers')
 				})
 				.catch(error => {
 					this.setState({ error })
@@ -116,6 +116,6 @@ class PasswordResetFormBase extends Component {
 
 const PasswordReset = withRouter(withFirebase(PasswordResetFormBase))
 
-export default PassworResetPage;
+export default PasswordResetPage;
 
 export { PasswordReset };

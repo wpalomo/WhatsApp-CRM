@@ -5,10 +5,10 @@ import history from "./History";
 
 import HomePage from "./HomePage/HomePage";
 import SignUpPage from "./Register/Register";
-import PassworResetPage from "./PasswordReset/index";
+import PasswordResetPage from "./PasswordReset/index";
 import Admin from "./Admin/Admin"; 
 import SignInPage from "./Login";
-import User from "./User"; 
+import AgentPage from "./User"; 
 import ProtectedRoute from "./ProtectedRoute";
 
 //OLD DATA BELOW >> SCROLL DOWN
@@ -20,8 +20,8 @@ const Routes = () => {
 				<Route path="/login" component={SignInPage}/>
 				<Route path="/admin" component={Admin}/>
 				<Route path="/register" component={SignUpPage}/>
-				<Route path="/passwordReset" component={PassworResetPage}/>
-				<ProtectedRoute path="/customers" component={User}/>
+				<Route path="/passwordReset" component={PasswordResetPage}/>
+				<Route path="/customers" component={AgentPage}/>
 			</Switch>
 		</Router>  
 	)  

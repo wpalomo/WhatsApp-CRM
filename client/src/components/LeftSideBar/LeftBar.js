@@ -27,7 +27,7 @@ const LeftBar = ({ customerList, getCustomerData }) => {
 						<MoreVertIcon />
 					</IconButton>
 				</div>
-			</div>
+			</div> 
 
 			<div className="leftbar__search">
 				<div className="leftbar__searchContainer">

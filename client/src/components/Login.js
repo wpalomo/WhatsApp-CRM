@@ -78,8 +78,8 @@ class LoginFormBase extends Component {
 						if (signinPassword === "password") {
 							history.push('/passwordReset')
 						} else {
-							console.log('has a new password, needs to get customer list')
-							//history.push('/customers') 
+							//set loggedin to Yes
+							history.push('/customers') 
 						}
 					} else {//admin
 						history.push('/admin') 

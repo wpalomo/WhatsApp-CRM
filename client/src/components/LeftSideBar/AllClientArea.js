@@ -11,12 +11,17 @@ const AllClientArea = ({ customerList, clickedCustomer }) => {
 	return(
 		<div className="all__clients_area">
 			<MessageCustomer />
-			{ customerList.map(obj => (<SingleClient currentCustomer={currentCustomer} key={obj.id} id={obj.id} dbObj={obj.data}/>)) }
+			{ 
+				//customerList.map(obj => (<SingleClient currentCustomer={currentCustomer} key={obj.id} id={obj.id} dbObj={obj.data}/>)) 
+			}
+			{ 
+				//<SingleClient /> 
+			}
 		</div>
 	) 
 }  
 
- 
+  
 
 
 export default AllClientArea;

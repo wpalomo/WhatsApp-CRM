@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
 import { Redirect, Switch, Route } from 'react-router-dom';
+//import { withFirebase } from "../firebase/index";
+import { withRouter } from 'react-router-dom';
+import { AuthUserContext } from "../session/index";
 import LeftBar from "./LeftSideBar/LeftBar";
 import ExpandedSingleChat from "./ExpandedSingleChat";
 import './styles/user.css';
 
 import { db } from '../firebase'
 
-class User extends Component {
+const AgentPage = () => (
+	<div>
+		<AuthUserContext.Consumer>
+			{  authUser => <CustomerList authUser={authUser}/> }
+		</AuthUserContext.Consumer>
+	</div>
+)
+
+class UserBase extends Component {
 
 	constructor() {
 		super()
@@ -16,26 +27,51 @@ class User extends Component {
 		}
 	} 
  
-	getMessages = () => {
-		let agentID = sessionStorage.getItem('aid')
-		this.unsubscribe = db.collection('agents').doc(agentID).collection('customers').onSnapshot(snapshot => (
-			this.setState({
-				allChats: snapshot.docs.map(obj => {
-					return {id:obj.id, data:obj.data()}
+	// getMessages = () => {
+	// 	let agentID = sessionStorage.getItem('aid')
+	// 	this.unsubscribe = db.collection('agents').doc(agentID).collection('customers').onSnapshot(snapshot => (
+	// 		this.setState({
+	// 			allChats: snapshot.docs.map(obj => {
+	// 				return {id:obj.id, data:obj.data()}
+	// 			})
+	// 		})
+	// 	))
+	// } 
+
+	getMessages = async () => {
+		const { authUser } = this.props
+		let allAgentsRef = db.collection('allagents');
+		let currentUser;
+		authUser ? currentUser = authUser.uid : currentUser = authUser
+		let companyid;
+		if (currentUser) {
+			let snapshot = await allAgentsRef.where('agentId', '==', currentUser).get()
+			if (!snapshot.empty) {
+				snapshot.forEach(doc => {
+						companyid = doc.data().companyId
+					})
+				}
+		}
+		if (companyid) {
+			let allCustomers = await db.collection('companies').doc(companyid).collection('users').doc(currentUser).collection('customers').onSnapshot(snapshot => {
+				this.setState({
+					allChats: snapshot.docs.map(obj => {
+						return {id:obj.id, data:obj.data()}
+					})
 				})
 			})
-		))
+		}
+		
 	}  
  
 	componentDidMount() { 
-		// get exisitng chats for this agent - replace agent1 with the logged in agent
 		this.getMessages()
 	} 
 
 
-	componentWillUnmount() {
-		this.unsubscribe()
-	}
+	// componentWillUnmount() {
+	// 	this.unsubscribe()
+	// }
 
 	getCustomer = data => {
 		this.setState({
@@ -45,11 +81,16 @@ class User extends Component {
 	
 	render() {
 		const { allChats, selectedCustomer } = this.state
+		const { authUser } = this.props
+		authUser ? console.log('logged in >>', authUser.uid) : console.log('nobody logged in')
 		return (
 			<div className="app__body">
 				<Switch>
 					<Route path="/customers/all">
-						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
+						{
+							//<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
+						}
+						<LeftBar />
 					</Route>
 					<Route path="/customers/:customerId">
 						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
@@ -62,5 +103,8 @@ class User extends Component {
 	} 
 }
 
-export default User;
- 
+const CustomerList = withRouter(UserBase)
+
+export default AgentPage;
+
+export { CustomerList };
