@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Redirect, Switch, Route } from 'react-router-dom';
-//import { withFirebase } from "../firebase/index";
 import { withRouter } from 'react-router-dom';
 import { AuthUserContext } from "../session/index";
 import LeftBar from "./LeftSideBar/LeftBar";
@@ -72,11 +71,6 @@ class UserBase extends Component {
 		}
 	}
 
-
-	// componentWillUnmount() {
-	// 	this.unsubscribe()
-	// }
-
 	getCustomer = data => {
 		this.setState({
 			selectedCustomer: data
@@ -84,7 +78,7 @@ class UserBase extends Component {
 	}
 	
 	render() {
-		const { allChats, selectedCustomer, companyid } = this.state
+		const { allChats, selectedCustomer, companyid, agentID } = this.state
 		return (
 			<div className="app__body">
 				<Switch>
@@ -93,10 +87,10 @@ class UserBase extends Component {
 					</Route>
 					<Route path="/customers/:customerId">
 						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
-						<ExpandedSingleChat selectedCustomer={selectedCustomer} agentMessageToServer={this.handleAgentMessage}/>
-					</Route>
+						<ExpandedSingleChat companyUid={companyid} agentUid={agentID} selectedCustomer={selectedCustomer}/>
+					</Route> 
 					<Redirect from="/customers" to="/customers/all" exact/>
-				</Switch>
+				</Switch> 
 		   	</div>
 		  );  
 	} 

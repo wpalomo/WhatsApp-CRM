@@ -13,7 +13,7 @@ class ExpandedSingleChat extends Component {
 	constructor(props) {
 		super(props)
 		this.state = { 
-			agentMessage:"",
+			agentMessage:"", 
 			customerNum: "",
 			chats:[] 
 		}
@@ -70,28 +70,6 @@ class ExpandedSingleChat extends Component {
 		})
 	}
 
-	// saveResponder = async (client, agentid, clientid, agentMessage, agentName, serverTimestamp) => {
-	// 	let currentResponder = await db.collection('response').get()
-	// 	if (currentResponder.empty) {//nobody has responded
-	// 		db.collection('response').add({ customer:Number(client), agentid:agentid })
-	// 	} else {
-	// 		let data = currentResponder.docs.map(doc => {
-	// 			return doc.data()
-	// 		}).filter(obj => obj.customer === Number(client))
-	// 		if (data.length !== 0) { //someone has responded
-	// 			//check who responded
-	// 			let responder = data[0].agentid
-	// 			if (responder === agentid) {
-	// 				this.sendResponse(agentid, clientid, agentMessage, agentName, serverTimestamp)
-	// 			} else {
-	// 				alert('an agent already responded to this customer!')
-	// 			}
-	// 		} else {//no one has responded
-	// 			this.sendResponse(agentid, clientid, agentMessage, agentName, serverTimestamp)
-	// 			db.collection('response').add({ customer:Number(client), agentid:agentid })
-	// 		}
-	// 	}
-	// }
 
 	saveResponder = (client, agentid, clientid, agentMessage, agentName, serverTimestamp, cid) => {
 		db.collection('response')
@@ -139,16 +117,6 @@ class ExpandedSingleChat extends Component {
 		let agentID = sessionStorage.getItem('aid')
 		//save agent message to db which is automatically shown on the screen
 		if (id) {
-			// this.sendMessage = db.collection('agents')
-			// 						  .doc(agentID)
-			// 						  .collection('customers')
-			// 					      .doc(id)
-			// 						  .collection('messages')
-			// 						  .add({
-			// 						  	 message: agentMessage,
-			// 						 	 name: agentName,
-			// 						 	 timestamp: serverTimestamp
-			// 						  })
 			this.saveResponder(customerNum, agentID, id, agentMessage, agentName, serverTimestamp)
 		}
 		//send to twilio as a response
