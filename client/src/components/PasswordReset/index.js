@@ -3,6 +3,7 @@ import { withFirebase } from "../../firebase/index";
 import { withRouter } from 'react-router-dom';
 import { AuthUserContext } from "../../session/index";
 import history from "../History";
+import "./passwordreset.css";
 
 const PassworResetPage = () => (
 	<div>
@@ -72,7 +73,7 @@ class PasswordResetFormBase extends Component {
 					<div className="form__heading">
 						<p>Password Update</p>
 					</div>
-						<div className="form__container">
+						<div className="form__container password__reset">
 								<div className="password__container">
 									<label className="field__label" htmlFor="owner__password">New Password</label>
 									<div className="password__container__input">
