@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { withFirebase } from "../../firebase/index";
 import { withRouter } from 'react-router-dom';
+import { AuthUserContext } from "../../session/index";
 import history from "../History";
 
 const PassworResetPage = () => (
 	<div>
-		<PasswordReset />
+		<AuthUserContext.Consumer>
+			{ authUser => <PasswordReset authUser={authUser}/> }
+		</AuthUserContext.Consumer>
 	</div>
 )
 
@@ -24,13 +27,13 @@ class PasswordResetFormBase extends Component {
 
 	onPasswordOneChange = e => {
 		this.setState({
-			password: e.target.value
+			password1: e.target.value
 		})
 	}
 
 	onPasswordTwoChange = e => {
 		this.setState({
-			password: e.target.value
+			password2: e.target.value
 		})
 	}
 
@@ -47,6 +50,7 @@ class PasswordResetFormBase extends Component {
 				.then(() => {
 					this.setState({ ...initialState })
 					console.log('current user is >>', this.props.authUser)
+					//change status to active and loggedin to yes
 					//history.push('/customers')
 				})
 				.catch(error => {
@@ -57,7 +61,10 @@ class PasswordResetFormBase extends Component {
 
 	render() {
 		const { password1, password2, error } = this.state
+		const { authUser } = this.props
 		const isInvalid = password1 === "" || password2 === ""
+		authUser ? console.log('current user is >>', authUser.uid) : console.log('nobody resetting password')
+		
 		return(
 			<div className="register__container">  
 				<p id="brand__name">Sauceflow</p>

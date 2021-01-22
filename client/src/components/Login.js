@@ -76,9 +76,9 @@ class LoginFormBase extends Component {
 					if (snapshot.empty) {//agent
 						//get the password - if default, send to the change password page else, send to customer list
 						if (signinPassword === "password") {
-							//history.push('/passwordReset')
-
+							history.push('/passwordReset')
 						} else {
+							console.log('has a new password, needs to get customer list')
 							//history.push('/customers') 
 						}
 					} else {//admin
