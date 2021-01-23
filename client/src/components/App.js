@@ -23,7 +23,7 @@ class App extends Component {
 		})
 	}
 
-	componentWillUnmount() {
+	componentWillUnmount() { 
 		this.listener()
 	}
 

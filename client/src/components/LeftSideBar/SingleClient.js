@@ -9,13 +9,11 @@ import { db } from '../../firebase';
 const SingleClient = ({ dbObj, id, currentCustomer, companyid }) => {
 	
 	const { name } = dbObj
+
+	//state
 	const [customerMessage, setCustomerMessage] = useState([])
 
-	let coyid;
-	if (companyid) {
-		coyid = companyid
-	}
-
+	let coyid = sessionStorage.getItem('coy')
 	let agent;
 	const authUser = useContext(AuthUserContext)
 	authUser ?  agent = authUser.uid : agent = authUser //if there is an authe'd user, get the id else return the default authUser which is null

@@ -14,52 +14,43 @@ class ExpandedSingleChat extends Component {
 		super(props)
 		this.state = { 
 			agentMessage:"", 
-			customerNum: "",
+			agentUid: this.props.agentUid,
+			customerNum: sessionStorage.getItem('cn'),
+			companyUid: sessionStorage.getItem('coy'),
 			chats:[] 
 		}
 	}  
 
-	//this will get the currently selected customer
-	getCustomerData = () => {
-		this.setState({
-			customerNum: sessionStorage.getItem('cn')
-		})
-	}
-
-	//get all messages between this customer and the agent
-	getAllMessages = (id, agentID) => {
-		this.cleanMessageListener = db.collection('agents')
-									  .doc(agentID)
-									  .collection('customers')
-								      .doc(id)
-									  .collection('messages')
-									  .orderBy('timestamp', 'asc')
+	getAllMessages = (customerId, agentID, coyid) => {
+		let messageRef = db.collection('companies').doc(coyid).collection('users').doc(agentID).collection('customers').doc(customerId).collection('messages').orderBy('timestamp', 'asc')
+		this.cleanMessageListener = messageRef
 									  .onSnapshot(snapshot => {
 									  	this.setState({
 									  		chats: snapshot.docs.map(doc => doc.data())
 									  	})
-									  })
+									})
 	}
 
 
 	componentDidMount() {
-		this.getCustomerData()
-		const id  = sessionStorage.getItem('cid')
-		let agentID = sessionStorage.getItem('aid')
-		if (id && agentID) {
-			this.getAllMessages(id, agentID)
+		const { companyUid, agentUid } = this.state
+		const customerId  = sessionStorage.getItem('cid')
+		let agentID = agentUid
+		if (customerId && agentID && companyUid) {
+			this.getAllMessages(customerId, agentID, companyUid)
 		} else {
-			console.log('no id present')
+			console.log('something went wrong in componentDidMount')
 		}
 	}
 
-	componentDidUpdate(prevProps) {
-		if (prevProps.selectedCustomer.name !== this.props.selectedCustomer.name) {
-			this.getCustomerData()
-			let id = this.props.selectedCustomer.id
-			let agentID = sessionStorage.getItem('aid')
-			if (id) {
-				this.getAllMessages(id, agentID)
+	componentDidUpdate(prevProps, prevState) {
+		if ((prevProps.selectedCustomer.name !== this.props.selectedCustomer.name) || (prevProps.agentUid !== this.props.agentUid)) { //this condition handles when the agent selects another customer OR if the page is refreshed
+			const { companyUid } = this.state
+			const { agentUid } = this.props
+			let customerId = sessionStorage.getItem('cid')
+			let agentID = agentUid
+			if (customerId && agentID && companyUid) {
+				this.getAllMessages(customerId, agentID, companyUid)
 			}
 		}
 	}
@@ -71,8 +62,8 @@ class ExpandedSingleChat extends Component {
 	}
 
 
-	saveResponder = (client, agentid, clientid, agentMessage, agentName, serverTimestamp, cid) => {
-		db.collection('response')
+	saveResponder = (coyid, client, agentid, clientid, agentMessage, agentName, serverTimestamp, cid) => {
+		db.collection('companies').doc(coyid).collection('response')
 		  .get()
 		  .then(snapshot => {
 		  	let data = snapshot.docs.map(doc => {
@@ -83,19 +74,21 @@ class ExpandedSingleChat extends Component {
 				//check who responded
 				let responder = data[0].agentid
 				if (responder === agentid) {
-					this.sendResponse(agentid, clientid, agentMessage, agentName, serverTimestamp)
+					this.sendResponse(coyid, agentid, clientid, agentMessage, agentName, serverTimestamp)
 				} else {
 					alert('an agent already responded to this customer!')
 				}
 			} else {//no one has responded
-				this.sendResponse(agentid, clientid, agentMessage, agentName, serverTimestamp)
-				db.collection('response').add({ customer:Number(client), agentid:agentid, customerid:clientid })
+				this.sendResponse(coyid, agentid, clientid, agentMessage, agentName, serverTimestamp)
+				db.collection('companies').doc(coyid).collection('response').add({ customer:Number(client), agentid:agentid, customerid:clientid })
 			}
 		  })
 	}
 
-	sendResponse = (agentID, id, agentMessage, agentName, serverTimestamp) => {
-		db.collection('agents')
+	sendResponse = (coyid, agentID, id, agentMessage, agentName, serverTimestamp) => {
+		db.collection('companies')
+		  .doc(coyid)
+		  .collection('users')
 		  .doc(agentID)
 		  .collection('customers')
 		  .doc(id)
@@ -111,23 +104,24 @@ class ExpandedSingleChat extends Component {
 		//send to db, pull from db and show on the screen, in the left bar, and pass to the server
 		//to server
 		e.preventDefault()
-		const { agentMessage, customerNum } = this.state
-		let id  = sessionStorage.getItem('cid')
+		const { agentMessage, customerNum, companyUid } = this.state
+		const { agentUid } = this.props
+		let customerId  = sessionStorage.getItem('cid')
 		let agentName = sessionStorage.getItem('aun')
-		let agentID = sessionStorage.getItem('aid')
+		let agentID = agentUid
 		//save agent message to db which is automatically shown on the screen
-		if (id) {
-			this.saveResponder(customerNum, agentID, id, agentMessage, agentName, serverTimestamp)
+		if (customerId) {
+			this.saveResponder(companyUid, customerNum, agentID, customerId, agentMessage, agentName, serverTimestamp)
 		}
-		//send to twilio as a response
+		//clear the form
 		this.setState({
 			agentMessage: ""
 		})
 	} 
  
-	componentWillUnmount() {
-		this.cleanMessageListener()
-	}
+	// componentWillUnmount() {
+	// 	this.cleanMessageListener()
+	// }
 
 	render() {
 		const { agentMessage, customerNum, chats } = this.state

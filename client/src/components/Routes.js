@@ -9,7 +9,7 @@ import PasswordResetPage from "./PasswordReset/index";
 import Admin from "./Admin/Admin"; 
 import SignInPage from "./Login";
 import AgentPage from "./User"; 
-import ProtectedRoute from "./ProtectedRoute";
+//import ProtectedRoute from "./ProtectedRoute";
 
 //OLD DATA BELOW >> SCROLL DOWN
 const Routes = () => { 

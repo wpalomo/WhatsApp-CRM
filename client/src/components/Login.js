@@ -79,6 +79,7 @@ class LoginFormBase extends Component {
 							history.push('/passwordReset')
 						} else {
 							//set loggedin to Yes
+							sessionStorage.setItem('aun', signinUsername)
 							history.push('/customers') 
 						}
 					} else {//admin

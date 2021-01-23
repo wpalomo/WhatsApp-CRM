@@ -22,8 +22,8 @@ class UserBase extends Component {
 		super(props)
 		this.state = {
 			allChats:[],
-			companyid: null,
 			selectedCustomer:{},
+			companyid:"",
 			agentID: this.props.authUser ? this.props.authUser.uid : this.props.authUser
 		}
 	} 
@@ -39,6 +39,7 @@ class UserBase extends Component {
 				snapshot.forEach(doc => {
 						companyid = doc.data().companyId
 				})
+				sessionStorage.setItem('coy', companyid)
 				this.setState({
 					companyid:companyid
 				})
@@ -78,7 +79,8 @@ class UserBase extends Component {
 	}
 	
 	render() {
-		const { allChats, selectedCustomer, companyid, agentID } = this.state
+		const { allChats, selectedCustomer, agentID, companyid } = this.state
+		
 		return (
 			<div className="app__body">
 				<Switch>
@@ -87,7 +89,7 @@ class UserBase extends Component {
 					</Route>
 					<Route path="/customers/:customerId">
 						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
-						<ExpandedSingleChat companyUid={companyid} agentUid={agentID} selectedCustomer={selectedCustomer}/>
+						<ExpandedSingleChat agentUid={agentID} selectedCustomer={selectedCustomer}/>
 					</Route> 
 					<Redirect from="/customers" to="/customers/all" exact/>
 				</Switch> 
