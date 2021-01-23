@@ -83,6 +83,13 @@ class UserBase extends Component {
 			selectedCustomer: data
 		})
 	}
+
+	//to prevent memory leaks
+	componentWillUnmount() {
+		this.setState = (state, cb) => {
+			return;
+		}
+	}
 	
 	render() {
 		const { allChats, selectedCustomer, agentID, companyid } = this.state
@@ -106,7 +113,7 @@ class UserBase extends Component {
 	} 
 }
 
-const CustomerList = withRouter(UserBase)
+const CustomerList = withRouter(UserBase);
 
 export default AgentPage;
 

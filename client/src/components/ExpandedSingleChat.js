@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Avatar, IconButton } from "@material-ui/core";
-import { SearchOutlined, MoreVert, AttachFile } from "@material-ui/icons";
+import { withFirebase } from "../firebase/index";
+import history from "./History";
+import { Avatar, IconButton, Button } from "@material-ui/core";
+import { AttachFile } from "@material-ui/icons";
+//import { SearchOutlined, MoreVert } from "@material-ui/icons";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
 import { db, serverTimestamp } from '../firebase';
@@ -135,6 +138,21 @@ class ExpandedSingleChat extends Component {
 			agentMessage: ""
 		})
 	} 
+
+	signOut = async () => {
+		const { companyUid } = this.state
+		const { agentUid } = this.props
+		//signout the agent
+		if (companyUid && agentUid) {
+			let agentSnapshot = await db.collection('companies').doc(companyUid).collection('users').doc(agentUid)
+			if (agentSnapshot) {
+				await agentSnapshot.update({ loggedin: 'No'})
+			}
+		}
+		this.props.firebase.doSignOut()
+		sessionStorage.clear()
+		history.push('/')
+	}
   
 	render() {
 		const { agentMessage, customerNum, chats } = this.state
@@ -157,12 +175,11 @@ class ExpandedSingleChat extends Component {
 						</p>
 					</div>
 					<div className="chat__headerRight"> 
-						<IconButton>
-							<SearchOutlined />
-						</IconButton>
-						<IconButton>
-							<MoreVert />
-						</IconButton>
+						<Button onClick={this.signOut} variant="outlined">Sign Out</Button>
+						{
+							//<IconButton><SearchOutlined /></IconButton>
+							//<IconButton><MoreVert /></IconButton>
+						}
 					</div>
 			    </div>
 			    <div className="chat__body"> 
@@ -194,4 +211,4 @@ class ExpandedSingleChat extends Component {
 	}
 }
 
-export default ExpandedSingleChat;
+export default withFirebase(ExpandedSingleChat);
