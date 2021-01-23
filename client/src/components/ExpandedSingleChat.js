@@ -15,9 +15,10 @@ class ExpandedSingleChat extends Component {
 		this.state = { 
 			agentMessage:"", 
 			agentUid: this.props.agentUid,
-			customerNum: sessionStorage.getItem('cn'),
-			companyUid: sessionStorage.getItem('coy'),
-			chats:[] 
+			customerNum: Number(this.props.secret.decryption(sessionStorage.getItem('iiI'))),
+			companyUid: this.props.secret.decryption(sessionStorage.getItem('iIi')),
+			chats:[]
+
 		}
 	}  
 
@@ -34,20 +35,28 @@ class ExpandedSingleChat extends Component {
 
 	componentDidMount() {
 		const { companyUid, agentUid } = this.state
-		const customerId  = sessionStorage.getItem('cid')
+		const { secret } = this.props
+
+		//get code from sessionstorage and decrypt - customer id
+		let codedcustomerId = sessionStorage.getItem('iio')
+		let deCodedcustomerId = secret.decryption(codedcustomerId)
+		let customerId  = deCodedcustomerId;
+
 		let agentID = agentUid
 		if (customerId && agentID && companyUid) {
 			this.getAllMessages(customerId, agentID, companyUid)
-		} else {
-			console.log('something went wrong in componentDidMount')
-		}
+		} 
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if ((prevProps.selectedCustomer.name !== this.props.selectedCustomer.name) || (prevProps.agentUid !== this.props.agentUid)) { //this condition handles when the agent selects another customer OR if the page is refreshed
 			const { companyUid } = this.state
-			const { agentUid } = this.props
-			let customerId = sessionStorage.getItem('cid')
+			const { agentUid, secret } = this.props
+			//get code from sessionstorage and decrypt - customer id
+			let codedcustomerId = sessionStorage.getItem('iio')
+			let deCodedcustomerId = secret.decryption(codedcustomerId)
+			let customerId  = deCodedcustomerId;
+
 			let agentID = agentUid
 			if (customerId && agentID && companyUid) {
 				this.getAllMessages(customerId, agentID, companyUid)
@@ -105,9 +114,17 @@ class ExpandedSingleChat extends Component {
 		//to server
 		e.preventDefault()
 		const { agentMessage, customerNum, companyUid } = this.state
-		const { agentUid } = this.props
-		let customerId  = sessionStorage.getItem('cid')
-		let agentName = sessionStorage.getItem('aun')
+		const { agentUid, secret } = this.props
+
+		//get code from sessionstorage and decrypt - customer id
+		let codedcustomerId = sessionStorage.getItem('iio')
+		let deCodedcustomerId = secret.decryption(codedcustomerId)
+		let customerId  = deCodedcustomerId;
+		//agent name
+		let codedAgentName = sessionStorage.getItem('iii')
+		let deCodedAgentName = secret.decryption(codedAgentName)
+		let agentName = deCodedAgentName
+		
 		let agentID = agentUid
 		//save agent message to db which is automatically shown on the screen
 		if (customerId) {
@@ -118,14 +135,14 @@ class ExpandedSingleChat extends Component {
 			agentMessage: ""
 		})
 	} 
- 
-	// componentWillUnmount() {
-	// 	this.cleanMessageListener()
-	// }
-
+  
 	render() {
 		const { agentMessage, customerNum, chats } = this.state
-		let agentName = sessionStorage.getItem('aun')
+		//decrypt agent name
+		let codedAgentName = sessionStorage.getItem('iii')
+		let deCodedAgentName = this.props.secret.decryption(codedAgentName)
+		let agentName = deCodedAgentName
+		
 		return(
 			<div className="singlechat"> 
 				<div className="chat__header"> 

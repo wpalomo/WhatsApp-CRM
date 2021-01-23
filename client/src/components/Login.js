@@ -100,7 +100,8 @@ class LoginFormBase extends Component {
 								}
 							}
 							//encrypt the signinusername before setting to sessionStorage
-							sessionStorage.setItem('aun', signinUsername) 
+							let codedUsername = this.props.secret.encryption(signinUsername)
+							sessionStorage.setItem('iii', codedUsername) 
 						}
 					} else {//admin
 						history.push('/admin') 
@@ -123,10 +124,7 @@ class LoginFormBase extends Component {
 	render() {
 		const { signinUsername, signinPassword, error } = this.state
 		const isInvalid = signinUsername === "" || signinPassword === "" 
-		let plainText = 'boyega'
-		let codedTunes = this.props.secret.encryption(plainText)
-		console.log('encoded >>', codedTunes)
-		console.log('decoded >>', this.props.secret.decryption(codedTunes))
+		
 		return(
 			<div className="signin">
 				<div className="signin__container">

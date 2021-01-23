@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Switch, Route } from 'react-router-dom';
+import { SessionDataContext } from "../encrypt/index";
 import { withRouter } from 'react-router-dom';
 import { AuthUserContext } from "../session/index";
 import LeftBar from "./LeftSideBar/LeftBar";
@@ -8,14 +9,17 @@ import './styles/user.css';
 
 import { db } from '../firebase'
 
+//embed contexts
 const AgentPage = () => (
 	<div>
 		<AuthUserContext.Consumer>
-			{  authUser => <CustomerList authUser={authUser}/> }
+			{ (authUser) => (
+				<SessionDataContext.Consumer>{(secret) =>  <CustomerList secret={secret} authUser={authUser}/> }</SessionDataContext.Consumer>
+			)}
 		</AuthUserContext.Consumer>
 	</div>
 )
-
+  
 class UserBase extends Component {
 
 	constructor(props) {
@@ -39,7 +43,9 @@ class UserBase extends Component {
 				snapshot.forEach(doc => {
 						companyid = doc.data().companyId
 				})
-				sessionStorage.setItem('coy', companyid)
+				//encrypt the company id before setting to sessionStorage
+				let codedCompanyId = this.props.secret.encryption(companyid)
+				sessionStorage.setItem('iIi', codedCompanyId) 
 				this.setState({
 					companyid:companyid
 				})
@@ -89,7 +95,9 @@ class UserBase extends Component {
 					</Route>
 					<Route path="/customers/:customerId">
 						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
-						<ExpandedSingleChat agentUid={agentID} selectedCustomer={selectedCustomer}/>
+						<SessionDataContext.Consumer>
+							{ secret => <ExpandedSingleChat secret={secret} agentUid={agentID} selectedCustomer={selectedCustomer}/> }
+						</SessionDataContext.Consumer>
 					</Route> 
 					<Redirect from="/customers" to="/customers/all" exact/>
 				</Switch> 
