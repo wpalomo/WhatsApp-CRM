@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withFirebase } from "../firebase/index";
+import { SessionDataContext } from "../encrypt/index";
 import { withRouter } from 'react-router-dom';
 import history from "./History";
 import "./styles/login.css"
@@ -8,7 +9,9 @@ import { db } from '../firebase.js';
 
 const SignInPage = () => (
 	<div>
-		<SignIn />
+		<SessionDataContext.Consumer>
+			{ secret => <SignIn secret={secret}/> }
+		</SessionDataContext.Consumer>
 	</div>
 ) 
 
@@ -120,6 +123,10 @@ class LoginFormBase extends Component {
 	render() {
 		const { signinUsername, signinPassword, error } = this.state
 		const isInvalid = signinUsername === "" || signinPassword === "" 
+		let plainText = 'boyega'
+		let codedTunes = this.props.secret.encryption(plainText)
+		console.log('encoded >>', codedTunes)
+		console.log('decoded >>', this.props.secret.decryption(codedTunes))
 		return(
 			<div className="signin">
 				<div className="signin__container">

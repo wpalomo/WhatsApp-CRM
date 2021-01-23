@@ -3,6 +3,7 @@
 # dependencies
 node_modules
 src/firebase.js
+src/encrypt
 .pnp
 .pnp.js
 .eslintcache
