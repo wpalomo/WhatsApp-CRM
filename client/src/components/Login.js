@@ -13,10 +13,10 @@ const SignInPage = () => (
 ) 
 
 const initialState = {
-			signinUsername:"",
-			signinPassword:"",
-			error: null
-		}
+	signinUsername:"",
+	signinPassword:"",
+	error: null
+} 
 
 
 class LoginFormBase extends Component { 
@@ -68,6 +68,7 @@ class LoginFormBase extends Component {
 		const { firebase } = this.props
 		const { signinUsername, signinPassword } = this.state
 		let adminRef = db.collection('admins');
+		let allAgentsRef = db.collection('allagents');
 		firebase.doSignInWithEmailAndPassword(signinUsername, signinPassword)
 				.then(async (user) => {
 					let currentUser = user.user.uid
@@ -78,9 +79,25 @@ class LoginFormBase extends Component {
 						if (signinPassword === "password") {
 							history.push('/passwordReset')
 						} else {
+							history.push('/customers')
 							//set loggedin to Yes
-							sessionStorage.setItem('aun', signinUsername)
-							history.push('/customers') 
+							let companyid;
+							if (currentUser) {
+								let allAgentSnapshot = await allAgentsRef.where('agentId', '==', currentUser).get()
+								if (!allAgentSnapshot.empty) {
+									allAgentSnapshot.forEach(doc => {
+										companyid = doc.data().companyId
+									})
+								}
+							}
+							if (companyid) {
+								let agentSnapshot = await db.collection('companies').doc(companyid).collection('users').doc(currentUser)
+								if (agentSnapshot) {
+									await agentSnapshot.update({ loggedin: 'Yes'})
+								}
+							}
+							//encrypt the signinusername before setting to sessionStorage
+							sessionStorage.setItem('aun', signinUsername) 
 						}
 					} else {//admin
 						history.push('/admin') 

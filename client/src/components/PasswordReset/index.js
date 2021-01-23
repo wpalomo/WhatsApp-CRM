@@ -63,7 +63,7 @@ class PasswordResetFormBase extends Component {
 								companyid = doc.data().companyId
 							})
 						}
-					}
+					}  
 					if (companyid) {
 						let agentSnapshot = await db.collection('companies').doc(companyid).collection('users').doc(currentUser)
 						if (agentSnapshot) {
