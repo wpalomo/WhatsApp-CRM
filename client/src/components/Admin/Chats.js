@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { customers, chats } from "./team";
 import "./styles/agents.css";
 import { db } from "../../firebase";
 
@@ -11,7 +10,9 @@ class Chats extends Component {
 			agentList: [], 
 			customerList: [],
 			chatHistory:[],
-			adminUser: this.props.authUser ? this.props.authUser.uid : this.props.authUser
+			adminUser: this.props.authUser ? this.props.authUser.uid : this.props.authUser,
+			company:"",
+			currentAgent:""
 		}
 	}
 
@@ -37,19 +38,36 @@ class Chats extends Component {
 			})
 			this.setState({
 				agentList: newList
-			}, () => {
+			}, async () => {
 				let selectedAgent = this.state.agentList.filter(obj => obj.activeAgent === true)
+				let companyRef = db.collection('companies').doc(this.state.company);
 				if (selectedAgent.length === 1) {
+					let agentid;
+					let currentAgent = selectedAgent[0].email
+					let agentSnapshot = await companyRef.collection('users').where('email', '==', currentAgent).get()
+					if (!agentSnapshot.empty) {
+						agentSnapshot.forEach(doc => {
+							agentid = doc.id
+						})
+					}
 					this.setState({
-						customerList: customers
-					}, () => {
-						let selectedCustomer = this.state.customerList.filter(obj => obj.activeNum === true)
-						if (selectedCustomer.length === 0) {
-							this.setState({
-								chatHistory:[]
-							})
-						}
+						currentAgent: agentid
 					})
+					//get the agent's customers
+					companyRef.collection('users').doc(agentid).collection('customers').onSnapshot(snapshot => (
+						this.setState({
+							customerList: snapshot.docs.map(obj => {
+								return obj.data()
+							})
+						}, () => {
+							let selectedCustomer = this.state.customerList.filter(obj => obj.active === true)
+							if (selectedCustomer.length === 0) {
+								this.setState({
+									chatHistory:[]
+								})
+							}
+						})
+					))
 				} else {
 					this.setState({
 						customerList: [],
@@ -63,10 +81,10 @@ class Chats extends Component {
 
 	setActiveNum = e => {
 		const { customerList } = this.state
-		let currentClicked = e.target.id
+		let currentClicked = Number(e.target.id)
 		let singleActive = customerList.map(obj => {
-			if (obj.num === currentClicked) {
-				return { ...obj, activeNum: !obj.activeNum}
+			if (obj.name === currentClicked) {
+				return { ...obj, active: !obj.active}
 			}
 			return obj
 		})
@@ -74,19 +92,42 @@ class Chats extends Component {
 			customerList: singleActive
 		}, () => {
 			let newCusList = this.state.customerList.map(obj => {
-				if (obj.num !== currentClicked) {
-					return { ...obj, activeNum: false}
+				if (obj.name !== currentClicked) {
+					return { ...obj, active: false}
 				}
 				return obj
 			})
 			this.setState({
 				customerList: newCusList
-			}, () => {
-				let selectedCustomer = this.state.customerList.filter(obj => obj.activeNum === true)
+			}, async () => {
+				let selectedCustomer = this.state.customerList.filter(obj => obj.active === true)
+				let agentRef = db.collection('companies').doc(this.state.company).collection('users').doc(this.state.currentAgent).collection('customers');
 				if (selectedCustomer.length === 1) {
-					this.setState({
-						chatHistory: chats
-					})
+					//get the messages
+					let customerid;
+					let customerSnapshot;
+					let currentCustomer = selectedCustomer[0].name
+					if (currentCustomer) {
+						customerSnapshot = await agentRef.where('name', '==', currentCustomer).get()
+					} else {
+						console.log('i dont have the customer')
+					}
+					
+					if (!customerSnapshot.empty) {
+						customerSnapshot.forEach(doc => {
+							customerid = doc.id
+						})
+					} else {
+						console.log('nothing')
+					}
+
+					agentRef.doc(customerid).collection('messages').onSnapshot(snapshot => (
+						this.setState({
+							chatHistory: snapshot.docs.map(doc => {
+								return doc.data()
+							})
+						})
+					))
 				} else {
 					this.setState({
 						chatHistory: []
@@ -117,6 +158,9 @@ class Chats extends Component {
 						companyId = doc.id
 					})
 				}
+				this.setState({
+					company: companyId
+				})
 			}
 			
 			this.unsubscribe = companyRef.doc(companyId).collection('users').where('role', '==', 'Agent').onSnapshot(snapshot => (
@@ -178,7 +222,7 @@ class Chats extends Component {
 								<div className="agent__customers__body">
 									{
 										customerList.map((obj, idx) => (
-											<p onClick={this.setActiveNum} key={idx} id={obj.num} className={obj.activeNum ? "active__num" : ""}>{ obj.num }</p>
+											<p onClick={this.setActiveNum} key={idx} id={obj.name} className={obj.active ? "active__num" : ""}>{ obj.name }</p>
 										))
 									}
 								</div>
