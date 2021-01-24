@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { withFirebase } from "../../firebase/index";
 import { withRouter } from 'react-router-dom';
-// import { AuthUserContext } from "../../session/index";
-// import { db } from "../../firebase";
 import history from "../History";
+import "./passwordforget.css";
 
 const PasswordForgetPage = () => (
 	<div>
@@ -25,7 +24,8 @@ class PasswordForgetFormBase extends Component {
 
 	onEmailChange = e => {
 		this.setState({
-			email: e.target.value
+			email: e.target.value,
+			error:null
 		})
 	}
 
@@ -42,6 +42,13 @@ class PasswordForgetFormBase extends Component {
 				})
 	}
 
+	//to prevent memory leaks
+	componentWillUnmount() {
+		this.setState = (state, cb) => {
+			return;
+		}
+	}
+
 	render() {
 		const { email, error } = this.state
 		const isInvalid = email === ""
@@ -49,9 +56,9 @@ class PasswordForgetFormBase extends Component {
 		return(
 			<div className="register__container">  
 				<p id="brand__name">Sauceflow</p>
-				<div className="register__body password__reset">
+				<div className="register__body password__forget">
 					<div className="form__heading">
-						<p>Get new password</p>
+						<p>Get New password</p>
 					</div>
 						<div className="form__container">
 								<div className="email__container">
@@ -60,9 +67,9 @@ class PasswordForgetFormBase extends Component {
 										<input onChange={this.onEmailChange} value={email} type="email" name="email" className="email"/>
 									</div>
 								</div>
+								{ error && <p className="signup__error">{ error.message }</p> }
 								<div className="submit__container">
-									{ error && <p className="signup__error">{ error.message }</p> }
-									<button disabled={isInvalid} onClick={this.submitResetPassword} type="submit" className="button">Reset Password</button>
+									<button disabled={isInvalid} onClick={this.submitResetPassword} type="submit" className="button">New Password</button>
 								</div>
 						</div>
 				</div>
