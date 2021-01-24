@@ -56,7 +56,7 @@ class AgentList extends Component {
 				}
 			}
 			this.props.companyID(companyId) //send it out to be used when adding new agents to the company
-			this.unsubscribe = companyRef.doc(companyId).collection('users').onSnapshot(snapshot => (
+			this.unsubscribe = companyRef.doc(companyId).collection('users').orderBy('role', 'desc').onSnapshot(snapshot => (
 			this.setState({
 					team: snapshot.docs.map(obj => {
 						return obj.data()
