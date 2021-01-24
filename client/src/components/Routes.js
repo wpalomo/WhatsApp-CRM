@@ -6,12 +6,13 @@ import history from "./History";
 import HomePage from "./HomePage/HomePage";
 import SignUpPage from "./Register/Register";
 import PasswordResetPage from "./PasswordReset/index";
+import PasswordForgetPage from "./PasswordForget/index";
 import Admin from "./Admin/Admin"; 
 import SignInPage from "./Login";
 import AgentPage from "./User"; 
 //import ProtectedRoute from "./ProtectedRoute";
 
-//OLD DATA BELOW >> SCROLL DOWN
+//OLD DATA BELOW >> SCROLL DOWN 
 const Routes = () => { 
 	return(
 		<Router history={history}>
@@ -21,6 +22,7 @@ const Routes = () => {
 				<Route path="/admin" component={Admin}/>
 				<Route path="/register" component={SignUpPage}/>
 				<Route path="/passwordReset" component={PasswordResetPage}/>
+				<Route path="/passwordForget" component={PasswordForgetPage}/>
 				<Route path="/customers" component={AgentPage}/>
 			</Switch>
 		</Router>  
