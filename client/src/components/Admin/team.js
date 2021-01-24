@@ -5,7 +5,7 @@ export const team = [
 		email: 'tunde@gmail.com',
 		loggedin: '',
 		status: ''
-	},
+	}, 
 	{
 		name: 'Jomi Oni',
 		role: 'Agent',

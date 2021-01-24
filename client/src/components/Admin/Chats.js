@@ -1,15 +1,17 @@
 import React, { Component } from "react";
-import { team, customers, chats } from "./team";
+import { customers, chats } from "./team";
 import "./styles/agents.css";
+import { db } from "../../firebase";
 
 class Chats extends Component {
 
-	constructor() {
-		super() 
+	constructor(props) {
+		super(props) 
 		this.state = {
-			agentList: [],
+			agentList: [], 
 			customerList: [],
-			chatHistory:[]
+			chatHistory:[],
+			adminUser: this.props.authUser ? this.props.authUser.uid : this.props.authUser
 		}
 	}
 
@@ -94,17 +96,60 @@ class Chats extends Component {
 		})
 	}
 
+	getUsers = async () => {
+		let companyRef = db.collection('companies');
+		let adminRef = db.collection('admins');
+		const { adminUser } = this.state
+		let adminID = adminUser
+		if (adminID) {
+			let snapshot = await adminRef.where('adminId', '==', adminID).get()
+			let companyName; 
+			if (!snapshot.empty) {
+				snapshot.forEach(doc => { 
+					companyName = doc.data().company
+				})
+			}
+			let companyId; 
+			if (companyName) {
+				let companySnapshot = await companyRef.where('name', '==', companyName).get()
+				if (!companySnapshot.empty) {
+					companySnapshot.forEach(doc => {
+						companyId = doc.id
+					})
+				}
+			}
+			
+			this.unsubscribe = companyRef.doc(companyId).collection('users').where('role', '==', 'Agent').onSnapshot(snapshot => (
+			this.setState({
+					agentList: snapshot.docs.map(obj => {
+						return obj.data()
+					})
+				})
+			))
+		}
+	} 
+
 	componentDidMount() {
-		let agents = team.filter(obj => (obj.role === 'Agent' && obj.status === 'active'))
-		this.setState({
-			agentList: agents
-		})
+		this.getUsers()
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.authUser !== this.props.authUser) {
+			if (this.props.authUser) {
+				this.setState({
+					adminUser: this.props.authUser.uid
+				}, () => {
+					this.getUsers()
+				})
+			}
+		}
 	}
 
 	
 
 	render() {
 		const { agentList, customerList, chatHistory } = this.state
+		
 		return(
 			<div className="agents__container">
 					<div className="agents__top__row">

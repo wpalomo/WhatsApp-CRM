@@ -28,7 +28,7 @@ class AgentList extends Component {
 		super(props)
 		this.state = {
 			team: [],
-			adminUser: this.props.authUser ? this.props.authUser.uid : this.props.authUser //if the auth user is not null, get the uid otherwise return the default null authuser
+			adminUser: this.props.authUser ? this.props.authUser.uid : this.props.authUser, //if the auth user is not null, get the uid otherwise return the default null authuser
 		}
 	}
 
@@ -65,7 +65,7 @@ class AgentList extends Component {
 			))
 		}
 	} 
-
+ 
 	componentDidMount() {
 		this.getUsers()
 	}
@@ -92,6 +92,7 @@ class AgentList extends Component {
 	render() {
 		const { classes } = this.props;
 		const { team } = this.state;
+		
 		return(
 			<Paper className={classes.root}>
 				<TableContainer className={classes.container}>

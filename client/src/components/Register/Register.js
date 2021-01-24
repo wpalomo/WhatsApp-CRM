@@ -65,7 +65,7 @@ class RegisterFormBase extends Component {
 		this.setState({
 			company: e.target.value
 		})
-	}
+	} 
 
 	submitRegister = () => {
 		const { name, email, password, company } = this.state

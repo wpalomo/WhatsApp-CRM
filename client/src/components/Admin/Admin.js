@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect, Switch, Route } from 'react-router-dom';
+import { AuthUserContext } from "../../session/index";
 import Chats from "./Chats";
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
@@ -15,7 +16,7 @@ class Admin extends Component {
 	constructor() {
 		super()
 		this.state = {
-			sidebarOpen: false
+			sidebarOpen: false,
 		}
 	}
 
@@ -45,7 +46,9 @@ class Admin extends Component {
 						</Route>
 						<Route path="/admin/chats">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
-							<Chats />
+							<AuthUserContext.Consumer>
+								{ authUser => <Chats authUser={authUser}/>}
+							</AuthUserContext.Consumer>
 							<Sidebar sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/agents">
@@ -58,9 +61,9 @@ class Admin extends Component {
 							<Subscription />
 							<Sidebar sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
-							<Redirect from="/admin" to="/admin/agents" exact/>
+						<Redirect from="/admin" to="/admin/agents" exact/>
 					</Switch>
-				</div>
+				</div> 
 			</div>
 		)
  	}

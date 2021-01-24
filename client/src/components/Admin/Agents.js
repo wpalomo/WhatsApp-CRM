@@ -45,7 +45,7 @@ class Agents extends Component {
 					<div onClick={this.showModal} className="add__agent">
 						<button>
 							<div>+ Add</div>
-						</button>  
+						</button>   
 					</div>
 					<AddAgentModal companyid={companyid} show={this.state.show} closeModal={this.closeOpenModal}/> 
 				</div>
