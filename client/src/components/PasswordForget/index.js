@@ -12,7 +12,8 @@ const PasswordForgetPage = () => (
 
 const initialState = {
 	email:'',
-	error: null
+	error: null,
+	success: null,
 }
 
 class PasswordForgetFormBase extends Component {
@@ -34,8 +35,12 @@ class PasswordForgetFormBase extends Component {
 		const { email } = this.state
 		this.props.firebase.doPasswordReset(email)
 				.then(() => {
-					history.push('/login')
-					this.setState({ ...initialState })
+					// this.setState({ ...initialState })
+					this.setState({ 
+						success: "Success!!...please check your email.",
+						email: "" 
+					})
+					//history.push('/login') //this should run after like 5 secs
 				})
 				.catch(error => {
 					this.setState({ error })
@@ -50,7 +55,7 @@ class PasswordForgetFormBase extends Component {
 	}
 
 	render() {
-		const { email, error } = this.state
+		const { email, error, success } = this.state
 		const isInvalid = email === ""
 		
 		return(
@@ -70,6 +75,7 @@ class PasswordForgetFormBase extends Component {
 								{ error && <p className="signup__error">{ error.message }</p> }
 								<div className="submit__container">
 									<button disabled={isInvalid} onClick={this.submitResetPassword} type="submit" className="button">New Password</button>
+								{ success && <p className="signup__success">{ success }</p> }
 								</div>
 						</div>
 				</div>
