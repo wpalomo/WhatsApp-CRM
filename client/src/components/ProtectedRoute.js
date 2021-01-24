@@ -10,4 +10,4 @@ const ProtectedRoute = ({ component }) => {
 	return <Redirect to={{ pathname: '/login' }}/>
 }
 
-export default ProtectedRoute;
+export default ProtectedRoute; 
