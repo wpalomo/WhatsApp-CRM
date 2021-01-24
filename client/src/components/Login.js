@@ -41,31 +41,6 @@ class LoginFormBase extends Component {
 		})
 	}
 
-	// onSubmitSignin =  e => {
-	// 	e.preventDefault()
-	// 	const { signinUsername } = this.state;
-	// 	const agentsRef = db.collection('agents')
-	// 	//get the admins collection and check where the signin email is the saved email. if it does not exist, it's an agent
-	// 	//if true, its an admin
-
-	// 	//- change route to user if auth is true
-	// 	//history.push('/customers')  or (/admin)
-	// 	sessionStorage.setItem('aun', signinUsername)
-	// 	//save the username 
-	// 	agentsRef
-	// 		.get()
-	// 		.then(snapshot => {
-	// 			let loggedIn = snapshot.docs.map(doc => {
-	// 				return {id:doc.id, data:doc.data()}
-	// 			}).filter(obj => (obj.data.loggedin === 'yes' && obj.data.agentname === signinUsername))
-	// 			if(loggedIn) {
-	// 				let user = loggedIn[0].id
-	// 				sessionStorage.setItem('aid', user)
-	// 				history.push('/customers') 
-	// 			}
-	// 		})
-		
-
 	onSubmitSignin =  e => {
 		e.preventDefault()
 		const { firebase } = this.props
@@ -114,6 +89,10 @@ class LoginFormBase extends Component {
 				})
 	}
 
+	getNewPassword = () => {
+		history.push('/passwordForget')
+	}
+
 	//to prevent memory leaks
 	componentWillUnmount() {
 		this.setState = (state, cb) => {
@@ -145,8 +124,8 @@ class LoginFormBase extends Component {
 								<input disabled={isInvalid} type="submit" value="Login" onClick={this.onSubmitSignin}/>
 							</div>
 						</form>
-						<div className="link">
-							<div>Forgot Password</div>
+						<div className="forgot__password">
+							<div onClick={this.getNewPassword}>Forgot Password</div>
 						</div>
 					</div>
 				</div>

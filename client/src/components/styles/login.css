@@ -6,7 +6,7 @@
  	place-items: center;
 }
 
-.signin__container {
+.signin__container { 
  	text-align: center;
  	position: relative;
  	border-radius: 10px;
@@ -68,5 +68,19 @@
 
 .error__message {
 	color: red;
+}
+
+.forgot__password {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.forgot__password > div {
+	padding: 2px;
+}
+
+.forgot__password > div:hover {
+	cursor: pointer;
 }
 
