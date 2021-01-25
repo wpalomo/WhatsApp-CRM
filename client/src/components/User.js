@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { Redirect, Switch, Route } from 'react-router-dom';
 import { SessionDataContext } from "../encrypt/index";
 import { withRouter } from 'react-router-dom';
-import { AuthUserContext } from "../session/index";
+import { AuthUserContext, withAuthorization } from "../session/index";
 import LeftBar from "./LeftSideBar/LeftBar";
 import ExpandedSingleChat from "./ExpandedSingleChat";
 import './styles/user.css';
-
 import { db } from '../firebase'
 
 //embed contexts
@@ -14,11 +13,11 @@ const AgentPage = () => (
 	<div>
 		<AuthUserContext.Consumer>
 			{ (authUser) => (
-				<SessionDataContext.Consumer>{(secret) =>  <CustomerList secret={secret} authUser={authUser}/> }</SessionDataContext.Consumer>
+				<SessionDataContext.Consumer>{ (secret) =>  <CustomerList secret={secret} authUser={authUser}/> }</SessionDataContext.Consumer>
 			)}
 		</AuthUserContext.Consumer>
 	</div>
-)
+) 
   
 class UserBase extends Component {
 
@@ -93,7 +92,6 @@ class UserBase extends Component {
 	
 	render() {
 		const { allChats, selectedCustomer, agentID, companyid } = this.state
-		
 		return (
 			<div className="app__body">
 				<Switch>
@@ -113,7 +111,12 @@ class UserBase extends Component {
 	} 
 }
 
-const CustomerList = withRouter(UserBase);
+const condition = authUser => authUser != null 
+//condition is a function (which was predefined as an argument in 
+//private/withAuthorization.js) and it checks if the authUser is not null
+//if it is null, it will redirect to the login page
+
+const CustomerList = withAuthorization(condition)(withRouter(UserBase));
 
 export default AgentPage;
 
