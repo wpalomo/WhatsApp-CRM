@@ -10,6 +10,9 @@ import { db } from '../../firebase';
 const SingleClient = ({ dbObj, id, currentCustomer, companyid }) => {
 	
 	const { name } = dbObj //gotten from props
+	
+	//generate random string
+	//let randomString;
 
 	//state
 	const [customerMessage, setCustomerMessage] = useState([])

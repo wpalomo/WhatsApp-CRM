@@ -4,7 +4,8 @@ import { SessionDataContext } from "../encrypt/index";
 import { withRouter } from 'react-router-dom';
 import { AuthUserContext, withAuthorization } from "../session/index";
 import LeftBar from "./LeftSideBar/LeftBar";
-import ExpandedSingleChat from "./ExpandedSingleChat";
+// import ExpandedSingleChat from "./ExpandedSingleChat";
+import FullUserArea from "./FullUserArea";
 import './styles/user.css';
 import { db } from '../firebase'
 
@@ -99,10 +100,13 @@ class UserBase extends Component {
 						<LeftBar getCustomerData={this.getCustomer} companyid={companyid} customerList={allChats}/>
 					</Route>
 					<Route path="/customers/:customerId">
-						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
-						<SessionDataContext.Consumer>
-							{ secret => <ExpandedSingleChat secret={secret} agentUid={agentID} selectedCustomer={selectedCustomer}/> }
-						</SessionDataContext.Consumer>
+						<FullUserArea allChats={allChats} agentID={agentID} selectedCustomer={selectedCustomer}/>
+						{
+							// <LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
+							// 					<SessionDataContext.Consumer>
+							// 						{ secret => <ExpandedSingleChat secret={secret} agentUid={agentID} selectedCustomer={selectedCustomer}/> }
+							// 					</SessionDataContext.Consumer>
+											}
 					</Route> 
 					<Redirect from="/customers" to="/customers/all" exact/>
 				</Switch> 
