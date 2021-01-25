@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import { CSSTransition } from "react-transition-group";
+//import { withAuthorization } from "../../session/index";
 import "./styles/modal.css";
 
 class AddAgentModal extends Component {
 
-	constructor() {
+	constructor() { 
 		super()
 		this.state = {
 			newAgentName:"",
@@ -101,4 +102,10 @@ class AddAgentModal extends Component {
 	}
 }
 
+//const condition = authUser => authUser != null 
+//condition is a function (which was predefined as an argument in 
+//private/withAuthorization.js) and it checks if the authUser is not null
+//if it is null, it will redirect to the login page
+
+// export default withAuthorization(condition)(AddAgentModal);
 export default AddAgentModal;

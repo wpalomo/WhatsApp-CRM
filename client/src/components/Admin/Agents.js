@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import AddAgentModal from "./AddAgent";
+//import { AuthUserContext, withAuthorization } from "../../session/index";
 import { AuthUserContext } from "../../session/index";
 import AgentList from "./AgentList";
 import "./styles/agents.css";
@@ -60,5 +61,11 @@ class Agents extends Component {
 		)
 	} 
 }
+
+//const condition = authUser => authUser != null 
+//condition is a function (which was predefined as an argument in 
+//private/withAuthorization.js) and it checks if the authUser is not null
+//if it is null, it will redirect to the login page
  
 export default Agents;
+//export default withAuthorization(condition)(Agents);

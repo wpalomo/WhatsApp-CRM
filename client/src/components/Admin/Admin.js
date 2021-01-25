@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { Redirect, Switch, Route } from 'react-router-dom';
-import { AuthUserContext } from "../../session/index";
+import { AuthUserContext, withAuthorization } from "../../session/index";
 import Chats from "./Chats";
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import Main from "./Main";
 import Agents from "./Agents";
-import Subscription from "./Subscription";
+import Subscription from "./Subscription"; 
 import "../styles/admin.css";
-
-//https://www.fontawesomecheatsheet.com/
 
 class Admin extends Component {
 
@@ -70,5 +68,9 @@ class Admin extends Component {
 	
 }
 
+const condition = authUser => authUser != null 
+//condition is a function (which was predefined as an argument in 
+//private/withAuthorization.js) and it checks if the authUser is not null
+//if it is null, it will redirect to the login page
 
-export default Admin;
+export default withAuthorization(condition)(Admin);

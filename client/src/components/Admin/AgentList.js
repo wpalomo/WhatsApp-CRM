@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withStyles } from '@material-ui/core/styles';
 import { withFirebase } from "../../firebase/index";
+//import { withAuthorization } from "../../session/index";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -124,4 +125,10 @@ class AgentList extends Component {
 	}
 }
 
+//const condition = authUser => authUser != null 
+//condition is a function (which was predefined as an argument in 
+//private/withAuthorization.js) and it checks if the authUser is not null
+//if it is null, it will redirect to the login page
+
+//export default withAuthorization(condition)(withFirebase(withStyles(styles)(AgentList)));
 export default withFirebase(withStyles(styles)(AgentList));
