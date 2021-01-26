@@ -15,11 +15,13 @@ class Chats extends Component {
 			adminUser: this.props.authUser ? this.props.authUser.uid : this.props.authUser,
 			company:"",
 			currentAgent:"",
-			showLoading: false
+			showLoading: false,
+			customerLoading: false
 		}
 	}
 
 	setActiveAgent = e => {
+		this.setState({ customerLoading: true })
 		const { agentList } = this.state
 		let currentClicked = e.target.id
 		let singleActive = agentList.map(obj => {
@@ -63,6 +65,7 @@ class Chats extends Component {
 								return obj.data()
 							})
 						}, () => {
+							this.setState({ customerLoading: false })
 							let selectedCustomer = this.state.customerList.filter(obj => obj.active === true)
 							if (selectedCustomer.length === 0) {
 								this.setState({
@@ -74,7 +77,8 @@ class Chats extends Component {
 				} else {
 					this.setState({
 						customerList: [],
-						chatHistory:[]
+						chatHistory:[],
+						customerLoading: false
 					})
 				}
 			})
@@ -200,7 +204,7 @@ class Chats extends Component {
 	
 
 	render() {
-		const { agentList, customerList, chatHistory, showLoading } = this.state
+		const { agentList, customerList, chatHistory, showLoading, customerLoading } = this.state
 		
 		return(
 			<div className="agents__container">
@@ -229,6 +233,7 @@ class Chats extends Component {
 									<p>Customer</p>
 								</div>
 								<div className="agent__customers__body">
+									<div>{  customerLoading && <div className="agents__loader"><Loader type="Circles" color="#4FCE5D" height={40} width={40}/></div> }</div>
 									{
 										customerList.map((obj, idx) => (
 											<p onClick={this.setActiveNum} key={idx} id={obj.name} className={obj.active ? "active__num" : ""}>{ obj.name }</p>
