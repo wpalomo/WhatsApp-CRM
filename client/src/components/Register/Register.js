@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withFirebase } from "../../firebase/index";
-import { withRouter } from 'react-router-dom';
 import history from "../History";
 import { db } from "../../firebase";
 import '../styles/register.css';
@@ -159,7 +158,7 @@ class RegisterFormBase extends Component {
 	}
 }
 
-const Register = withRouter(withFirebase(RegisterFormBase))
+const Register = withFirebase(RegisterFormBase)
 
 export default SignUpPage; 
 

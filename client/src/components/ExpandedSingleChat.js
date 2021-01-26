@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withFirebase } from "../firebase/index";
+import { withAuthorization } from "../session/index";
 import history from "./History";
 import { Avatar, IconButton, Button } from "@material-ui/core";
 import { AttachFile } from "@material-ui/icons";
@@ -15,7 +16,7 @@ class ExpandedSingleChat extends Component {
 
 	constructor(props) {
 		super(props)
-		this.state = { 
+		this.state = {  
 			agentMessage:"", 
 			agentUid: this.props.agentUid,
 			customerNum: Number(this.props.secret.decryption(sessionStorage.getItem('iiI'))),
@@ -211,4 +212,9 @@ class ExpandedSingleChat extends Component {
 	}
 }
 
-export default withFirebase(ExpandedSingleChat);
+const condition = authUser => authUser != null 
+//condition is a function (which was predefined as an argument in 
+//private/withAuthorization.js) and it checks if the authUser is not null
+//if it is null, it will redirect to the login page
+
+export default withAuthorization(condition)(withFirebase(ExpandedSingleChat));

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withFirebase } from "../firebase/index";
 import { SessionDataContext } from "../encrypt/index";
-import { withRouter } from 'react-router-dom';
 import history from "./History";
 import "./styles/login.css"
 import whatsapp from './media/whatsapp.png';
@@ -134,7 +133,7 @@ class LoginFormBase extends Component {
 	}
 }
 
-const SignIn = withRouter(withFirebase(LoginFormBase))
+const SignIn = withFirebase(LoginFormBase)
 
 export default SignInPage;
 

@@ -55,7 +55,7 @@ const SingleClient = ({ dbObj, id, currentCustomer, companyid }) => {
 	}
 	
 	return(
-		<Link to={`/customers/${id}`}>
+		<Link to={`/customers/${'xyz'}`}>
 			<div className="singleclient" onClick={getCustomer}>
 				<Avatar src=""/>
 				<div className="singleclient__info">

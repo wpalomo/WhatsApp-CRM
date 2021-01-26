@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withFirebase } from "../../firebase/index";
-import { withRouter } from 'react-router-dom';
 import { AuthUserContext } from "../../session/index";
 import { db } from "../../firebase";
 import history from "../History";
@@ -114,7 +113,7 @@ class PasswordResetFormBase extends Component {
 	}
 }
 
-const PasswordReset = withRouter(withFirebase(PasswordResetFormBase))
+const PasswordReset = withFirebase(PasswordResetFormBase);
 
 export default PasswordResetPage;
 

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withFirebase } from "../../firebase/index";
-import { withRouter } from 'react-router-dom';
 import history from "../History";
 import "./passwordforget.css";
 
@@ -35,12 +34,12 @@ class PasswordForgetFormBase extends Component {
 		const { email } = this.state
 		this.props.firebase.doPasswordReset(email)
 				.then(() => {
-					// this.setState({ ...initialState })
 					this.setState({ 
 						success: "Success!!...please check your email.",
 						email: "" 
 					})
-					//history.push('/login') //this should run after like 5 secs
+					//this should run after like 5 secs
+					setTimeout(() => history.push('/login'), 2)
 				})
 				.catch(error => {
 					this.setState({ error })
@@ -84,7 +83,7 @@ class PasswordForgetFormBase extends Component {
 	}
 }
 
-const PasswordForgetForm = withRouter(withFirebase(PasswordForgetFormBase))
+const PasswordForgetForm = withFirebase(PasswordForgetFormBase)
 
 export default PasswordForgetPage;
 
