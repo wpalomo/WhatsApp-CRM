@@ -82,7 +82,7 @@ class AddAgentModal extends Component {
 							<h4 className="aa_modal__title">Invite Agents</h4>
 						</div>
 						<div className="aa_modal__body">
-							{ showLoading && <Loader type="Circles" color="#4FCE5D" height={30} width={30}/> }
+							{  showLoading && <div className="loader"><Loader type="Circles" color="#4FCE5D" height={50} width={50}/></div> }	
 							<div className="aa_modal__name">
 								<label className="aa__agent__email" htmlFor="aa__agent__email">Name</label>
 								<div className="aa__email__container">

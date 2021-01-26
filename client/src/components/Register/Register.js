@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { withFirebase } from "../../firebase/index";
 import history from "../History";
 import { db } from "../../firebase";
@@ -32,7 +34,8 @@ const initialState = {
 			email: '',
 			password: '',
 			company:'',
-			error: null
+			error: null,
+			showLoading: false,
 		}
 
 class RegisterFormBase extends Component {
@@ -67,6 +70,7 @@ class RegisterFormBase extends Component {
 	} 
 
 	submitRegister = () => {
+		this.setState({ showLoading: true })
 		const { name, email, password, company } = this.state
 		let companyName = company.replace(/\s+/g, "__").toLowerCase() //replace all spaces with underscore
 		let adminRef = db.collection('admins');
@@ -92,7 +96,7 @@ class RegisterFormBase extends Component {
 
 						//add to the users collection
 						companyRef.doc(newCompanyId).collection('users').add({ name:name, role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
-
+						this.setState({ showLoading: false })
 						//go to the admin route 
 						history.push("/admin")
 					} catch (err) {
@@ -101,7 +105,7 @@ class RegisterFormBase extends Component {
 					this.setState({ ...initialState })
 				})
 				.catch(error => {
-					this.setState({ error })
+					this.setState({ showLoading:false, error })
 				})
 	}
 
@@ -113,11 +117,14 @@ class RegisterFormBase extends Component {
 	}
 
 	render() {
-		const { name, email, password, company, error } = this.state
+		const { name, email, password, company, error, showLoading } = this.state
 		const isInvalid = name === "" || email === "" || password === "" || company === ""
 		return ( 
 			<div className="register__container">  
-				<p id="brand__name">Sauceflow</p>
+				<div className="register__midway">
+					<div className="reg_one"><p id="brand__name">Sauceflow</p></div>
+					{  showLoading && <div className="register__loader"><Loader type="Circles" color="#4FCE5D" height={50} width={50}/></div> }	
+				</div>
 				<div className="register__body">
 					<div className="form__heading">
 						<p>Register</p>

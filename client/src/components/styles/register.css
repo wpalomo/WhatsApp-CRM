@@ -63,3 +63,20 @@
 	color: red;
 }
 
+.register__midway {
+	display: flex;
+	justify-content: center;
+}
+
+.register__loader {
+	flex: 1.1;
+	display: flex;
+	justify-content: flex-start;
+}
+
+.reg_one {
+	flex: 0.9;
+	display: flex;
+	justify-content: flex-start;
+}
+
