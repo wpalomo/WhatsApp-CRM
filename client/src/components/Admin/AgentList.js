@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { withStyles } from '@material-ui/core/styles';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { withFirebase } from "../../firebase/index";
-//import { withAuthorization } from "../../session/index";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -30,11 +31,13 @@ class AgentList extends Component {
 		this.state = {
 			team: [],
 			adminUser: this.props.authUser ? this.props.authUser.uid : this.props.authUser, //if the auth user is not null, get the uid otherwise return the default null authuser
+			showLoading: false
 		}
 	}
 
   
 	getUsers = async () => {
+		this.setState({ showLoading: true })
 		let companyRef = db.collection('companies');
 		let adminRef = db.collection('admins');
 		const { adminUser } = this.state
@@ -62,6 +65,10 @@ class AgentList extends Component {
 					team: snapshot.docs.map(obj => {
 						return obj.data()
 					})
+				}, () => {
+					this.setState({
+						showLoading: false
+					})
 				})
 			))
 		}
@@ -71,7 +78,7 @@ class AgentList extends Component {
 		this.getUsers()
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevProps.authUser !== this.props.authUser) {
 			if (this.props.authUser) {
 				this.setState({
@@ -81,9 +88,13 @@ class AgentList extends Component {
 				})
 			}
 		}
+
+		// if (prevState.team.length !== this.state.team.length) {
+		// 	this.setState({ showLoading: false })
+		// }
 	}
 
-	//to prevent memory leaks
+	//to prevent memory leaks 
 	componentWillUnmount() {
 		this.setState = (state, cb) => {
 			return;
@@ -92,43 +103,42 @@ class AgentList extends Component {
 	
 	render() {
 		const { classes } = this.props;
-		const { team } = this.state;
+		const { team, showLoading } = this.state;
 		
 		return(
-			<Paper className={classes.root}>
-				<TableContainer className={classes.container}>
-					<Table stickyHeader aria-label="sticky table">
-						<TableHead>
-							<TableRow>
-								<TableCell>Name</TableCell>
-								<TableCell align="center">Role</TableCell>
-					            <TableCell align="center">Email</TableCell>
-					            <TableCell align="center">Loggedin</TableCell>
-					            <TableCell align="center">Status</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody> 
-							{ team.map(row => (
-								<TableRow key={row.name}>
-									<TableCell component="th" scope="row">{ row.name }</TableCell>
-									<TableCell align="center">{row.role}</TableCell>
-									<TableCell align="center">{row.email}</TableCell>
-						            <TableCell align="center">{row.loggedin}</TableCell>
-						            <TableCell align="center">{row.status}</TableCell>
+			<div>
+				<div>
+					{  showLoading && <div className="loader"><Loader type="Circles" color="#4FCE5D" height={50} width={50}/></div> }	
+				</div>
+				<Paper className={classes.root}>
+					<TableContainer className={classes.container}>
+						<Table stickyHeader aria-label="sticky table">
+							<TableHead>
+								<TableRow>
+									<TableCell>Name</TableCell>
+									<TableCell align="center">Role</TableCell>
+						            <TableCell align="center">Email</TableCell>
+						            <TableCell align="center">Loggedin</TableCell>
+						            <TableCell align="center">Status</TableCell>
 								</TableRow>
-							)) }
-						</TableBody>
-					</Table>
-				</TableContainer> 
-			</Paper>
+							</TableHead>
+							<TableBody> 
+								{ team.map(row => (
+									<TableRow key={row.name}>
+										<TableCell component="th" scope="row">{ row.name }</TableCell>
+										<TableCell align="center">{row.role}</TableCell>
+										<TableCell align="center">{row.email}</TableCell>
+							            <TableCell align="center">{row.loggedin}</TableCell>
+							            <TableCell align="center">{row.status}</TableCell>
+									</TableRow>
+								)) }
+							</TableBody>
+						</Table>
+					</TableContainer> 
+				</Paper>
+			</div>
 		)
 	}
 }
 
-//const condition = authUser => authUser != null 
-//condition is a function (which was predefined as an argument in 
-//private/withAuthorization.js) and it checks if the authUser is not null
-//if it is null, it will redirect to the login page
-
-//export default withAuthorization(condition)(withFirebase(withStyles(styles)(AgentList)));
 export default withFirebase(withStyles(styles)(AgentList));

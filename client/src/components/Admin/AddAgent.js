@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Loader from 'react-loader-spinner'
+import Loader from 'react-loader-spinner';
 import axios from 'axios';
 import { CSSTransition } from "react-transition-group";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./styles/modal.css";
 
 class AddAgentModal extends Component {
