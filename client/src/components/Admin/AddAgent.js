@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import Loader from 'react-loader-spinner'
 import axios from 'axios';
 import { CSSTransition } from "react-transition-group";
-//import { withAuthorization } from "../../session/index";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import "./styles/modal.css";
 
 class AddAgentModal extends Component {
@@ -12,7 +13,8 @@ class AddAgentModal extends Component {
 			newAgentName:"",
 			newAgentEmail:"",
 			showError: false,
-			errorMsg: "please enter a name and email"
+			errorMsg: "please enter a name and email",
+			showLoading: false
 		}
 	}
 
@@ -32,6 +34,7 @@ class AddAgentModal extends Component {
 
 
 	registerAgent = () => {
+		this.setState({ showLoading: true })
 		const { newAgentEmail, newAgentName } = this.state
 		const { companyid } = this.props;
 		if (newAgentName === "" || newAgentEmail === "") {
@@ -46,7 +49,8 @@ class AddAgentModal extends Component {
 				 	//clear the form and close the modal
 				 	this.setState({
 				 		newAgentName:"",
-						newAgentEmail:""
+						newAgentEmail:"",
+						showLoading: false
 				 	})
 				 	this.props.closeModal()
 				 })
@@ -54,7 +58,8 @@ class AddAgentModal extends Component {
 				 	if (err.response) {
 				 		this.setState({
 					 		errorMsg: err.response.data,
-					 		showError:true
+					 		showError:true,
+					 		showLoading: false
 					 	})
 				 	}
 				 }) 
@@ -63,7 +68,7 @@ class AddAgentModal extends Component {
 
 	render() {
 		const nodeRef = React.createRef(null)
-		const { showError, errorMsg } = this.state
+		const { showError, errorMsg, showLoading } = this.state
 		return(
 			<CSSTransition
 				in={this.props.show}
@@ -77,6 +82,7 @@ class AddAgentModal extends Component {
 							<h4 className="aa_modal__title">Invite Agents</h4>
 						</div>
 						<div className="aa_modal__body">
+							{ showLoading && <Loader type="Circles" color="#4FCE5D" height={30} width={30}/> }
 							<div className="aa_modal__name">
 								<label className="aa__agent__email" htmlFor="aa__agent__email">Name</label>
 								<div className="aa__email__container">
@@ -102,10 +108,5 @@ class AddAgentModal extends Component {
 	}
 }
 
-//const condition = authUser => authUser != null 
-//condition is a function (which was predefined as an argument in 
-//private/withAuthorization.js) and it checks if the authUser is not null
-//if it is null, it will redirect to the login page
 
-// export default withAuthorization(condition)(AddAgentModal);
 export default AddAgentModal;
