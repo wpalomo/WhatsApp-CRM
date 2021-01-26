@@ -16,7 +16,8 @@ class Chats extends Component {
 			company:"",
 			currentAgent:"",
 			showLoading: false,
-			customerLoading: false
+			customerLoading: false,
+			chatLoading: false
 		}
 	}
 
@@ -69,7 +70,8 @@ class Chats extends Component {
 							let selectedCustomer = this.state.customerList.filter(obj => obj.active === true)
 							if (selectedCustomer.length === 0) {
 								this.setState({
-									chatHistory:[]
+									chatHistory:[],
+									chatLoading: false
 								})
 							}
 						})
@@ -78,7 +80,8 @@ class Chats extends Component {
 					this.setState({
 						customerList: [],
 						chatHistory:[],
-						customerLoading: false
+						customerLoading: false,
+						chatLoading: false
 					})
 				}
 			})
@@ -87,6 +90,7 @@ class Chats extends Component {
 
 
 	setActiveNum = e => {
+		this.setState({ chatLoading: true })
 		const { customerList } = this.state
 		let currentClicked = Number(e.target.id)
 		let singleActive = customerList.map(obj => {
@@ -133,11 +137,14 @@ class Chats extends Component {
 							chatHistory: snapshot.docs.map(doc => {
 								return doc.data()
 							})
+						}, () => {
+							this.setState({ chatLoading: false })
 						})
 					))
 				} else {
 					this.setState({
-						chatHistory: []
+						chatHistory: [],
+						chatLoading: false
 					})
 				}
 			})		
@@ -204,7 +211,7 @@ class Chats extends Component {
 	
 
 	render() {
-		const { agentList, customerList, chatHistory, showLoading, customerLoading } = this.state
+		const { agentList, customerList, chatHistory, showLoading, customerLoading, chatLoading } = this.state
 		
 		return(
 			<div className="agents__container">
@@ -246,6 +253,7 @@ class Chats extends Component {
 									<p>Chat History</p>
 								</div>
 								<div className="agent__chat__body">
+									<div>{  chatLoading && <div className="chats__loader"><Loader type="Circles" color="#4FCE5D" height={60} width={60}/></div> }</div>
 									{
 										chatHistory.map((obj, idx) => (
 											<p key={idx} className={`chat__message ${obj.user === 'agent' && "chat__receiver"}`}>
