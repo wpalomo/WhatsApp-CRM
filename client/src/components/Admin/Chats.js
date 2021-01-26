@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./styles/agents.css";
 import { db } from "../../firebase";
 
@@ -12,7 +14,8 @@ class Chats extends Component {
 			chatHistory:[],
 			adminUser: this.props.authUser ? this.props.authUser.uid : this.props.authUser,
 			company:"",
-			currentAgent:""
+			currentAgent:"",
+			showLoading: false
 		}
 	}
 
@@ -138,6 +141,7 @@ class Chats extends Component {
 	}
 
 	getUsers = async () => {
+		this.setState({ showLoading: true })
 		let companyRef = db.collection('companies');
 		let adminRef = db.collection('admins');
 		const { adminUser } = this.state
@@ -168,6 +172,10 @@ class Chats extends Component {
 					agentList: snapshot.docs.map(obj => {
 						return obj.data()
 					})
+				}, () => {
+					this.setState({
+						showLoading: false
+					})
 				})
 			))
 		}
@@ -192,7 +200,7 @@ class Chats extends Component {
 	
 
 	render() {
-		const { agentList, customerList, chatHistory } = this.state
+		const { agentList, customerList, chatHistory, showLoading } = this.state
 		
 		return(
 			<div className="agents__container">
@@ -208,6 +216,7 @@ class Chats extends Component {
 									<p>Agents</p>
 								</div>
 								<div className="agents__area__body">
+									<div>{  showLoading && <div className="agents__loader"><Loader type="Circles" color="#4FCE5D" height={40} width={40}/></div> }</div>
 									{
 										agentList.map((obj, idx) => (
 											<p onClick={this.setActiveAgent} key = {idx} id={obj.name} className={obj.activeAgent ? "active__agent" : ""}>{ obj.name }</p>

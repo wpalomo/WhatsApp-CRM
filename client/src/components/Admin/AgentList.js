@@ -88,10 +88,6 @@ class AgentList extends Component {
 				})
 			}
 		}
-
-		// if (prevState.team.length !== this.state.team.length) {
-		// 	this.setState({ showLoading: false })
-		// }
 	}
 
 	//to prevent memory leaks 
