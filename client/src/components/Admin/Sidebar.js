@@ -1,15 +1,38 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { withFirebase } from "../../firebase/index";
+import { AuthUserContext } from "../../session/index";
 import history from "../History";
 import "./styles/sidebar.css";
+import { db } from "../../firebase";
 
 const Sidebar = ({ sidebarOpen, closeSideBar, firebase }) => {
+
+	const [companyName, setCompanyName] = useState("")
+
+	let adminUser = useContext(AuthUserContext)
+
+	//get the company name
+	useEffect(() => {
+		const getCompany = async () => {
+			if (adminUser) {
+				let adminRef = db.collection('admins');
+				let snapshot = await adminRef.where('adminId', '==', adminUser.uid).get()
+				if (!snapshot.empty) {
+					snapshot.forEach(doc => {
+						let name = doc.data().company.toUpperCase();
+						setCompanyName(name)
+					})
+				}
+			}
+		}
+		getCompany();
+	}, [adminUser])
 
 	const getAgentsPage = () => {
 		history.push('/admin/agents') 
 	}
 
-	const chatsPage = () => {
+	const chatsPage = () => { 
 		history.push('/admin/chats') 
 	}
  
@@ -32,7 +55,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase }) => {
 			<div className="sidebar__title">
 				<div className="sidebar__img">
 					<img src="" alt=""/>
-					<h1>Company Name</h1>
+					<h1>{ companyName }</h1>
 				</div>
 				<i className="fa fa-times" id="sidebarIcon" onClick={closeSideBar}></i>
 			</div>
