@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import Loader from 'react-loader-spinner'
 import { withFirebase } from "../firebase/index";
 import { SessionDataContext } from "../encrypt/index";
 import history from "./History";
 import "./styles/login.css"
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import whatsapp from './media/whatsapp.png';
 import { db } from '../firebase.js';
 
@@ -17,7 +19,8 @@ const SignInPage = () => (
 const initialState = {
 	signinUsername:"",
 	signinPassword:"",
-	error: null
+	error: null,
+	showLoading: false
 } 
 
 
@@ -42,6 +45,7 @@ class LoginFormBase extends Component {
 
 	onSubmitSignin =  e => {
 		e.preventDefault()
+		this.setState({ showLoading: true }) //this is to let the user know that the page is being loaded
 		const { firebase } = this.props
 		const { signinUsername, signinPassword } = this.state
 		let adminRef = db.collection('admins');
@@ -54,8 +58,10 @@ class LoginFormBase extends Component {
 					if (snapshot.empty) {//agent
 						//get the password - if default, send to the change password page else, send to customer list
 						if (signinPassword === "password") {
+							this.setState({ showLoading: false })
 							history.push('/passwordReset')
 						} else {
+							this.setState({ showLoading: false })
 							history.push('/customers')
 							//set loggedin to Yes
 							let companyid;
@@ -78,13 +84,14 @@ class LoginFormBase extends Component {
 							sessionStorage.setItem('iii', codedUsername) 
 						}
 					} else {//admin
+						this.setState({ showLoading: false })
 						history.push('/admin') 
 					}
 					//clear the form 
 					this.setState({ ...initialState })
 				})
 				.catch(error => {
-					this.setState({ error })
+					this.setState({ showLoading: false, error })
 				})
 	}
 
@@ -100,7 +107,7 @@ class LoginFormBase extends Component {
 	}
  
 	render() {
-		const { signinUsername, signinPassword, error } = this.state
+		const { signinUsername, signinPassword, error, showLoading } = this.state
 		const isInvalid = signinUsername === "" || signinPassword === "" 
 		
 		return(
@@ -110,6 +117,7 @@ class LoginFormBase extends Component {
 				 	<div className="form-container">
 						<h1>Sauceflow</h1>
 						<form>
+							{ showLoading && <Loader type="Circles" color="#4FCE5D" height={40} width={40}/> }
 							<div className="control">
 								<label htmlFor="name">Email</label>
 								<input value={signinUsername} onChange={this.getSigninUsername} type="text" name="name" id="name" placeholder="Email address"/>
