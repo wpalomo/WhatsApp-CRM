@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
  
 app.post('/', (req, res) => {
 	res.send('/api/v0/') 
-})
+}) 
 
 
 app.listen(PORT, () => {
