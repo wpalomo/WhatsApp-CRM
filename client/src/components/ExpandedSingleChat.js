@@ -4,12 +4,18 @@ import { withAuthorization } from "../session/index";
 import history from "./History";
 import { Avatar, IconButton, Button } from "@material-ui/core";
 import { AttachFile } from "@material-ui/icons";
+import axios from 'axios';
 //import { SearchOutlined, MoreVert } from "@material-ui/icons";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
 import { db, serverTimestamp } from '../firebase';
 
 import "./styles/chat.css";
+
+//whatsapp credentials for sending message
+const instanceUrl = process.env.REACT_APP_MAYTAPI_INSTANCE_URL;
+const token = process.env.REACT_APP_MAYTAPI_TOKEN;
+const productId = process.env.REACT_APP_MAYTAPI_PRODUCT_ID;
 
 
 class ExpandedSingleChat extends Component {
@@ -112,6 +118,17 @@ class ExpandedSingleChat extends Component {
 			timestamp: serverTimestamp
 		})							  
 	}
+
+	sendMessageToWhatsapp = (body, phoneId=9662) => {
+		let url = `${instanceUrl}/${productId}/${phoneId}/sendMessage`
+		axios.post(url, body, {
+			headers: {
+				"x-maytapi-key":token
+			}
+		})
+		.then(res => console.log(res.data))
+		.catch(err => console.log('an error occurred when sending a message >>', err))
+	}
  
 	submitAgentMessage = async (e) => {
 		//send to db, pull from db and show on the screen, in the left bar, and pass to the server
@@ -134,6 +151,15 @@ class ExpandedSingleChat extends Component {
 		if (customerId) {
 			this.saveResponder(companyUid, customerNum, agentID, customerId, agentMessage, agentName, serverTimestamp)
 		}
+
+		//send to maytapi
+		let data = {
+			to_number: customerNum,
+			message: agentMessage,
+			type: "text"
+		}
+		this.sendMessageToWhatsapp(data)
+		
 		//clear the form
 		this.setState({
 			agentMessage: ""

@@ -10,7 +10,7 @@ class AddAgentModal extends Component {
 	constructor() { 
 		super()
 		this.state = {
-			newAgentName:"",
+			newAgentName:"", 
 			newAgentEmail:"",
 			showError: false,
 			errorMsg: "please enter a name and email",
@@ -60,6 +60,10 @@ class AddAgentModal extends Component {
 					 		errorMsg: err.response.data,
 					 		showError:true,
 					 		showLoading: false
+					 	}, () => {
+					 		this.setState({ 
+					 			errorMsg: 'An error occurred. Please try again'
+					 		})
 					 	})
 				 	}
 				 }) 
@@ -95,7 +99,7 @@ class AddAgentModal extends Component {
 									<input onChange={this.getAgentEmail} placeholder="Enter new agent email address" type="email" name="new_agent__email" className="new_agent__email" required/>
 								</div>	
 							</div>
-							{ showError ? <div className="bill__error"><p>{ errorMsg }</p></div> : null}					
+							{ showError ? <div className="bill__error"><p>{ errorMsg }</p></div> : null }					
 						</div>
 						<div className="aa__modal__footer add__agent">
 							<button  className="aa__cancel" onClick={this.props.closeModal}>Cancel</button>

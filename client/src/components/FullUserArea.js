@@ -13,7 +13,7 @@ class FullUserArea extends Component {
 				<SessionDataContext.Consumer>
 					{ secret => <ExpandedSingleChat secret={secret} agentUid={agentID} selectedCustomer={selectedCustomer}/> }
 				</SessionDataContext.Consumer>
-			</div>
+			</div> 
 		)
 	}
 }

@@ -8,7 +8,7 @@ const { adminApp, db } = require("../../../../config/config");
 let transport = nodemailer.createTransport({
   host: "smtp.mailtrap.io",
   port: 2525,
-  auth: {
+  auth: { 
     user: process.env.MAILTRAP_USER,
     pass: process.env.MAILTRAP_PASSWORD 
   }
@@ -42,7 +42,7 @@ router.post('/', (req, res) => {
 	let { newAgentEmail, newAgentName, companyid } = req.body.newUserData
 	let companyRef = db.collection('companies').doc(companyid).collection('users');
 	adminApp
-		.auth()
+		.auth() 
 		.createUser({ 
 			email: newAgentEmail,
 			password: 'password' //default password

@@ -208,7 +208,12 @@ class Chats extends Component {
 		}
 	}
 
-	
+	//to prevent memory leaks
+	componentWillUnmount() {
+		this.setState = (state, cb) => {
+			return;
+		}
+	}
 
 	render() {
 		const { agentList, customerList, chatHistory, showLoading, customerLoading, chatLoading } = this.state

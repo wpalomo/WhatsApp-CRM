@@ -25,7 +25,7 @@ class Agents extends Component {
 		this.setState({
 			show: !this.state.show
 		})
-	}
+	} 
 
 	sendCoyID = value => {
 		this.setState({
@@ -44,7 +44,7 @@ class Agents extends Component {
 					</div> 
 					<div onClick={this.showModal} className="add__agent">
 						<button>
-							<div>Add Agent</div>
+							<div>Add Agent</div> 
 						</button>   
 					</div>
 					<AddAgentModal companyid={companyid} show={this.state.show} closeModal={this.closeOpenModal}/> 

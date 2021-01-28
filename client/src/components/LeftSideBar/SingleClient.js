@@ -48,7 +48,7 @@ const SingleClient = ({ dbObj, id, currentCustomer, companyid }) => {
 		sessionStorage.setItem('iiI', codedcustomerName)
 
 		let codedcustomerID = secret.encryption(id)
-		sessionStorage.setItem('iio', codedcustomerID)
+		sessionStorage.setItem('iio', codedcustomerID) 
 	}
 	
 	return(

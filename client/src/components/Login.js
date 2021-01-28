@@ -69,7 +69,7 @@ class LoginFormBase extends Component {
 								let allAgentSnapshot = await allAgentsRef.where('agentId', '==', currentUser).get()
 								if (!allAgentSnapshot.empty) {
 									allAgentSnapshot.forEach(doc => {
-										companyid = doc.data().companyId
+										companyid = doc.data().companyId 
 									})
 								}
 							}
@@ -82,7 +82,7 @@ class LoginFormBase extends Component {
 							//encrypt the signinusername before setting to sessionStorage
 							let codedUsername = this.props.secret.encryption(signinUsername)
 							sessionStorage.setItem('iii', codedUsername) 
-						}
+						} 
 					} else {//admin
 						this.setState({ showLoading: false })
 						history.push('/admin') 

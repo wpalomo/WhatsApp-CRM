@@ -4,19 +4,12 @@ const bodyParser = require("body-parser");
 require('dotenv').config()
 
 const { IndexRouter } = require('./controllers/v0/index.router');
-const { setupNetwork, sendMessage, addPhoneNumber } = require('./controllers/v0/messages/routes/message.router');
+const { setupNetwork, addPhoneNumber } = require('./controllers/v0/messages/routes/message.router');
 
 const PORT = process.env.PORT || 4000;
 
 const app = express()
-
-let data = {
-	to_number: "2348152258413",
-	message: "Good maureen",
-	type: "text"
-}
-
-// sendMessage(data)
+ 
 //addPhoneNumber('2348152258413')
 
 app.use(bodyParser.json());
@@ -34,6 +27,6 @@ app.post('/', (req, res) => {
 
 app.listen(PORT, async () => {
 	console.log(`The server is running on port ${ PORT }`)
-	//await setupNetwork() 
+	await setupNetwork() 
 });
  

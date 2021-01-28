@@ -15,7 +15,7 @@ const AllClientArea = ({ customerList, clickedCustomer, companyid }) => {
 				customerList.map(obj => (<SingleClient companyid={companyid} currentCustomer={currentCustomer} key={obj.id} id={obj.id} dbObj={obj.data}/>)) 
 			}
 		</div> 
-	) 
+	)  
 }  
 
 export default AllClientArea;

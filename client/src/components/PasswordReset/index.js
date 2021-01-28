@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Loader from 'react-loader-spinner';
 import { withFirebase } from "../../firebase/index";
 import { AuthUserContext } from "../../session/index";
+import { SessionDataContext } from "../../encrypt/index";
 import { db } from "../../firebase";
 import history from "../History";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -10,7 +11,9 @@ import "./passwordreset.css";
 const PasswordResetPage = () => (
 	<div>
 		<AuthUserContext.Consumer>
-			{ authUser => <PasswordReset authUser={authUser}/> }
+			{(authUser) => (
+				<SessionDataContext.Consumer>{ (secret) => <PasswordReset secret={secret} authUser={authUser}/> }</SessionDataContext.Consumer>
+			)}
 		</AuthUserContext.Consumer>
 	</div>
 )
@@ -44,7 +47,7 @@ class PasswordResetFormBase extends Component {
 	submitResetPassword = () => {
 		this.setState({ showLoading: true })
 		const { password1, password2 } = this.state
-		const { authUser } = this.props
+		const { authUser, secret } = this.props
 		let allAgentsRef = db.collection('allagents');
 		if (password2 !== password1) {
 			this.setState({
@@ -73,8 +76,18 @@ class PasswordResetFormBase extends Component {
 							////change status to active and loggedin to yes
 							await agentSnapshot.update({ loggedin: 'Yes', status: "Active" })
 							this.setState({ showLoading: false })
+
+							//set the username to session storage
+							let agentData = await agentSnapshot.get();
+							if (agentData.exists) {
+								let agentUsername = agentData.data().email
+
+								//encrypt the signinusername before setting to sessionStorage
+								let codedUsername = secret.encryption(agentUsername)
+								sessionStorage.setItem('iii', codedUsername)
+							}
 							history.push('/customers')
-						}
+						} 
 					}
 				})
 				.catch(error => {
