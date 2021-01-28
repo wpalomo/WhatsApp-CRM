@@ -32,18 +32,19 @@ class Agents extends Component {
 			companyid: value
 		})
 	}
-
+ 
 	render() {
 		const { companyid } = this.state
+		
 		return(
 			<div className="agents__container">
 				<div className="agents__top__row">
 					<div className="agents__top__heading">
 						Team
-					</div>
+					</div> 
 					<div onClick={this.showModal} className="add__agent">
 						<button>
-							<div>+ Add</div>
+							<div>Add Agent</div>
 						</button>   
 					</div>
 					<AddAgentModal companyid={companyid} show={this.state.show} closeModal={this.closeOpenModal}/> 

@@ -10,7 +10,7 @@ let transport = nodemailer.createTransport({
   port: 2525,
   auth: {
     user: process.env.MAILTRAP_USER,
-    pass: process.env.MAILTRAP_PASSWORD
+    pass: process.env.MAILTRAP_PASSWORD 
   }
 })
 

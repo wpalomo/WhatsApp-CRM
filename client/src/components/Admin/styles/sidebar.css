@@ -5,7 +5,7 @@
 	padding: 20px;
 	-webkit-transition: all 0.5s;
 	transition: all 0.5s;
-}
+} 
 
 .sidebar__title {
 	display: flex;
@@ -21,13 +21,18 @@
 }
 
 .sidebar__title > div > img {
-	width: 75px;
+	width: 50px;
 	object-fit: contain;
 }
 
-.sidebar__title > div > h1 {
-	font-size: 18px;
+.sidebar__title .company__info {
+	font-size: 8px;
 	display: inline;
+	text-align: center;
+}
+
+.company__info > h1 {
+	margin-bottom: 3px;
 }
 
 .sidebar__title > i {

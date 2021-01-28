@@ -46,7 +46,7 @@ const addPhoneNumber = number => {
 	.then(res => console.log(res.data))
 	.catch(err => console.log('an error occurred when setting adding a new phone >>', err))
 }
-
+ 
 //NEW
 router.get('/', (req, res) => {
 	res.status(200).send('new csteam get route home')

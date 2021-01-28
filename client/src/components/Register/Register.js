@@ -32,6 +32,7 @@ const SignUpPage = () => (
 const initialState = {
 			name:'',
 			email: '',
+			number:"",
 			password: '',
 			company:'',
 			error: null,
@@ -48,6 +49,12 @@ class RegisterFormBase extends Component {
 	onNameChange = e => {
 		this.setState({
 			name: e.target.value
+		})
+	}
+
+	onNumberChange = e => {
+		this.setState({
+			number: e.target.value
 		})
 	}
 
@@ -71,7 +78,7 @@ class RegisterFormBase extends Component {
 
 	submitRegister = () => {
 		this.setState({ showLoading: true })
-		const { name, email, password, company } = this.state
+		const { name, email, password, company, number } = this.state
 		let companyName = company.replace(/\s+/g, "__").toLowerCase() //replace all spaces with underscore
 		let adminRef = db.collection('admins');
 		let companyRef = db.collection('companies');
@@ -91,7 +98,7 @@ class RegisterFormBase extends Component {
 					})
 					//add the company to the company list and get the doc id
 					try {
-						let newCompany = await companyRef.add({ name:companyName })
+						let newCompany = await companyRef.add({ name:companyName, number: Number(number) })
 						let newCompanyId = newCompany.id
 
 						//add to the users collection
@@ -117,8 +124,8 @@ class RegisterFormBase extends Component {
 	}
 
 	render() {
-		const { name, email, password, company, error, showLoading } = this.state
-		const isInvalid = name === "" || email === "" || password === "" || company === ""
+		const { name, email, password, company, error, number, showLoading } = this.state
+		const isInvalid = name === "" || email === "" || number === "" || password === "" || company === ""
 		return ( 
 			<div className="register__container">  
 				<div className="register__midway">
@@ -140,6 +147,12 @@ class RegisterFormBase extends Component {
 									<label className="field__label" htmlFor="company__name">Company Name</label>
 									<div className="company__container__input">
 										<input onChange={this.onCompanyChange} value={company} type="text" name="company" className="company" required/>
+									</div>
+								</div>
+								<div className="number__container">
+									<label className="field__label" htmlFor="company__number">Company Number</label>
+									<div className="company__container__input">
+										<input onChange={this.onNumberChange} value={number} type="text" name="number" className="number" placeholder="For customer contact e.g. +234102..." required/>
 									</div>
 								</div>
 								<div className="email__container">

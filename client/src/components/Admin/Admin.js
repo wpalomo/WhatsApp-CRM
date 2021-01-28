@@ -15,6 +15,7 @@ class Admin extends Component {
 		super()
 		this.state = {
 			sidebarOpen: false,
+			companyNum:""
 		}
 	}
 
@@ -29,7 +30,6 @@ class Admin extends Component {
 			sidebarOpen: false
 		})
 	}
-
  
  	render() {
  		const { sidebarOpen } = this.state
