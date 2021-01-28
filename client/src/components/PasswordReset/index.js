@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import Loader from 'react-loader-spinner'
+import Loader from 'react-loader-spinner';
 import { withFirebase } from "../../firebase/index";
 import { AuthUserContext } from "../../session/index";
 import { db } from "../../firebase";
 import history from "../History";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./passwordreset.css";
 
 const PasswordResetPage = () => (
@@ -93,9 +93,9 @@ class PasswordResetFormBase extends Component {
 				<div className="register__body password__reset">
 					<div className="form__heading">
 						<p>Password Update</p>
+						{ showLoading && <div className="passwordreset__loading" ><Loader type="Circles" color="#4FCE5D" height={30} width={30}/></div> }
 					</div>
 						<div className="form__container">
-								{ showLoading && <div className="passwordreset__loading" ><Loader type="Circles" color="#4FCE5D" height={40} width={40}/></div> }
 								<div className="password__container">
 									<label className="field__label" htmlFor="owner__password">New Password</label>
 									<div className="password__container__input">

@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { withFirebase } from "../../firebase/index";
 import history from "../History";
 import "./passwordforget.css";
@@ -13,6 +15,7 @@ const initialState = {
 	email:'',
 	error: null,
 	success: null,
+	showLoading: false
 }
 
 class PasswordForgetFormBase extends Component {
@@ -31,17 +34,19 @@ class PasswordForgetFormBase extends Component {
 
 
 	submitResetPassword = () => {
+		this.setState({ showLoading: true })
 		const { email } = this.state
 		this.props.firebase.doPasswordReset(email)
 				.then(() => {
 					this.setState({ 
 						success: "Success!!...please check your email.",
-						email: "" 
+						email: "" ,
+						showLoading:false
 					})
 					//this should run after like 5 secs
 					setTimeout(() => history.push('/login'), 2)
 				})
-				.catch(error => {
+				.catch(error => { 
 					this.setState({ error })
 				})
 	}
@@ -54,17 +59,18 @@ class PasswordForgetFormBase extends Component {
 	}
 
 	render() {
-		const { email, error, success } = this.state
+		const { email, error, success, showLoading } = this.state
 		const isInvalid = email === ""
 		
 		return(
 			<div className="register__container">  
 				<p id="brand__name">Sauceflow</p>
-				<div className="register__body password__forget">
+				<div className={`register__body password__forget ${showLoading && "password__forget_load"}`}>
 					<div className="form__heading">
 						<p>Get New password</p>
 					</div>
 						<div className="form__container">
+								{ showLoading && <div className="passwordreset__loading" ><Loader type="Circles" color="#4FCE5D" height={40} width={40}/></div> }
 								<div className="email__container">
 									<label className="field__label" htmlFor="owner__email">Email Address</label>
 									<div className="email__container__input">
