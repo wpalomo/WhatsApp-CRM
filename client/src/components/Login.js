@@ -18,7 +18,7 @@ const SignInPage = () => (
 
 const initialState = {
 	signinUsername:"",
-	signinPassword:"",
+	signinPassword:"", 
 	error: null,
 	showLoading: false
 } 
@@ -55,7 +55,7 @@ class LoginFormBase extends Component {
 					let currentUser = user.user.uid
 					//check the admin collection if the currentUser is there
 					let snapshot = await adminRef.where('adminId', '==', currentUser).get()
-					if (snapshot.empty) {//agent
+					if (snapshot.empty) {//agent 
 						//get the password - if default, send to the change password page else, send to customer list
 						if (signinPassword === "password") {
 							this.setState({ showLoading: false })

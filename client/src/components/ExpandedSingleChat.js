@@ -104,7 +104,7 @@ class ExpandedSingleChat extends Component {
 		  .collection('users')
 		  .doc(agentID)
 		  .collection('customers')
-		  .doc(id)
+		  .doc(id) 
 		  .collection('messages')
 		  .add({
 			message: agentMessage,
@@ -137,7 +137,7 @@ class ExpandedSingleChat extends Component {
 		//clear the form
 		this.setState({
 			agentMessage: ""
-		})
+		}) 
 	} 
 
 	signOut = async () => {

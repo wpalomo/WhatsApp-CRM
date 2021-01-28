@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import Loader from 'react-loader-spinner'
 import { withFirebase } from "../../firebase/index";
 import { AuthUserContext } from "../../session/index";
 import { db } from "../../firebase";
 import history from "../History";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import "./passwordreset.css";
 
 const PasswordResetPage = () => (
@@ -16,7 +18,8 @@ const PasswordResetPage = () => (
 const initialState = {
 			password1:'',
 			password2:'',
-			error: null
+			error: null ,
+			showLoading: false
 		}
 
 class PasswordResetFormBase extends Component {
@@ -39,6 +42,7 @@ class PasswordResetFormBase extends Component {
 	}
 
 	submitResetPassword = () => {
+		this.setState({ showLoading: true })
 		const { password1, password2 } = this.state
 		const { authUser } = this.props
 		let allAgentsRef = db.collection('allagents');
@@ -68,18 +72,19 @@ class PasswordResetFormBase extends Component {
 						if (agentSnapshot) {
 							////change status to active and loggedin to yes
 							await agentSnapshot.update({ loggedin: 'Yes', status: "Active" })
+							this.setState({ showLoading: false })
 							history.push('/customers')
 						}
 					}
 				})
 				.catch(error => {
-					this.setState({ error })
+					this.setState({ showLoading:false, error })
 				})
 		}
 	}
 
 	render() {
-		const { password1, password2, error } = this.state
+		const { password1, password2, error, showLoading } = this.state
 		const isInvalid = password1 === "" || password2 === ""
 		
 		return(
@@ -90,6 +95,7 @@ class PasswordResetFormBase extends Component {
 						<p>Password Update</p>
 					</div>
 						<div className="form__container">
+								{ showLoading && <div className="passwordreset__loading" ><Loader type="Circles" color="#4FCE5D" height={40} width={40}/></div> }
 								<div className="password__container">
 									<label className="field__label" htmlFor="owner__password">New Password</label>
 									<div className="password__container__input">

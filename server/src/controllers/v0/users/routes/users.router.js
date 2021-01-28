@@ -43,7 +43,7 @@ router.post('/', (req, res) => {
 	let companyRef = db.collection('companies').doc(companyid).collection('users');
 	adminApp
 		.auth()
-		.createUser({
+		.createUser({ 
 			email: newAgentEmail,
 			password: 'password' //default password
 		})
