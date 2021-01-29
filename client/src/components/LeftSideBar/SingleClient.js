@@ -43,7 +43,7 @@ const SingleClient = ({ dbObj, id, currentCustomer, companyid }) => {
 	}, [id, coyid, agent])
 
 	const getCustomer = () => {
-		currentCustomer({id, name}) 
+		currentCustomer({id, name})  //name is the customer's number
 		//encrypt the data before storing it in sessionStorage
 		let codedcustomerName = secret.encryption(String(name)) //the encryption module only accepts strings, no integers
 		sessionStorage.setItem('iiI', codedcustomerName)

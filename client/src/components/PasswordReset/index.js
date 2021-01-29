@@ -72,8 +72,8 @@ class PasswordResetFormBase extends Component {
 						if (agentSnapshot) {
 							////change status to active and loggedin to yes
 							await agentSnapshot.update({ loggedin: 'Yes', status: "Active" })
-							this.setState({ showLoading: false })
 							history.push('/login')
+							this.setState({ showLoading: false })
 						} 
 					}
 				})

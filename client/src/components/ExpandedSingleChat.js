@@ -9,7 +9,7 @@ import axios from 'axios';
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
 import { db, serverTimestamp } from '../firebase';
-
+ 
 import "./styles/chat.css";
 
 //whatsapp credentials for sending message
@@ -25,10 +25,10 @@ class ExpandedSingleChat extends Component {
 		this.state = {  
 			agentMessage:"", 
 			agentUid: this.props.agentUid,
-			customerNum: Number(this.props.secret.decryption(sessionStorage.getItem('iiI'))),
+			customerNum: this.props.selectedCustomer.name,
+			// customerNum: Number(this.props.secret.decryption(sessionStorage.getItem('iiI'))),
 			companyUid: this.props.secret.decryption(sessionStorage.getItem('iIi')),
 			chats:[]
-
 		}
 	}  
 
@@ -62,10 +62,16 @@ class ExpandedSingleChat extends Component {
 		if ((prevProps.selectedCustomer.name !== this.props.selectedCustomer.name) || (prevProps.agentUid !== this.props.agentUid)) { //this condition handles when the agent selects another customer OR if the page is refreshed
 			const { companyUid } = this.state
 			const { agentUid, secret } = this.props
-			//get code from sessionstorage and decrypt - customer id
+			//get code from sessionstorage and decrypt - customer id and customer number
 			let codedcustomerId = sessionStorage.getItem('iio')
 			let deCodedcustomerId = secret.decryption(codedcustomerId)
 			let customerId  = deCodedcustomerId;
+
+			let codedcustomerName = sessionStorage.getItem('iiI')
+			let deCodedcustomerName = secret.decryption(codedcustomerName)
+			this.setState({
+				customerNum: deCodedcustomerName
+			})
 
 			let agentID = agentUid
 			if (customerId && agentID && companyUid) {
@@ -186,9 +192,9 @@ class ExpandedSingleChat extends Component {
 		history.push('/')
 	}
 
-	componentWillUnmount() {
-		this.cleanMessageListener()
-	}
+	// componentWillUnmount() {
+	// 	this.cleanMessageListener()
+	// }
   
 	render() {
 		const { agentMessage, customerNum, chats } = this.state

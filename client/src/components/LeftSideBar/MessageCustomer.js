@@ -1,6 +1,5 @@
 import React from 'react';
 import "../styles/singleclient.css";
-//import db from '../../firebase';
 import { db } from '../../firebase';
 
 const MessageCustomer = () => {
