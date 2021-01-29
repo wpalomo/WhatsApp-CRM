@@ -22,19 +22,8 @@ const setupNetwork = async () => {
 	})
 	.then(res => console.log(res.data))
 	.catch(err => console.log('an error occurred when setting up webhook endpoint >>', err))
-}
+} 
 
-const addPhoneNumber = number => {
-	let url = `${INSTANCE_URL}/${productId}/addPhone`
-	axios.post(url, { "number": number }, {
-		headers: {
-			'Content-Type': 'application/json',
-			'x-maytapi-key': token
-		}
-	})
-	.then(res => console.log(res.data))
-	.catch(err => console.log('an error occurred when setting adding a new phone >>', err))
-}
  
 //NEW
 router.get('/', (req, res) => {
@@ -133,6 +122,5 @@ router.post('/webhook', async (req, res) => {
 
 exports.MessageRouter = router;  
 exports.setupNetwork = setupNetwork;
-exports.addPhoneNumber = addPhoneNumber;
 
 

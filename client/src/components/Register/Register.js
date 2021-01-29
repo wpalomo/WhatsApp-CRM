@@ -1,10 +1,16 @@
 import React, { Component } from "react";
+import axios from "axios"; 
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { withFirebase } from "../../firebase/index";
 import history from "../History";
 import { db } from "../../firebase";
 import '../styles/register.css';
+
+//whatsapp credentials for adding phone number
+const instanceUrl = process.env.REACT_APP_MAYTAPI_INSTANCE_URL;
+const token = process.env.REACT_APP_MAYTAPI_TOKEN;
+const productId = process.env.REACT_APP_MAYTAPI_PRODUCT_ID;
 
 //DON'T DELETE - code has been replaced with withFirebase below
 // const SignUpPage = () => {
@@ -76,6 +82,21 @@ class RegisterFormBase extends Component {
 		})
 	} 
 
+	addPhoneNumber = async (number) => {
+		let url = `${instanceUrl}/${productId}/addPhone`
+		try {
+			let response = await axios.post(url, { "number": number }, {
+				headers: {
+					'Content-Type': 'application/json',
+					'x-maytapi-key': token
+				}
+			})
+			return response.data
+		} catch(err) {
+			console.log('an error occurred when setting adding a new phone >>', err)
+		}
+	}
+
 	submitRegister = () => {
 		this.setState({ showLoading: true })
 		const { name, email, password, company, number } = this.state
@@ -96,17 +117,21 @@ class RegisterFormBase extends Component {
 					.catch(err => {
 						console.log('Something went wrong with added user to firestore: ', err);
 					})
+					//add a phone in maytapi
+					let phoneData = await this.addPhoneNumber(String(number))
+					console.log('maytapi add phone said', phoneData)
+					let phoneID
+					if (phoneData) {
+						phoneID = phoneData.id
+					}
 					//add the company to the company list and get the doc id
 					try {
-						let newCompany = await companyRef.add({ name:companyName, number: Number(number) })
+						let newCompany = await companyRef.add({ name:companyName, number: Number(number), phoneID:phoneID })
 						let newCompanyId = newCompany.id
 
 						//add to the users collection
 						companyRef.doc(newCompanyId).collection('users').add({ name:name, role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
 						this.setState({ showLoading: false })
-						//add a phone in maytapi
-
-
 						//go to the admin route 
 						history.push("/admin")
 					} catch (err) {
