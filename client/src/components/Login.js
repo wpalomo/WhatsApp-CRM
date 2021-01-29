@@ -6,7 +6,7 @@ import history from "./History";
 import "./styles/login.css"
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import whatsapp from './media/whatsapp.png';
-import { db } from '../firebase.js';
+import { db, authFirebase } from '../firebase.js';
 
 const SignInPage = () => (
 	<div>
@@ -15,7 +15,7 @@ const SignInPage = () => (
 		</SessionDataContext.Consumer>
 	</div>
 ) 
-
+ 
 const initialState = {
 	signinUsername:"",
 	signinPassword:"", 
@@ -50,49 +50,55 @@ class LoginFormBase extends Component {
 		const { signinUsername, signinPassword } = this.state
 		let adminRef = db.collection('admins');
 		let allAgentsRef = db.collection('allagents');
-		firebase.doSignInWithEmailAndPassword(signinUsername, signinPassword)
-				.then(async (user) => {
-					let currentUser = user.user.uid
-					//check the admin collection if the currentUser is there
-					let snapshot = await adminRef.where('adminId', '==', currentUser).get()
-					if (snapshot.empty) {//agent 
-						//get the password - if default, send to the change password page else, send to customer list
-						if (signinPassword === "password") {
-							this.setState({ showLoading: false })
-							history.push('/passwordReset')
-						} else {
-							this.setState({ showLoading: false })
-							history.push('/customers')
-							//set loggedin to Yes
-							let companyid;
-							if (currentUser) {
-								let allAgentSnapshot = await allAgentsRef.where('agentId', '==', currentUser).get()
-								if (!allAgentSnapshot.empty) {
-									allAgentSnapshot.forEach(doc => {
-										companyid = doc.data().companyId 
-									})
+		authFirebase.auth().setPersistence(authFirebase.auth.Auth.Persistence.SESSION)
+			.then(() => {
+				return firebase.doSignInWithEmailAndPassword(signinUsername, signinPassword)
+							.then(async (user) => {
+								let currentUser = user.user.uid
+								//check the admin collection if the currentUser is there
+								let snapshot = await adminRef.where('adminId', '==', currentUser).get()
+								if (snapshot.empty) {//agent 
+									//get the password - if default, send to the change password page else, send to customer list
+									if (signinPassword === "password") {
+										this.setState({ showLoading: false })
+										history.push('/passwordReset')
+									} else {
+										this.setState({ showLoading: false })
+										history.push('/customers')
+										//set loggedin to Yes
+										let companyid;
+										if (currentUser) {
+											let allAgentSnapshot = await allAgentsRef.where('agentId', '==', currentUser).get()
+											if (!allAgentSnapshot.empty) {
+												allAgentSnapshot.forEach(doc => {
+													companyid = doc.data().companyId 
+												})
+											}
+										}
+										if (companyid) {
+											let agentSnapshot = await db.collection('companies').doc(companyid).collection('users').doc(currentUser)
+											if (agentSnapshot) {
+												await agentSnapshot.update({ loggedin: 'Yes'})
+											}
+										}
+										//encrypt the signinusername before setting to sessionStorage
+										let codedUsername = this.props.secret.encryption(signinUsername)
+										sessionStorage.setItem('iii', codedUsername) 
+									} 
+								} else {//admin
+									this.setState({ showLoading: false })
+									history.push('/admin') 
 								}
-							}
-							if (companyid) {
-								let agentSnapshot = await db.collection('companies').doc(companyid).collection('users').doc(currentUser)
-								if (agentSnapshot) {
-									await agentSnapshot.update({ loggedin: 'Yes'})
-								}
-							}
-							//encrypt the signinusername before setting to sessionStorage
-							let codedUsername = this.props.secret.encryption(signinUsername)
-							sessionStorage.setItem('iii', codedUsername) 
-						} 
-					} else {//admin
-						this.setState({ showLoading: false })
-						history.push('/admin') 
-					}
-					//clear the form 
-					this.setState({ ...initialState })
-				})
-				.catch(error => {
-					this.setState({ showLoading: false, error })
-				})
+								//clear the form 
+								this.setState({ ...initialState })
+							})
+							.catch(error => {
+								this.setState({ showLoading: false, error })
+							})
+			})
+			.catch(error => {
+				console.log('error occurred with session persistence', error)
+			})
 	}
 
 	getNewPassword = () => {

@@ -81,7 +81,8 @@ class ExpandedSingleChat extends Component {
 	}
 
 
-	saveResponder = (coyid, client, agentid, clientid, agentMessage, agentName, serverTimestamp, cid) => {
+	saveResponder = (coyid, client, agentid, clientid, agentMessage, agentName, serverTimestamp) => {
+		//for the db
 		db.collection('companies').doc(coyid).collection('response')
 		  .get()
 		  .then(snapshot => {
@@ -94,11 +95,13 @@ class ExpandedSingleChat extends Component {
 				let responder = data[0].agentid
 				if (responder === agentid) {
 					this.sendResponse(coyid, agentid, clientid, agentMessage, agentName, serverTimestamp)
+					this.sendMessageToWhatsapp(client, agentMessage)
 				} else {
 					alert('an agent already responded to this customer!')
 				}
 			} else {//no one has responded
 				this.sendResponse(coyid, agentid, clientid, agentMessage, agentName, serverTimestamp)
+				this.sendMessageToWhatsapp(client, agentMessage)
 				db.collection('companies').doc(coyid).collection('response').add({ customer:Number(client), agentid:agentid, customerid:clientid })
 			}
 		  })
@@ -119,15 +122,20 @@ class ExpandedSingleChat extends Component {
 		})							  
 	}
 
-	sendMessageToWhatsapp = (body, phoneId=9662) => {
+	sendMessageToWhatsapp = (number, message, phoneId=9662) => {
+		let body = {
+			to_number:number,
+			message:message,
+			type: "text"
+		}
 		let url = `${instanceUrl}/${productId}/${phoneId}/sendMessage`
 		axios.post(url, body, {
 			headers: {
 				"x-maytapi-key":token
 			}
 		})
-		.then(res => console.log(res.data))
-		.catch(err => console.log('an error occurred when sending a message >>', err))
+		.then()
+		.catch(err => console.log('an error occurred when sending a message with maytapi >>', err))
 	}
  
 	submitAgentMessage = async (e) => {
@@ -136,6 +144,12 @@ class ExpandedSingleChat extends Component {
 		e.preventDefault()
 		const { agentMessage, customerNum, companyUid } = this.state
 		const { agentUid, secret } = this.props
+		//send to maytapi
+		let data = {
+			to_number: customerNum,
+			message: agentMessage,
+			type: "text"
+		}
 
 		//get code from sessionstorage and decrypt - customer id
 		let codedcustomerId = sessionStorage.getItem('iio')
@@ -149,17 +163,8 @@ class ExpandedSingleChat extends Component {
 		let agentID = agentUid
 		//save agent message to db which is automatically shown on the screen
 		if (customerId) {
-			this.saveResponder(companyUid, customerNum, agentID, customerId, agentMessage, agentName, serverTimestamp)
-		}
-
-		//send to maytapi
-		let data = {
-			to_number: customerNum,
-			message: agentMessage,
-			type: "text"
-		}
-		this.sendMessageToWhatsapp(data)
-		
+			this.saveResponder(companyUid, customerNum, agentID, customerId, agentMessage, agentName, serverTimestamp, data)
+		}		
 		//clear the form
 		this.setState({
 			agentMessage: ""
@@ -179,6 +184,10 @@ class ExpandedSingleChat extends Component {
 		this.props.firebase.doSignOut()
 		sessionStorage.clear()
 		history.push('/')
+	}
+
+	componentWillUnmount() {
+		this.cleanMessageListener()
 	}
   
 	render() {

@@ -27,17 +27,18 @@ const SingleClient = ({ dbObj, id, currentCustomer, companyid }) => {
 	let agent;
 	const authUser = useContext(AuthUserContext) //get auth context
 	authUser ?  agent = authUser.uid : agent = authUser //if there is an authe'd user, get the id else return the default authUser which is null
-
+	
 	useEffect(() => {
 		let agentSnapshot = db.collection('companies').doc(coyid).collection('users').doc(agent).collection('customers')
 		if (id) { //if a customer sends a message, get the id of the customer and extract the message
-			agentSnapshot
+			let unsubscribe = agentSnapshot
 			    .doc(id)
 			    .collection('messages')
 				.orderBy('timestamp', 'desc')
 				.onSnapshot(snapshot => {
 					setCustomerMessage(snapshot.docs.map(doc => doc.data()))
-			})					
+			})		
+			return () => unsubscribe()			
 		}
 	}, [id, coyid, agent])
 
