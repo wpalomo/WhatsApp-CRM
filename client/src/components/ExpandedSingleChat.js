@@ -22,11 +22,11 @@ class ExpandedSingleChat extends Component {
 
 	constructor(props) {
 		super(props)
+		this.chatRef = React.createRef();
 		this.state = {  
 			agentMessage:"", 
 			agentUid: this.props.agentUid,
 			customerNum: this.props.selectedCustomer.name,
-			// customerNum: Number(this.props.secret.decryption(sessionStorage.getItem('iiI'))),
 			companyUid: this.props.secret.decryption(sessionStorage.getItem('iIi')),
 			chats:[]
 		}
@@ -55,6 +55,7 @@ class ExpandedSingleChat extends Component {
 		let agentID = agentUid
 		if (customerId && agentID && companyUid) {
 			this.getAllMessages(customerId, agentID, companyUid)
+			this.scrollToBottom()
 		} 
 	}
 
@@ -78,6 +79,7 @@ class ExpandedSingleChat extends Component {
 				this.getAllMessages(customerId, agentID, companyUid)
 			}
 		}
+		this.scrollToBottom()
 	}
  
 	getAgentMessage = e => {
@@ -192,9 +194,16 @@ class ExpandedSingleChat extends Component {
 		history.push('/')
 	}
 
-	// componentWillUnmount() {
-	// 	this.cleanMessageListener()
-	// }
+	scrollToBottom = () => {
+		this.chatRef.current.scrollIntoView({ behavior: "smooth" })
+	}
+
+	//to prevent memory leaks
+	componentWillUnmount() {
+		this.setState = (state, cb) => {
+			return;
+		}
+	}
   
 	render() {
 		const { agentMessage, customerNum, chats } = this.state
@@ -225,13 +234,14 @@ class ExpandedSingleChat extends Component {
 					</div>
 			    </div>
 			    <div className="chat__body"> 
-			    { chats.map((chat, idx) => (
-			    	<p key={idx} className={`chat__message ${chat.name === agentName && "chat__receiver"}`}>
-			    		{ chat.message }
-			    		<span className="chat__timestamp">{ //new Date(chat.timestamp?.toDate()).toUTCString() 
-			    		}</span> 
-			    	</p>
-			    )) }
+				    { chats.map((chat, idx) => (
+				    	<p key={idx} className={`chat__message ${chat.name === agentName && "chat__receiver"}`}>
+				    		{ chat.message }
+				    		<span className="chat__timestamp">{ //new Date(chat.timestamp?.toDate()).toUTCString() 
+				    		}</span> 
+				    	</p>
+				    )) }
+				    <div ref={this.chatRef}/>
 			    </div>
 			    <div className="chat__footer">  
 			    	<IconButton>

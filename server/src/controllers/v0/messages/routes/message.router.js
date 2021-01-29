@@ -7,7 +7,7 @@ const { db, serverTimestamp } = require("../../../../config/config");
 
 const INSTANCE_URL = 'https://api.maytapi.com/api';
 const token = process.env.MAYTAPI_TOKEN;
-const productId = process.env.MAYTAPI_PRODUCT_ID
+const productId = process.env.MAYTAPI_PRODUCT_ID 
 
 
 const setupNetwork = async () => {
@@ -39,7 +39,7 @@ const addPhoneNumber = number => {
 //NEW
 router.get('/', (req, res) => {
 	res.status(200).send('new csteam get route home')
-})
+}) 
 
 router.post('/sendMessage', async (req, res) => {
 	console.log(req.body);

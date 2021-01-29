@@ -104,6 +104,9 @@ class RegisterFormBase extends Component {
 						//add to the users collection
 						companyRef.doc(newCompanyId).collection('users').add({ name:name, role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
 						this.setState({ showLoading: false })
+						//add a phone in maytapi
+
+
 						//go to the admin route 
 						history.push("/admin")
 					} catch (err) {
