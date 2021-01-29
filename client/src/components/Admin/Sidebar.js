@@ -62,14 +62,14 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase }) => {
 		firebase.doSignOut()
 		history.push('/')
 	}
-
+	let cleanedName = companyName.replace("__", " ");
 	return(
 		<div id="sidebar" className={sidebarOpen ? "sidebar_responsive" : ""}>
 			<div className="sidebar__title">
 				<div className="sidebar__img">
 					<img src="" alt=""/>
 					<div className="company__info">
-						<h1>{ companyName }</h1>
+						<h1>{ cleanedName }</h1>
 						<h1>{ companyNumber }</h1>
 					</div>
 				</div>
