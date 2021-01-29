@@ -27,10 +27,10 @@ class UserBase extends Component {
 			allChats:[],
 			selectedCustomer:{},
 			companyid:"",
-			agentID: this.props.authUser ? this.props.authUser.uid : this.props.authUser
+			agentID: this.props.authUser ? this.props.authUser.uid : this.props.authUser,
+			phoneId:""
 		}
 	} 
- 
 
 	getMessages = async () => {
 		const { agentID } = this.state
@@ -58,6 +58,14 @@ class UserBase extends Component {
 					})
 				})
 			})
+			
+			//get phone id
+			let phoneRef = await db.collection('companies').doc(companyid).get()
+			if (phoneRef) {
+				this.setState({
+					phoneId: phoneRef.data().phoneID
+				}) 
+			}
 		}
 	}  
  
@@ -91,7 +99,8 @@ class UserBase extends Component {
 	}
 	
 	render() {
-		const { allChats, selectedCustomer, agentID, companyid } = this.state
+		const { allChats, selectedCustomer, agentID, companyid, phoneId } = this.state
+		
 		return (
 			<div className="app__body">
 				<Switch>
@@ -101,7 +110,7 @@ class UserBase extends Component {
 					<Route path="/customers/:customerId">
 						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
 						<SessionDataContext.Consumer>
-							{ secret => <ExpandedSingleChat secret={secret} agentUid={agentID} selectedCustomer={selectedCustomer}/> }
+							{ secret => <ExpandedSingleChat phoneId={phoneId} secret={secret} agentUid={agentID} selectedCustomer={selectedCustomer}/> }
 						</SessionDataContext.Consumer>		
 					</Route>  
 					<Redirect from="/customers" to="/customers/all" exact/>

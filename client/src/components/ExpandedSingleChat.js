@@ -28,7 +28,8 @@ class ExpandedSingleChat extends Component {
 			agentUid: this.props.agentUid,
 			customerNum: this.props.selectedCustomer.name,
 			companyUid: this.props.secret.decryption(sessionStorage.getItem('iIi')),
-			chats:[]
+			chats:[],
+			phoneId: this.props.phoneId
 		}
 	}  
 
@@ -60,7 +61,7 @@ class ExpandedSingleChat extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if ((prevProps.selectedCustomer.name !== this.props.selectedCustomer.name) || (prevProps.agentUid !== this.props.agentUid)) { //this condition handles when the agent selects another customer OR if the page is refreshed
+		if ((prevProps.selectedCustomer.name !== this.props.selectedCustomer.name) || (prevProps.agentUid !== this.props.agentUid) || (prevProps.phoneId !== this.props.phoneId)) { //this condition handles when the agent selects another customer OR if the page is refreshed
 			const { companyUid } = this.state
 			const { agentUid, secret } = this.props
 			//get code from sessionstorage and decrypt - customer id and customer number
@@ -71,13 +72,16 @@ class ExpandedSingleChat extends Component {
 			let codedcustomerName = sessionStorage.getItem('iiI')
 			let deCodedcustomerName = secret.decryption(codedcustomerName)
 			this.setState({
-				customerNum: deCodedcustomerName
+				customerNum: deCodedcustomerName,
 			})
 
 			let agentID = agentUid
 			if (customerId && agentID && companyUid) {
 				this.getAllMessages(customerId, agentID, companyUid)
 			}
+			this.setState({
+				phoneId: this.props.phoneId
+			})
 		}
 		this.scrollToBottom()
 	}
@@ -89,12 +93,12 @@ class ExpandedSingleChat extends Component {
 	}
 
 
-	saveResponder = (coyid, client, agentid, clientid, agentMessage, agentName, serverTimestamp) => {
+	saveResponder = (coyid, client, agentid, clientid, agentMessage, agentName, serverTimestamp, phoneId) => {
 		//for the db
 		db.collection('companies').doc(coyid).collection('response')
 		  .get()
 		  .then(snapshot => {
-		  	let data = snapshot.docs.map(doc => {
+		  	let data = snapshot.docs.map(doc => { 
 		  		return doc.data()
 		  	}).filter(obj => obj.customer === Number(client))
 
@@ -103,13 +107,13 @@ class ExpandedSingleChat extends Component {
 				let responder = data[0].agentid
 				if (responder === agentid) {
 					this.sendResponse(coyid, agentid, clientid, agentMessage, agentName, serverTimestamp)
-					this.sendMessageToWhatsapp(client, agentMessage)
+					this.sendMessageToWhatsapp(client, agentMessage, phoneId)
 				} else {
 					alert('an agent already responded to this customer!')
 				}
 			} else {//no one has responded
 				this.sendResponse(coyid, agentid, clientid, agentMessage, agentName, serverTimestamp)
-				this.sendMessageToWhatsapp(client, agentMessage)
+				this.sendMessageToWhatsapp(client, agentMessage, phoneId)
 				db.collection('companies').doc(coyid).collection('response').add({ customer:Number(client), agentid:agentid, customerid:clientid })
 			}
 		  })
@@ -130,7 +134,7 @@ class ExpandedSingleChat extends Component {
 		})							  
 	}
 
-	sendMessageToWhatsapp = (number, message, phoneId=9662) => {
+	sendMessageToWhatsapp = (number, message, phoneId) => {
 		let body = {
 			to_number:number,
 			message:message,
@@ -150,15 +154,9 @@ class ExpandedSingleChat extends Component {
 		//send to db, pull from db and show on the screen, in the left bar, and pass to the server
 		//to server
 		e.preventDefault()
-		const { agentMessage, customerNum, companyUid } = this.state
+		const { agentMessage, customerNum, companyUid, phoneId } = this.state
 		const { agentUid, secret } = this.props
-		//send to maytapi
-		let data = {
-			to_number: customerNum,
-			message: agentMessage,
-			type: "text"
-		}
-
+		
 		//get code from sessionstorage and decrypt - customer id
 		let codedcustomerId = sessionStorage.getItem('iio')
 		let deCodedcustomerId = secret.decryption(codedcustomerId)
@@ -171,7 +169,7 @@ class ExpandedSingleChat extends Component {
 		let agentID = agentUid
 		//save agent message to db which is automatically shown on the screen
 		if (customerId) {
-			this.saveResponder(companyUid, customerNum, agentID, customerId, agentMessage, agentName, serverTimestamp, data)
+			this.saveResponder(companyUid, customerNum, agentID, customerId, agentMessage, agentName, serverTimestamp, phoneId)
 		}		
 		//clear the form
 		this.setState({
