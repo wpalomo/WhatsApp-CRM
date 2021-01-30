@@ -30,9 +30,9 @@ router.get('/', (req, res) => {
 	res.status(200).send('new csteam get route home')
 }) 
 
-router.post('/sendMessage', async (req, res) => {
-	console.log(req.body);
-})
+// router.post('/sendMessage', async (req, res) => {
+// 	console.log(req.body);
+// })
 
 router.post('/webhook', async (req, res) => {
 	res.sendStatus(200)

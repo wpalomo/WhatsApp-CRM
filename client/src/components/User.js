@@ -65,7 +65,7 @@ class UserBase extends Component {
 				this.setState({
 					phoneId: phoneRef.data().phoneID
 				}) 
-			}
+			} 
 		}
 	}  
  
