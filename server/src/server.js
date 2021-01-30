@@ -5,9 +5,6 @@ require('dotenv').config()
 
 const { IndexRouter } = require('./controllers/v0/index.router');
 const { setupNetwork } = require('./controllers/v0/messages/routes/message.router');
-const { sendVerificationEmailAdmin, sendVerificationEmailAgent } = require('./controllers/v0/users/routes/users.router');
-
-//sendVerificationEmailAgent("www.google.com", "icepaigez@yahoo.com", "Go Game", "Tunde")
 
 const PORT = process.env.PORT || 4000;
 

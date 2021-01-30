@@ -1,0 +1,45 @@
+<html>
+<html>
+<head>
+	<title>Sauceflow Admin Email Confirmation</title>
+	<style>
+		.button {
+			background-color: #4FCE5D;
+			border: 2px solid #4FCE5D;
+			border-radius: 5px;
+			color: white;
+			font-size: 1.125rem;
+			padding: 5px 15px;
+			box-sizing: border-box;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;
+			cursor: pointer;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<p>Hey <strong>{{ name }}!</strong></p>
+		<p>
+			You have been added as a support agent with {{company}}!
+		</p>
+		<p>
+			Please click the button below to verify your email address:
+		</p>
+		<div style="width: 50%; text-align: center;">
+			<a href='{{link}}' target="_blank" class="button">Verify email address</a> 
+		</div>
+		<p>
+			Once verified, you can <a href="https://www.sauceflow.com/login" target="_blank">login</a>
+		</p>
+		<p>
+			Your default password is <strong>password</strong>, (all small letters) and you will be prompted to change it!
+		</p>
+		<p>
+			If you have any problems, please contact us: <a href="mailto:support@sauceflow.com">Sauceflow</a>
+		</p>
+	</div>
+</body>
+</html>

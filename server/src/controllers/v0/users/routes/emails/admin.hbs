@@ -1,0 +1,42 @@
+<html>
+<html>
+<head>
+	<title>Sauceflow Admin Email Confirmation</title>
+	<style>
+		.button {
+			background-color: #4FCE5D;
+			border: 2px solid #4FCE5D;
+			border-radius: 5px;
+			color: white;
+			font-size: 1.125rem;
+			padding: 5px 15px;
+			box-sizing: border-box;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;
+			cursor: pointer;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<p>Hey <strong>{{ name }}!</strong></p>
+		<p>
+			Thanks for signing up on Sauceflow.  
+		</p>
+		<p>
+			To finish your registration, please click the button below to verify your account:
+		</p>
+		<div style="width: 50%; text-align: center;">
+			<a href='{{link}}' target="_blank" class="button">Verify email address</a> 
+		</div>
+		<p>
+			Once verified, you can <a href="https://www.sauceflow.com/login" target="_blank">login</a>, add agents and start responding to customers on WhatsApp!
+		</p>
+		<p>
+			If you have any problems, please contact us: <a href="mailto:support@sauceflow.com">Sauceflow</a>
+		</p>
+	</div>
+</body>
+</html>
