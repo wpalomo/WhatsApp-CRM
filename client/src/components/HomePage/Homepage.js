@@ -32,6 +32,15 @@ const HomePage = () => {
 								with your customers without restriction to one phone or
 								one WhatsApp web session. 
 							</p>
+							<br/>
+							<p>
+								With Sauceflow, your business needs only one WhatsApp number to receive customer messages 
+								and can have as many agents as needed responding.  
+							</p>
+							<br/>
+							<p>
+								Sauceflow is your WhatsApp CRM.  
+							</p>
 						</div>
 						<div className="hero__button">
 							<button onClick={getRegisterPage}>Sign Up</button>

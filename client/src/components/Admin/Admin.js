@@ -51,7 +51,9 @@ class Admin extends Component {
 						</Route>
 						<Route path="/admin/agents">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
-							<Agents />
+							<AuthUserContext.Consumer>
+								{ authUser => <Agents authUser={authUser}/> }
+							</AuthUserContext.Consumer>
 							<Sidebar sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/subscription">

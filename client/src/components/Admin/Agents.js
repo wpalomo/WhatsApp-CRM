@@ -6,11 +6,13 @@ import "./styles/agents.css";
 
 class Agents extends Component {
 
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 		this.state = {
 			show: false,
 			companyid:"",
+			// activated: true,
+			activated: this.props.authUser ? this.props.authUser.emailVerified : ""
 		}
 	}  
 
@@ -34,14 +36,17 @@ class Agents extends Component {
 	}
  
 	render() {
-		const { companyid } = this.state
+		const { companyid, activated } = this.state
+		const { authUser } = this.props;
+		let adminEmail;
+		if (authUser) {
+			adminEmail = authUser.email
+		}
 		
 		return(
 			<div className="agents__container">
 				<div className="agents__top__row">
-					<div className="agents__top__heading">
-						Team
-					</div> 
+					{ activated ? <div className="agents__top__heading">Team</div> : <div><p>Please activate your account. We sent an activation email to <b>{adminEmail}</b></p></div> } 
 					<div onClick={this.showModal} className="add__agent">
 						<button>
 							<div>Add Agent</div> 

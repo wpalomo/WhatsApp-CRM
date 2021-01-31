@@ -12,7 +12,7 @@ class Navbar extends Component {
 				</div>
 				{
 					//this navbar__left div has been hidden in the css file with display:none
-				}
+				} 
 				<div className="navbar__left">
 					<a href="foo">Subscribers</a>
 					<a href="foo">Video Mgt</a>
