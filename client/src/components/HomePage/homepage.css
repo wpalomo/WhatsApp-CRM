@@ -19,7 +19,6 @@
 
 .home__rightarea {
 	grid-area: r;
-	border: 1px solid blue;
 }
 
 /*.home__header {

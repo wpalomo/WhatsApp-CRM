@@ -1,4 +1,5 @@
 import React from "react";
+import HomeAnimation from "./HomeAnimation";
 import history from "../History";
 import "./homepage.css"; 
  
@@ -25,7 +26,7 @@ const HomePage = () => {
 					</div>
 				</div>
 				<div className="home__rightarea">
-					Right
+					<HomeAnimation />
 				</div>
 			</div>
 		</div>
