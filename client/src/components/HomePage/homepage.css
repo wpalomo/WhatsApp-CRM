@@ -65,8 +65,8 @@
 
 .hero__button > button {
 	padding: 5px 15px;
-	background-color: #4FCE5D;
-	border: 2px solid #4FCE5D;
+	background-color: #25d366;
+	border: 2px solid #25d366;
 	border-radius: 2px;
 	color: #fff;
 }
@@ -77,3 +77,11 @@
 	padding: 5px;
 	border-top: 1px solid lightgrey;
 }
+
+.whatsapp-icon {
+	color: #25d366;
+	font-weight: 700;
+	font-size: 16px;
+}
+
+

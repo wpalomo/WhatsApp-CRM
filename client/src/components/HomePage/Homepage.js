@@ -38,7 +38,7 @@ const HomePage = () => {
 						</div>
 					</div>
 					<div className="home__leftarea__footer">
-						<a href="mailto:sauce@sauceflow.com">Contact us</a>
+						Contact us: <a href="mailto:sauce@sauceflow.com">Email</a> | <a href="https://wa.me/2348152258413" className="whatsapp_float" target="_blank" rel="noopener noreferrer"><i className="fa fa-whatsapp whatsapp-icon"></i></a>
 					</div>
 				</div>
 				<div className="home__rightarea">

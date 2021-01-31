@@ -13,7 +13,11 @@
  	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0, 1px;
 }
 
-.signin__container > img {
+.brand__name:hover {
+	cursor: pointer;
+}
+
+.signin__container > img { 
   	object-fit: contain;
   	height: 200px;
   	margin-bottom: 180px;

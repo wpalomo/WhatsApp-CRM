@@ -105,6 +105,10 @@ class LoginFormBase extends Component {
 		history.push('/passwordForget')
 	}
 
+	goHome = () => {
+		history.go('/')
+	}
+
 	//to prevent memory leaks
 	componentWillUnmount() {
 		this.setState = (state, cb) => {
@@ -121,7 +125,7 @@ class LoginFormBase extends Component {
 				<div className="signin__container">
 				 <img src={whatsapp} alt=""/>
 				 	<div className="form-container">
-						<h1>Sauceflow</h1>
+						<h1 onClick={this.goHome} className="brand__name">Sauceflow</h1>
 						<form>
 							{ showLoading && <Loader type="Circles" color="#4FCE5D" height={40} width={40}/> }
 							<div className="control">
