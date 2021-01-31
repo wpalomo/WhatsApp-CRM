@@ -16,7 +16,8 @@ class PaymentPlans extends Component {
 			defaultInput: '', 
 			showSuccessModal: false,
 			showErrorModal: false,
-			amountPaid: 0
+			amountPaid: 0,
+			flutterwavePaymentplanId: 9606
 		}
 	}
 
@@ -57,7 +58,8 @@ class PaymentPlans extends Component {
 						totalCost = currentEntry * 21 * 12
 						if (!isNaN(totalCost)) {
 							this.setState({
-								totalBill: totalCost
+								totalBill: totalCost,
+								flutterwavePaymentplanId: 9607
 							})
 						}
 					}
@@ -65,7 +67,7 @@ class PaymentPlans extends Component {
 	}
 
 	getPaymentError = value => {
-		if (value < 1) {
+		if (value < 50) {
 			this.setState({
 				showError: true
 			})
@@ -95,10 +97,11 @@ class PaymentPlans extends Component {
 
 	getAgentInput = (e) => {
 		const { selectedRadio } = this.state
+		let enteredValue = Math.abs(Number(e.target.value))
 		this.setState({
-			defaultInput: e.target.value
+			defaultInput: enteredValue
 		})
-		let agentCount = Math.abs(Number(e.target.value))
+		let agentCount = enteredValue
 		let totalCost;
 		if (selectedRadio === 'monthly') {
 			totalCost = agentCount * 25
@@ -115,7 +118,8 @@ class PaymentPlans extends Component {
 				this.setState({
 					totalBill: totalCost,
 					currentAgentEntered: agentCount,
-					showError: false
+					showError: false,
+					flutterwavePaymentplanId: 9607
 				})
 			}
 		}
@@ -123,17 +127,21 @@ class PaymentPlans extends Component {
 	
 
 	render() {
-		const { totalBill, selectedRadio, showError, currentAgentEntered, defaultInput, showSuccessModal, showErrorModal, amountPaid } = this.state
+		const { totalBill, selectedRadio, showError, currentAgentEntered, defaultInput, showSuccessModal, showErrorModal, amountPaid, flutterwavePaymentplanId } = this.state
 		const { companyData } = this.props;
 			return(
 			<div className="expanded__downright">
 				<div className="payment__container">
 					<div className="payment__top">
-						<div className="payment__top_toptext">
-							<p>Your current plan: <strong>Free Trial</strong></p>
+						<div className="payment__top_toptext"> {//this div has been hidden in subscription.css
+						}
+						<p>Your current plan: <strong>Free Trial</strong></p>	
 						</div>
 						<div className="payment__top_bottomtext">
-							<p>Ends in 3 days. Subscribe now for full access!</p>
+							<p>Minimum number of agents to subscribe for: <span className="min__agents"><strong>2</strong></span></p>
+							{
+								//<p>Ends in 3 days. Subscribe now for full access!</p>
+							}
 						</div>
 					</div>	
 					<div className="payment__mid">
@@ -161,7 +169,7 @@ class PaymentPlans extends Component {
 							<div className="label__text1">
 								<label htmlFor="agent_number">Agents</label>
 							</div>
-							<input onChange={this.getAgentInput} type="text" name="agent_number" value={defaultInput} placeholder="E.g. 1"/>
+							<input onChange={this.getAgentInput} type="text" name="agent_number" value={defaultInput} placeholder="E.g. 2"/>
 						</div>
 						<div className="billing__cycle">
 							<div className="label__text2">
@@ -195,8 +203,8 @@ class PaymentPlans extends Component {
 							</div>
 						</div>
 						<div className="submit__payment__plan">
-							{ showError ? <div className="bill__error"><p>Error:please enter a number in the Agents field</p></div> : null}
-							<CreditCardModal companyData={companyData} getPaymentStatus={this.paymentStatus} getError={this.getPaymentError} totalBill={totalBill} agents={currentAgentEntered}/>
+							{ showError ? <div className="bill__error"><p>Error:please enter a number not less than 2 in the Agents field</p></div> : null}
+							<CreditCardModal companyData={companyData} getPaymentStatus={this.paymentStatus} getError={this.getPaymentError} totalBill={totalBill} agents={currentAgentEntered} paymentPlan={flutterwavePaymentplanId}/>
 							<SuccessModal onClose={this.closeSuccessModal} show={showSuccessModal} amountPaid={amountPaid}/>
 							<ErrorModal closeErr={this.closeErrorModal} showErr={showErrorModal}/>
 						</div>

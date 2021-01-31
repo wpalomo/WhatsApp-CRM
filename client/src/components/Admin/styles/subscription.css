@@ -9,7 +9,7 @@
 }
 
 .billing__heading {
-	grid-area: topleft;
+	grid-area: topleft; 
 	border-right: 1px solid lightgray;
 	border-bottom: 1px solid lightgray;
 	background-color: #e3fbe3;
@@ -74,6 +74,18 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.payment__top_toptext {
+	display: none;
+}
+
+.payment__top_bottomtext {
+	color: black;
+}
+
+.min__agents {
+	font-size: 1.5rem;
 }
 
 .payment__top > div {
