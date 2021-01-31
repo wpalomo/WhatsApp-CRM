@@ -9,24 +9,23 @@ const HomePage = () => {
 	}
 
 	const getRegisterPage = () => {
-		history.push('/register') 
+		history.push('/register')  
 	}
  
 	return( 
 		<div className="homepage__container">
 			<div className="home__container">
-				<div className="home__header">
+				<div className="home__leftarea">
+					<div className="home__header">
 					<p onClick={getSigninPage}>Sign In</p>
 					<p onClick={getRegisterPage}>Sign Up</p>		
+					</div>
+					<div className="home__content">
+						Content
+					</div>
 				</div>
-				<div className="home__menu">
-					Menu
-				</div>
-				<div className="home__content">
-					Content
-				</div>
-				<div className="home__footer">
-					Footer
+				<div className="home__rightarea">
+					Right
 				</div>
 			</div>
 		</div>

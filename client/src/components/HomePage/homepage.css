@@ -1,21 +1,28 @@
 .homepage__container {
 	width: 100vw;
 	height: 100vh;
-	background-color: #ffeead;
+	background-color: #fff;
 }
 
 .home__container {
 	height: 100%;
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	grid-template-rows: 0.1fr 1fr 0.1fr;
+	grid-template-columns: repeat(12, 1fr);
+	/*grid-template-rows: 0.1fr 1fr 0.1fr;*/
 	grid-template-areas: 
-		"h h h h"
-		"m m c c"
-		"f f f f";
+		"l l l l l r r r r r r r";
+} 
+
+.home__leftarea {
+	grid-area: l;
 }
 
-.home__header {
+.home__rightarea {
+	grid-area: r;
+	border: 1px solid blue;
+}
+
+/*.home__header {
 	grid-area: h;
 	background-color: #96ceb4;
 	display: flex;
@@ -45,4 +52,4 @@
 .home__footer {
 	grid-area: f;
 	background-color: #ffcc5c;
-}
+}*/
