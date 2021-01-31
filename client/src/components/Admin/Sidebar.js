@@ -6,7 +6,9 @@ import "./styles/sidebar.css";
 import { db } from "../../firebase";
 
 
-const Sidebar = ({ sidebarOpen, closeSideBar, firebase }) => {
+const NOOP = () => {};
+
+const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyNumberProp=NOOP }) => {
 
 	const [companyName, setCompanyName] = useState("")
 	const [companyNumber, setCompanyNumber] = useState(null)
@@ -31,7 +33,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase }) => {
 					if (!numberSnapshot.empty) {
 						numberSnapshot.forEach(doc => {
 							let number = doc.data().number
-							setCompanyNumber(number)
+							setCompanyNumber(number) 
 						})
 					} 
 				}
@@ -39,6 +41,11 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase }) => {
 		}
 		getCompany();
 	}, [adminUser])
+
+	//pass the company number out as props to the admin and then subscription component
+	useEffect(() => {
+		companyNumberProp(companyNumber)
+	}, [companyNumber, companyNumberProp])
 
 
 	const getAgentsPage = () => {

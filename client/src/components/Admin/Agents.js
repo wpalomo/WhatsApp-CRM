@@ -38,6 +38,7 @@ class Agents extends Component {
 	render() {
 		const { companyid, activated } = this.state
 		const { authUser } = this.props;
+		
 		let adminEmail;
 		if (authUser) {
 			adminEmail = authUser.email

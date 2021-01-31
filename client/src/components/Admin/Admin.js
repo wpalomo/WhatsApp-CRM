@@ -30,9 +30,16 @@ class Admin extends Component {
 			sidebarOpen: false
 		})
 	}
+
+	getCompanyNumber = value => {
+		this.setState({
+			companyNum: value
+		})
+	}
  
  	render() {
- 		const { sidebarOpen } = this.state
+ 		const { sidebarOpen, companyNum } = this.state
+ 		console.log('this coy number is >>', companyNum)
  		return(
 			<div className="admin__container"> 
 				<div className="admin__parent">
@@ -40,26 +47,26 @@ class Admin extends Component {
 						<Route path="/admin/home">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<Main />
-							<Sidebar sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Sidebar companyNumberProp={this.getCompanyNumber} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/chats">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<AuthUserContext.Consumer>
 								{ authUser => <Chats authUser={authUser}/>}
 							</AuthUserContext.Consumer>
-							<Sidebar sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Sidebar companyNumberProp={this.getCompanyNumber} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/agents">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<AuthUserContext.Consumer>
 								{ authUser => <Agents authUser={authUser}/> }
 							</AuthUserContext.Consumer>
-							<Sidebar sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Sidebar companyNumberProp={this.getCompanyNumber} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/subscription">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<Subscription />
-							<Sidebar sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Sidebar companyNumberProp={this.getCompanyNumber} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Redirect from="/admin" to="/admin/agents" exact/>
 					</Switch>

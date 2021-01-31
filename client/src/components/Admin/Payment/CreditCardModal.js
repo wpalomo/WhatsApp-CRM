@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthUserContext } from "../../../session/index";
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 
 import "../styles/cardModal.css";
@@ -6,6 +7,11 @@ import "../styles/cardModal.css";
 const CreditCardModal = ({ totalBill, agents, getError, getPaymentStatus }) => {
 	
 	let ftwKey = process.env.REACT_APP_FLUTTERWAVE_PUBLIC_KEY
+	let email;
+	let authUser = useContext(AuthUserContext)
+	if (authUser) {
+		email = authUser.email
+	}
 
 	const config = {
 	    public_key: ftwKey,
@@ -14,8 +20,8 @@ const CreditCardModal = ({ totalBill, agents, getError, getPaymentStatus }) => {
 	    currency: 'USD',
 	    payment_options: 'card,mobilemoney,ussd',
 	    customer: {
-	      email: 'oduguwaoa@gmail.com',
-	      phone_number: '+2347030117552',
+	      email: email,
+	      phone_number: '+2347030117552', 
 	      name: 'Tunde Oduguwa',
 	    },
 	    customizations: {

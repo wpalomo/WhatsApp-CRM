@@ -13,7 +13,7 @@ class PaymentPlans extends Component {
 			selectedRadio: "monthly",
 			currentAgentEntered: 0,
 			showError: false,
-			defaultInput: '',
+			defaultInput: '', 
 			showSuccessModal: false,
 			showErrorModal: false,
 			amountPaid: 0
@@ -41,7 +41,7 @@ class PaymentPlans extends Component {
 	}
 
 	handleRadioClick = (e) => {
-		this.setState({
+		this.setState({ 
 			selectedRadio: e.target.value
 		}, () => {if (this.state.currentAgentEntered) {
 					let totalCost;

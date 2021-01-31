@@ -13,7 +13,7 @@ const Subscription = () => {
 			<div className="subscr__container">
 				<Switch>
 					<Route path="/admin/subscription/home">
-						<Billhead />
+						<Billhead /> 
 						<Billfoot />
 						<Billtopright />
 						<PaymentPlans />
