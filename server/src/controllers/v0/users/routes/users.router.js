@@ -26,7 +26,7 @@ const sendVerificationEmailAdmin = (email, name, link) => {
 		link: link	
 	})
 	const mailOptions = {
-		from:"icepaigez@gmail.com",
+		from:"sauce@sauceflow.com",
 		to: email,
 		subject:"Sauceflow WhatsApp CRM - Please confirm your email address",
 		html: htmlToSend
@@ -58,7 +58,7 @@ const sendVerificationEmailAgent = (email, name, company, link) => {
 		link: link	
 	})
 	const mailOptions = {
-		from:"icepaigez@gmail.com",
+		from:"sauce@sauceflow.com",
 		to: email,
 		subject:"Sauceflow WhatsApp CRM - Please confirm your email address",
 		html: htmlToSend
