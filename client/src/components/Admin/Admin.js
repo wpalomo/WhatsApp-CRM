@@ -15,7 +15,8 @@ class Admin extends Component {
 		super()
 		this.state = {
 			sidebarOpen: false,
-			companyNum:""
+			companyNum:"",
+			companyName:""
 		}
 	}
 
@@ -31,15 +32,18 @@ class Admin extends Component {
 		})
 	}
 
-	getCompanyNumber = value => {
+	getCompanyData = value => {
+		const { companyNumber, companyName } = value
 		this.setState({
-			companyNum: value
+			companyNum: companyNumber,
+			companyName: companyName
 		})
 	}
  
  	render() {
- 		const { sidebarOpen, companyNum } = this.state
- 		console.log('this coy number is >>', companyNum)
+ 		const { sidebarOpen, companyNum, companyName } = this.state
+ 		let fullCompanyData = {companyName, companyNum}
+ 		
  		return(
 			<div className="admin__container"> 
 				<div className="admin__parent">
@@ -47,26 +51,26 @@ class Admin extends Component {
 						<Route path="/admin/home">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<Main />
-							<Sidebar companyNumberProp={this.getCompanyNumber} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Sidebar companyDataProp={this.getCompanyData} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/chats">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<AuthUserContext.Consumer>
 								{ authUser => <Chats authUser={authUser}/>}
 							</AuthUserContext.Consumer>
-							<Sidebar companyNumberProp={this.getCompanyNumber} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Sidebar companyDataProp={this.getCompanyData} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/agents">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<AuthUserContext.Consumer>
 								{ authUser => <Agents authUser={authUser}/> }
 							</AuthUserContext.Consumer>
-							<Sidebar companyNumberProp={this.getCompanyNumber} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Sidebar companyDataProp={this.getCompanyData} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/subscription">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
-							<Subscription />
-							<Sidebar companyNumberProp={this.getCompanyNumber} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
+							<Subscription companyData={fullCompanyData}/>
+							<Sidebar companyDataProp={this.getCompanyData} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Redirect from="/admin" to="/admin/agents" exact/>
 					</Switch>

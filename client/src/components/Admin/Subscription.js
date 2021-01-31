@@ -8,7 +8,7 @@ import AccountDetails from "./Payment/AccountDetails";
 import "./styles/subscription.css";
 
 
-const Subscription = () => {
+const Subscription = ({ companyData }) => {
 	return(
 			<div className="subscr__container">
 				<Switch>
@@ -16,7 +16,7 @@ const Subscription = () => {
 						<Billhead /> 
 						<Billfoot />
 						<Billtopright />
-						<PaymentPlans />
+						<PaymentPlans companyData={companyData}/>
 					</Route>
 					<Route path="/admin/subscription/account-details">
 						<Billhead />

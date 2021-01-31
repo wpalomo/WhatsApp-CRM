@@ -124,6 +124,7 @@ class PaymentPlans extends Component {
 
 	render() {
 		const { totalBill, selectedRadio, showError, currentAgentEntered, defaultInput, showSuccessModal, showErrorModal, amountPaid } = this.state
+		const { companyData } = this.props;
 			return(
 			<div className="expanded__downright">
 				<div className="payment__container">
@@ -195,7 +196,7 @@ class PaymentPlans extends Component {
 						</div>
 						<div className="submit__payment__plan">
 							{ showError ? <div className="bill__error"><p>Error:please enter a number in the Agents field</p></div> : null}
-							<CreditCardModal getPaymentStatus={this.paymentStatus} getError={this.getPaymentError} totalBill={totalBill} agents={currentAgentEntered}/>
+							<CreditCardModal companyData={companyData} getPaymentStatus={this.paymentStatus} getError={this.getPaymentError} totalBill={totalBill} agents={currentAgentEntered}/>
 							<SuccessModal onClose={this.closeSuccessModal} show={showSuccessModal} amountPaid={amountPaid}/>
 							<ErrorModal closeErr={this.closeErrorModal} showErr={showErrorModal}/>
 						</div>

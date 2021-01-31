@@ -8,7 +8,7 @@ import { db } from "../../firebase";
 
 const NOOP = () => {};
 
-const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyNumberProp=NOOP }) => {
+const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyDataProp=NOOP }) => {
 
 	const [companyName, setCompanyName] = useState("")
 	const [companyNumber, setCompanyNumber] = useState(null)
@@ -42,10 +42,10 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyNumberProp=NOOP }
 		getCompany();
 	}, [adminUser])
 
-	//pass the company number out as props to the admin and then subscription component
+	//pass the company name and number out as props to the admin and then subscription component
 	useEffect(() => {
-		companyNumberProp(companyNumber)
-	}, [companyNumber, companyNumberProp])
+		companyDataProp({companyNumber, companyName})
+	}, [companyNumber, companyName, companyDataProp])
 
 
 	const getAgentsPage = () => {

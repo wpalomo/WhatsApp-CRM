@@ -4,8 +4,8 @@ import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 
 import "../styles/cardModal.css";
 
-const CreditCardModal = ({ totalBill, agents, getError, getPaymentStatus }) => {
-	
+const CreditCardModal = ({ totalBill, agents, getError, getPaymentStatus, companyData }) => {
+	const { companyName, companyNum } = companyData;
 	let ftwKey = process.env.REACT_APP_FLUTTERWAVE_PUBLIC_KEY
 	let email;
 	let authUser = useContext(AuthUserContext)
@@ -21,8 +21,8 @@ const CreditCardModal = ({ totalBill, agents, getError, getPaymentStatus }) => {
 	    payment_options: 'card,mobilemoney,ussd',
 	    customer: {
 	      email: email,
-	      phone_number: '+2347030117552', 
-	      name: 'Tunde Oduguwa',
+	      phone_number: companyNum, 
+	      name: companyName,
 	    },
 	    customizations: {
 	      title: 'WhatsApp CRM',
