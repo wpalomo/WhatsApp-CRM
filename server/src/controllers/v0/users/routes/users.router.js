@@ -6,7 +6,7 @@ const mg = require("nodemailer-mailgun-transport")
 const handlebars = require("handlebars")
 const fs = require("fs")
 const path = require("path")
-const { adminApp, db } = require("../../../../config/config");
+const { adminApp, db, admin } = require("../../../../config/config");
 
 
 
@@ -15,7 +15,7 @@ const sendVerificationEmailAdmin = (email, name, link) => {
 	const mailgunAuth = {
 		auth: {
 			api_key: process.env.MAILGUN_API_KEY,
-			domain: process.env.MAILGUN_SANDBOX_DOMAIN
+			domain: process.env.MAILGUN_LIVE_DOMAIN
 		}
 	}
 
@@ -46,7 +46,7 @@ const sendVerificationEmailAgent = (email, name, company, link) => {
 	const mailgunAuth = {
 		auth: {
 			api_key: process.env.MAILGUN_API_KEY,
-			domain: process.env.MAILGUN_SANDBOX_DOMAIN
+			domain: process.env.MAILGUN_LIVE_DOMAIN
 		}
 	}
 
@@ -74,65 +74,79 @@ const sendVerificationEmailAgent = (email, name, company, link) => {
 }
 
 
+
 //test
 //CHECK BELOW THE ROUTER EXPORTS
-
-
 
 router.get('/', (req, res) => {
 	res.status(200).send('this is the users endpoint')
 })
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
 	//create a new user, add it to the db users list for the company and send them a mail to auth
 	let { newAgentEmail, newAgentName, companyid } = req.body.newUserData;
 	let agentFirstName = newAgentName.split(" ")[0]
 	let companyName;
-	let snapshot = db.collection('companies').doc(companyid).get();
+	let currentAgentCount;
+	let totalAgentLimit;
+	let snapshot = await db.collection('companies').doc(companyid).get();
 	if (snapshot) {
 		companyName = snapshot.data().name
+		currentAgentCount = snapshot.data().agentCount
+		totalAgentLimit = snapshot.data().agentLimit
 	}
 	let company = companyName.replace("__", " ").toUpperCase()
 
-	let companyRef = db.collection('companies').doc(companyid).collection('users');
-	adminApp
-		.auth() 
-		.createUser({ 
-			email: newAgentEmail,
-			password: 'password' //default password
-		})
-		.then(async user => {
-			let newAgentId = user.uid
-			//send verification link
-			adminApp
-				.auth()
-				.generateEmailVerificationLink(newAgentEmail)
-				.then(link => {
-					return sendVerificationEmailAgent(newAgentEmail, agentFirstName, company, link)
-				})
-				.catch((error) => {
-				    console.log('error occurred when sending verification email to the agent', error)
-				});
-			//add to general agents
-			await db.collection('allagents').add({
-				agentId: newAgentId,
-				companyId: companyid
-			})	
-
-			//add to company users list (check to see the subscription status of this admin and send an error messsage if they have not paid for a plan)
-			await companyRef.doc(newAgentId).set({ //this will add the new agent with a custom id which is the user id
-				name:newAgentName, 
-				role:'Agent', 
-				email:newAgentEmail, 
-				loggedin:"No", 
-				status:"Pending",  
-				activeAgent: false
+	//check if this company can add new users or need to increase the subscription
+	if (currentAgentCount < totalAgentLimit) {
+		let companyRef = db.collection('companies').doc(companyid).collection('users');
+		adminApp
+			.auth() 
+			.createUser({ 
+				email: newAgentEmail,
+				password: 'password' //default password
 			})
-			res.status(200).send('New user was created successfully')
-		})
-		.catch((error) => {
-		    res.status(400).send(error.message)
-		});
+			.then(async user => {
+				let newAgentId = user.uid
+				//send verification link
+				adminApp
+					.auth()
+					.generateEmailVerificationLink(newAgentEmail)
+					.then(link => {
+						return sendVerificationEmailAgent(newAgentEmail, agentFirstName, company, link)
+					})
+					.catch((error) => {
+					    console.log('error occurred when sending verification email to the agent', error)
+					});
+				//add to general agents
+				await db.collection('allagents').add({
+					agentId: newAgentId,
+					companyId: companyid
+				})	
+
+				//add to company users list (check to see the subscription status of this admin and send an error messsage if they have not paid for a plan)
+				await companyRef.doc(newAgentId).set({ //this will add the new agent with a custom id which is the user id
+					name:newAgentName, 
+					role:'Agent', 
+					email:newAgentEmail, 
+					loggedin:"No", 
+					status:"Pending",  
+					activeAgent: false
+				})
+				
+				//increase the agent count
+				const updateCount = await db.collection('companies').doc(companyid).update({
+					agentCount: admin.firestore.FieldValue.increment(1)
+				})
+
+				res.status(200).send('New user was created successfully')
+			})
+			.catch((error) => {
+			    res.status(400).send(error.message)
+			});
+	} else {
+		res.status(403).send('Please make a new subscription to add more agents')
+	}	
 })
 
 router.post('/admin', (req, res) => {
@@ -152,7 +166,7 @@ router.post('/admin', (req, res) => {
 
 
 exports.UserRouter = router; 
-
+exports.sendVerificationEmailAdmin = sendVerificationEmailAdmin;
 
 // let transport = nodemailer.createTransport({ 
 //   host: "smtp.mailtrap.io",
@@ -180,19 +194,3 @@ exports.UserRouter = router;
 // 	})
 // }
 
-// const sendVerificationEmailAgent = (link, email, company, name) => {
-// 	const message = {
-// 		from: 'admin@sauceflow.com',
-// 		to: `${email}`,
-// 		subject: 'Sauceflow WhatsApp CRM - Please confirm your email address',
-// 		html: `Hey <b>${name}!</b> <br><br>You have been added as a support agent with ${company}! <br><br>please click the link below to verify your email address: <br><br> <a href=${link}>Verify email address</a> <br><br> Once verified, you can <a href="sauceflow.com/login" target="_blank">login</a> <br><br> Your default password is <b>"password"</b>, (all small letters) and you will be prompted to change it! <br><br>If you have any problems, please contact us: <a href="mailto:support@sauceflow.com">Sauceflow</a>`
-// 	}
-
-// 	transport.sendMail(message, (err, info) => {
-// 		if (err) {
-// 			console.log('an error occurred when sending verification email', err)
-// 		} else {
-// 			console.log('this is the info gotten from mailer >>', info)
-// 		}
-// 	})
-// }
