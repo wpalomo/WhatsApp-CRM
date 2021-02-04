@@ -8,7 +8,7 @@ import "./styles/modal.css";
 class AddAgentModal extends Component {
 
 	constructor() { 
-		super()
+		super() 
 		this.state = {
 			newAgentName:"", 
 			newAgentEmail:"",
@@ -55,15 +55,17 @@ class AddAgentModal extends Component {
 				 	this.props.closeModal()
 				 })
 				 .catch(err => {
-				 	if (err.response) {
+				 	if (err.response.data === 'Please make a new subscription to add more agents') {
 				 		this.setState({
 					 		errorMsg: err.response.data,
 					 		showError:true,
 					 		showLoading: false
-					 	}, () => {
-					 		this.setState({ 
-					 			errorMsg: 'An error occurred. Please try again'
-					 		})
+					 	})
+				 	} else {
+				 		this.setState({ 
+					 		errorMsg: 'An error occurred. Please try again',
+					 		showError:true,
+					 		showLoading: false
 					 	})
 				 	}
 				 }) 

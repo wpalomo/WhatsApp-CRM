@@ -4,7 +4,7 @@ import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 
 import "../styles/cardModal.css";
 
-const CreditCardModal = ({ totalBill, agents, getError, getPaymentStatus, companyData, paymentPlan }) => {
+const CreditCardModal = ({ totalBill, agents, getError, getPaymentStatus, companyData, paymentPlan, monthlyCost}) => {
 	const { companyName, companyNum } = companyData;
 	let ftwKey = process.env.REACT_APP_FLUTTERWAVE_PUBLIC_KEY;
 	let merchantId = process.env.REACT_APP_FLUTTERWAVE_MERCHANT_ID;
@@ -36,7 +36,7 @@ const CreditCardModal = ({ totalBill, agents, getError, getPaymentStatus, compan
   const handleFlutterPayment = useFlutterwave(config);
 
   const handlePayment = () => {
-  	if (totalBill < 50) {
+  	if (totalBill < (monthlyCost * 2)) {
   		getError(totalBill)
   	} else {
   		handleFlutterPayment({

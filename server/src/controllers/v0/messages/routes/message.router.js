@@ -8,31 +8,56 @@ const { db, serverTimestamp } = require("../../../../config/config");
 const INSTANCE_URL = 'https://api.maytapi.com/api';
 const token = process.env.MAYTAPI_TOKEN;
 const productId = process.env.MAYTAPI_PRODUCT_ID 
+const ngrokAuthToken = process.env.NGROK_AUTH_TOKEN
+const user = process.env.NGROK_USER;
+const password = process.env.NGROK_PASSWORD;
+const PORT = process.env.PORT;
 
 
-const setupNetwork = async () => {
-	let publicUrl = await ngrok.connect(4000)
-	let webhookUrl = `${publicUrl}/api/v0/message/webhook`
-	let url = `${INSTANCE_URL}/${productId}/setWebhook`
-	axios.post(url, { webhook: webhookUrl }, {
-		headers: {
-			'Content-Type': 'application/json',
-			'x-maytapi-key': token
-		}
-	})
-	.then(res => console.log(res.data))
-	.catch(err => console.log('an error occurred when setting up webhook endpoint >>', err))
+// const setupNetwork = async () => {
+// 	let publicUrl = await ngrok.connect(4000)
+// 	let webhookUrl = `${publicUrl}/api/v0/message/webhook`
+// 	let url = `${INSTANCE_URL}/${productId}/setWebhook`
+// 	axios.post(url, { webhook: webhookUrl }, {
+// 		headers: {
+// 			'Content-Type': 'application/json', 
+// 			'x-maytapi-key': token
+// 		}
+// 	})
+// 	.then(res => console.log(res.data))
+// 	.catch(err => console.log('an error occurred when setting up webhook endpoint >>', err))
+// } 
+
+const setupWhatsAppNetwork = async () => {
+	try {
+		const publicUrl = await ngrok.connect({
+			authtoken: ngrokAuthToken, 
+			subdomain: 'sauceflow-messages',
+			addr: PORT,
+			inspect: false,
+		})
+		let webhookUrl = `${publicUrl}/api/v0/message/webhook`
+		let url = `${INSTANCE_URL}/${productId}/setWebhook`
+		axios.post(url, { webhook: webhookUrl }, {
+			headers: {
+				'Content-Type': 'application/json', 
+				'x-maytapi-key': token
+			}
+		})
+		.then(res => console.log(res.data))
+		.catch(err => console.log('an error occurred when setting up webhook endpoint >>', err))
+	} catch (err) {
+		console.error('Error while connecting Ngrok to whatsapp', err);
+        return new Error('Ngrok-Maytapi connection Failed');
+	}
 } 
+
 
  
 //NEW
 router.get('/', (req, res) => {
 	res.status(200).send('new csteam get route home')
 }) 
-
-// router.post('/sendMessage', async (req, res) => {
-// 	console.log(req.body);
-// })
 
 router.post('/webhook', async (req, res) => {
 	res.sendStatus(200)
@@ -121,6 +146,6 @@ router.post('/webhook', async (req, res) => {
 })
 
 exports.MessageRouter = router;  
-exports.setupNetwork = setupNetwork;
+exports.setupWhatsAppNetwork = setupWhatsAppNetwork;
 
 

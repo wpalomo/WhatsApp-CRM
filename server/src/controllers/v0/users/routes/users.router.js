@@ -34,7 +34,7 @@ const sendVerificationEmailAdmin = (email, name, link) => {
 
 	smtpTransport.sendMail(mailOptions, (err, res) => {
 		if (err) {
-			console.log('mailgun errored out >>', err)
+			console.log(`mailgun admin email to ${email} errored out >>`, err)
 		} else {
 			console.log('the email was sent!')
 		}
@@ -55,7 +55,7 @@ const sendVerificationEmailAgent = (email, name, company, link) => {
 	const htmlToSend = template({
 		name: name,
 		company: company,
-		link: link	
+		link: link	 
 	})
 	const mailOptions = {
 		from:"sauce@sauceflow.com",
@@ -66,7 +66,7 @@ const sendVerificationEmailAgent = (email, name, company, link) => {
 
 	smtpTransport.sendMail(mailOptions, (err, res) => {
 		if (err) {
-			console.log('mailgun errored out >>', err)
+			console.log(`mailgun agent email to ${email} errored out >>`, err)
 		} else {
 			console.log('the email was sent!')
 		}
@@ -166,7 +166,6 @@ router.post('/admin', (req, res) => {
 
 
 exports.UserRouter = router; 
-exports.sendVerificationEmailAdmin = sendVerificationEmailAdmin;
 
 // let transport = nodemailer.createTransport({ 
 //   host: "smtp.mailtrap.io",

@@ -17,7 +17,9 @@ class PaymentPlans extends Component {
 			showSuccessModal: false,
 			showErrorModal: false,
 			amountPaid: 0,
-			flutterwavePaymentplanId: 9606
+			flutterwavePaymentplanId: 9606,
+			monthlyCost:25,
+			annualCost:21
 		}
 	}
 
@@ -48,14 +50,14 @@ class PaymentPlans extends Component {
 					let totalCost;
 					let currentEntry = Math.abs(Number(this.state.currentAgentEntered))
 					if (this.state.selectedRadio === 'monthly') {
-						totalCost = currentEntry * 25
+						totalCost = currentEntry * this.state.monthlyCost
 						if (!isNaN(totalCost)) {
 							this.setState({
 								totalBill: totalCost
 							})
 						}
 					} else {
-						totalCost = currentEntry * 21 * 12
+						totalCost = currentEntry * this.state.annualCost * 12
 						if (!isNaN(totalCost)) {
 							this.setState({
 								totalBill: totalCost,
@@ -67,7 +69,7 @@ class PaymentPlans extends Component {
 	}
 
 	getPaymentError = value => {
-		if (value < 50) {
+		if (value < (this.state.monthlyCost * 2)) {
 			this.setState({
 				showError: true
 			})
@@ -104,7 +106,7 @@ class PaymentPlans extends Component {
 		let agentCount = enteredValue
 		let totalCost;
 		if (selectedRadio === 'monthly') {
-			totalCost = agentCount * 25
+			totalCost = agentCount * this.state.monthlyCost
 			if (!isNaN(totalCost)) {
 				this.setState({
 					totalBill: totalCost,
@@ -113,7 +115,7 @@ class PaymentPlans extends Component {
 				})
 			}
 		} else {
-			totalCost = agentCount * 21 * 12
+			totalCost = agentCount * this.state.annualCost * 12
 			if (!isNaN(totalCost)) {
 				this.setState({
 					totalBill: totalCost,
@@ -124,10 +126,17 @@ class PaymentPlans extends Component {
 			}
 		}
 	}
+
+	//to prevent memory leaks
+	componentWillUnmount() {
+		this.setState = (state, cb) => {
+			return;
+		}
+	}
 	
 
 	render() {
-		const { totalBill, selectedRadio, showError, currentAgentEntered, defaultInput, showSuccessModal, showErrorModal, amountPaid, flutterwavePaymentplanId } = this.state
+		const { totalBill, selectedRadio, showError, currentAgentEntered, defaultInput, showSuccessModal, showErrorModal, amountPaid, flutterwavePaymentplanId, monthlyCost, annualCost } = this.state
 		const { companyData } = this.props;
 			return(
 			<div className="expanded__downright">
@@ -147,7 +156,7 @@ class PaymentPlans extends Component {
 					<div className="payment__mid">
 						<div className= "payment__mid__card">
 							<div className="payment__mid__price">
-								<h1>$25</h1>
+								<h1>${monthlyCost}</h1>
 							</div>
 							<div className="payment__mid__desc">
 								<p>per agent, per month</p>
@@ -156,7 +165,7 @@ class PaymentPlans extends Component {
 						</div>
 						<div className="payment__mid__card">
 							<div className="payment__mid__price">
-								<h1>$21</h1>
+								<h1>${annualCost}</h1>
 							</div>
 							<div className="payment__mid__desc">
 								<p>per agent, per month</p>
@@ -204,7 +213,7 @@ class PaymentPlans extends Component {
 						</div>
 						<div className="submit__payment__plan">
 							{ showError ? <div className="bill__error"><p>Error:please enter a number not less than 2 in the Agents field</p></div> : null}
-							<CreditCardModal companyData={companyData} getPaymentStatus={this.paymentStatus} getError={this.getPaymentError} totalBill={totalBill} agents={currentAgentEntered} paymentPlan={flutterwavePaymentplanId}/>
+							<CreditCardModal companyData={companyData} getPaymentStatus={this.paymentStatus} getError={this.getPaymentError} totalBill={totalBill} agents={currentAgentEntered} paymentPlan={flutterwavePaymentplanId} monthlyCost={monthlyCost}/>
 							<SuccessModal onClose={this.closeSuccessModal} show={showSuccessModal} amountPaid={amountPaid}/>
 							<ErrorModal closeErr={this.closeErrorModal} showErr={showErrorModal}/>
 						</div>

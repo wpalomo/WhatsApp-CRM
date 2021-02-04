@@ -7,11 +7,6 @@ import history from "../History";
 import { db } from "../../firebase";
 import '../styles/register.css';
 
-//whatsapp credentials for adding phone number
-const instanceUrl = process.env.REACT_APP_MAYTAPI_INSTANCE_URL;
-const token = process.env.REACT_APP_MAYTAPI_TOKEN;
-const productId = process.env.REACT_APP_MAYTAPI_PRODUCT_ID;
-
 //DON'T DELETE - code has been replaced with withFirebase below
 // const SignUpPage = () => {
 // 	return(
@@ -82,21 +77,6 @@ class RegisterFormBase extends Component {
 		})
 	} 
 
-	addPhoneNumber = async (number) => {
-		let url = `${instanceUrl}/${productId}/addPhone`
-		try {
-			let response = await axios.post(url, { "number": number }, {
-				headers: {
-					'Content-Type': 'application/json',
-					'x-maytapi-key': token
-				}
-			})
-			return response.data
-		} catch(err) {
-			console.log('an error occurred when setting adding a new phone >>', err)
-		}
-	}
-
 	sendAdminData = (email, name) => {
 		axios.post(`/api/v0/users/admin`, { email, name })
 			.then()
@@ -124,19 +104,13 @@ class RegisterFormBase extends Component {
 					.catch(err => {
 						console.log('Something went wrong with added user to firestore: ', err);
 					})
-					//add a phone in maytapi
-					let phoneData = await this.addPhoneNumber(String(number))
-					console.log('maytapi add phone said', phoneData)
-					let phoneID
-					if (phoneData) {
-						phoneID = phoneData.id
-					}
+					
 					//send a message to the backend to send verification email to the admin
 					this.sendAdminData(email, name)
-
+ 
 					//add the company to the company list and get the doc id
 					try {
-						let newCompany = await companyRef.add({ name:companyName, number: Number(number), phoneID:phoneID })
+						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:0 })
 						let newCompanyId = newCompany.id
 
 						//add to the users collection
@@ -145,7 +119,7 @@ class RegisterFormBase extends Component {
 						//go to the admin route 
 						history.push("/admin")
 					} catch (err) {
-						console.log('Something went wrong with added company to firestore: ', err);
+						console.log('Something went wrong with newly added company to firestore: ', err);
 					}
 					this.setState({ ...initialState })
 				})
