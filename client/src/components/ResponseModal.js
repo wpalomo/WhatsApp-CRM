@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles/responsemodal.css";
 
 const ResponseModal = () => {
 	return(
