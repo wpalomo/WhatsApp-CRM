@@ -120,19 +120,17 @@ class Chats extends Component {
 					let currentCustomer = selectedCustomer[0].name
 					if (currentCustomer) {
 						customerSnapshot = await agentRef.where('name', '==', currentCustomer).get()
-					} else {
-						console.log('i dont have the customer')
-					}
+					} 
+						
 					
 					if (!customerSnapshot.empty) {
 						customerSnapshot.forEach(doc => {
 							customerid = doc.id
 						})
-					} else {
-						console.log('nothing')
-					}
+					} 
+						
 
-					agentRef.doc(customerid).collection('messages').onSnapshot(snapshot => (
+					agentRef.doc(customerid).collection('messages').orderBy('timestamp', 'asc').onSnapshot(snapshot => (
 						this.setState({
 							chatHistory: snapshot.docs.map(doc => {
 								return doc.data()
@@ -261,9 +259,9 @@ class Chats extends Component {
 									<div>{  chatLoading && <div className="chats__loader"><Loader type="Circles" color="#4FCE5D" height={60} width={60}/></div> }</div>
 									{
 										chatHistory.map((obj, idx) => (
-											<p key={idx} className={`chat__message ${obj.user === 'agent' && "chat__receiver"}`}>
+											<p key={idx} className={`chat__message ${typeof(obj.name) === "number" && "chat__receiver"}`}>
 												{ obj.message }
-												<span className="chat__timestamp">{ obj.user }</span>
+												<span className="chat__timestamp">{ new Date(obj.timestamp?.toDate()).toLocaleTimeString() }</span>
 											</p>
 										))
 									}
