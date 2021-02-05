@@ -29,7 +29,8 @@ class ExpandedSingleChat extends Component {
 			customerNum: this.props.selectedCustomer.name,
 			companyUid: this.props.secret.decryption(sessionStorage.getItem('iIi')),
 			chats:[],
-			phoneId: this.props.phoneId
+			phoneId: this.props.phoneId,
+			showModal: false
 		}
 	}  
 
@@ -92,6 +93,12 @@ class ExpandedSingleChat extends Component {
 		})
 	}
 
+	closeModal = () => {
+		this.setState({
+			showModal: false
+		})
+	}
+
 
 	saveResponder = (coyid, client, agentid, clientid, agentMessage, agentName, serverTimestamp, phoneId) => {
 		//for the db
@@ -109,7 +116,9 @@ class ExpandedSingleChat extends Component {
 					this.sendResponse(coyid, agentid, clientid, agentMessage, agentName, serverTimestamp)
 					this.sendMessageToWhatsapp(client, agentMessage, phoneId)
 				} else {
-					alert('an agent already responded to this customer!')
+					this.setState({
+						showModal: true
+					})
 				}
 			} else {//no one has responded
 				this.sendResponse(coyid, agentid, clientid, agentMessage, agentName, serverTimestamp)
@@ -204,7 +213,7 @@ class ExpandedSingleChat extends Component {
 	}
   
 	render() {
-		const { agentMessage, customerNum, chats } = this.state
+		const { agentMessage, customerNum, chats, showModal } = this.state
 		//decrypt agent name
 		let codedAgentName = sessionStorage.getItem('iii')
 		let deCodedAgentName = this.props.secret.decryption(codedAgentName)
@@ -235,11 +244,11 @@ class ExpandedSingleChat extends Component {
 				    { chats.map((chat, idx) => (
 				    	<p key={idx} className={`chat__message ${chat.name === agentName && "chat__receiver"}`}>
 				    		{ chat.message }
-				    		<span className="chat__timestamp">{ //new Date(chat.timestamp?.toDate()).toUTCString() 
-				    		}</span> 
+				    		<span className="chat__timestamp">{ new Date(chat.timestamp?.toDate()).toLocaleTimeString() }</span> 
 				    	</p>
 				    )) }
 				    <div ref={this.chatRef}/>
+				   { showModal && <p onClick={this.closeModal} className="already__responded">An agent already responded to this customer!</p> }
 			    </div>
 			    <div className="chat__footer">  
 			    	<IconButton>

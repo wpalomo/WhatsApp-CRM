@@ -112,7 +112,7 @@ class RegisterFormBase extends Component {
 					try {
 						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:0 })
 						let newCompanyId = newCompany.id
-
+ 
 						//add to the users collection
 						companyRef.doc(newCompanyId).collection('users').add({ name:name, role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
 						this.setState({ showLoading: false })

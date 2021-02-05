@@ -44,7 +44,7 @@ const setupWhatsAppNetwork = async () => {
 				'x-maytapi-key': token
 			}
 		})
-		.then(res => console.log(res.data))
+		.then()
 		.catch(err => console.log('an error occurred when setting up webhook endpoint >>', err))
 	} catch (err) {
 		console.error('Error while connecting Ngrok to whatsapp', err);
@@ -52,6 +52,21 @@ const setupWhatsAppNetwork = async () => {
 	}
 } 
 
+const sendMessageToWhatsapp = (number, message, phoneId) => {
+		let body = {
+			to_number:number,
+			message:message,
+			type: "text"
+		}
+		let url = `${INSTANCE_URL}/${productId}/${phoneId}/sendMessage`
+		axios.post(url, body, {
+			headers: {
+				"x-maytapi-key":token
+			}
+		})
+		.then()
+		.catch(err => console.log('an error occurred when sending a message with maytapi >>', err))
+}
 
  
 //NEW
@@ -62,7 +77,7 @@ router.get('/', (req, res) => {
 router.post('/webhook', async (req, res) => {
 	res.sendStatus(200)
 	if (req.body.type === 'ack') {//message status
-		console.log(req.body.data[0].ackType)
+		return;
 	} else {
 		let { message, user, receiver } = req.body;
 		let { type, text, fromMe } = message;
@@ -80,9 +95,11 @@ router.post('/webhook', async (req, res) => {
 				//get the company associated with this number
 				let companySnapshot = await db.collection('companies').where('number', '==', Number(receiver)).get()
 				let companyId;
+				let phoneId;
 				if (!companySnapshot.empty) {
 					companySnapshot.forEach(doc => {
 						companyId = doc.id
+						phoneId = doc.data().phoneID
 					})
 				}
 				if (companyId) {
@@ -95,7 +112,8 @@ router.post('/webhook', async (req, res) => {
 							activeAgents.push(doc.id)
 						})
 					} else {
-						console.log('All agents are offline, please leave a message and we\'ll get to you ASAP')
+						let feedback = 'All our agents are offline, please leave a message and we\'ll get to you ASAP'
+						sendMessageToWhatsapp(phone, feedback, phoneId)
 					}
 
 					//check for current responders
