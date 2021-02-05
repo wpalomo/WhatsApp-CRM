@@ -19,6 +19,10 @@
 	padding: 10px;
 }
 
+.response__modal__footer {
+	text-align: right;
+}
+
 .response__modal__title {
 	margin: 0;
 }

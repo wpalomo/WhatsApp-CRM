@@ -1,7 +1,10 @@
 import React from "react";
 import "./styles/responsemodal.css";
 
-const ResponseModal = () => {
+const ResponseModal = props => {
+	if (!props.showModal) {
+		return null
+	}
 	return(
 		<div className="response__modal">
 			<div className="response__modal__content">
@@ -12,7 +15,7 @@ const ResponseModal = () => {
 					An agent already responded to this customer!
 				</div>
 				<div className="response__modal__footer">
-					<button className="response__modal__button">OK</button>
+					<button onClick={props.onClose} className="response__modal__button">OK</button>
 				</div>
 			</div>
 		</div>

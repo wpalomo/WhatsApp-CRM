@@ -249,7 +249,7 @@ class ExpandedSingleChat extends Component {
 				    	</p>
 				    )) }
 				    <div ref={this.chatRef}/>
-				   { showModal && <ResponseModal onClick={this.closeModal} /> }
+				   { <ResponseModal showModal={showModal} onClose={this.closeModal} /> }
 			    </div>
 			    <div className="chat__footer">  
 			    	<IconButton>
