@@ -8,6 +8,7 @@ import axios from 'axios';
 //import { SearchOutlined, MoreVert } from "@material-ui/icons";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
+import ResponseModal from "./ResponseModal";
 import { db, serverTimestamp } from '../firebase';
  
 import "./styles/chat.css";
@@ -248,7 +249,7 @@ class ExpandedSingleChat extends Component {
 				    	</p>
 				    )) }
 				    <div ref={this.chatRef}/>
-				   { showModal && <p onClick={this.closeModal} className="already__responded">An agent already responded to this customer!</p> }
+				   { showModal && <ResponseModal onClick={this.closeModal} /> }
 			    </div>
 			    <div className="chat__footer">  
 			    	<IconButton>
