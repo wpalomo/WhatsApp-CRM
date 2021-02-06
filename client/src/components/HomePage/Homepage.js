@@ -52,7 +52,7 @@ const HomePage = () => {
 					</div>
 				</div>
 				<div className="home__rightarea">
-					<HomeAnimation animationData={animationData}/>
+					<HomeAnimation animationData={animationData} style={{ width: 600, height: 500 }}/>
 				</div>
 			</div>
 		</div>

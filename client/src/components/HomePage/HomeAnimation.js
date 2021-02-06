@@ -9,7 +9,7 @@ class HomeAnimation extends Component {
 				animationData={this.props.animationData}
 				loop
 				play
-				style={{ width: 600, height: 500 }}
+				style={this.props.style}
 			/>
 		)
 	}
