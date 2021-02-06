@@ -23,7 +23,7 @@ const AgentPage = () => (
 class UserBase extends Component {
 
 	constructor(props) {
-		super(props)
+		super(props) 
 		this.state = {
 			allChats:[],
 			selectedCustomer:{},
@@ -116,7 +116,7 @@ class UserBase extends Component {
 				<Switch>
 					<Route path="/customers/all">
 						<LeftBar getCustomerData={this.getCustomer} companyid={companyid} customerList={allChats}/>
-						<AgentWelcome name={agentName}/>
+						<AgentWelcome name={agentName} companyid={companyid} agentUid={agentID}/>
 					</Route>
 					<Route path="/customers/:customerId">
 						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>

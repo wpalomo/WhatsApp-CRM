@@ -5,22 +5,22 @@ import HomeAnimation from "./HomePage/HomeAnimation";
 import history from "./History";
 import "./styles/welcome.css";
 import animationData from "../anime/welcome.json";
+import { db } from '../firebase'
 
-const AgentWelcome = ({ name }) => {
+const AgentWelcome = ({ name, companyid, agentUid }) => {
 	const firebase = useContext(FirebaseContext)
+
 	let firstName = name.split(" ")[0]
 
 	const signOut = async () => {
-		// const { companyUid } = this.state
-		// const { agentUid } = this.props
-		// //signout the agent
-		// if (companyUid && agentUid) {
-		// 	let agentSnapshot = await db.collection('companies').doc(companyUid).collection('users').doc(agentUid)
-		// 	if (agentSnapshot) {
-		// 		await agentSnapshot.update({ loggedin: 'No'})
-		// 	}
-		// }
-		
+		//signout the agent
+		if (companyid && agentUid) {
+			let agentSnapshot = await db.collection('companies').doc(companyid).collection('users').doc(agentUid)
+			if (agentSnapshot) {
+				await agentSnapshot.update({ loggedin: 'No'})
+			}
+		}
+
 		firebase.doSignOut()
 		sessionStorage.clear()
 		history.push('/')
