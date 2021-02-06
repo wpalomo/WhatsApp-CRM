@@ -300,20 +300,6 @@ class ExpandedSingleChat extends Component {
 				<div ref={this.chatRef}/>
 			</div>
 		)
-
-		// return(
-		// 	<div> 
-		// 		{ 
-		// 		   yesterday.map((chat, idx) => (
-		// 			   <p key={idx} className={`chat__message ${chat.name === agentName && "chat__receiver"}`}>
-		// 			    	{ chat.message }
-		// 			    	<span className="chat__timestamp">{ new Date(chat.timestamp?.toDate()).toLocaleTimeString() }</span> 
-		// 			   </p>
-		// 		  	)) 
-		// 		}
-		// 		<div ref={this.chatRef}/>
-		// 	</div>
-		// )
 	}
   
 	render() {
@@ -349,20 +335,6 @@ class ExpandedSingleChat extends Component {
 			    		this.messageGroup(chats, agentName)
 			    	}
 			    </div>
-			    {
-			    	//replaced by messageGroup function above
-			    	// <div className="chat__body"> 
-			    	// 	{ 
-			    	// 		chats.map((chat, idx) => (
-			    	// 			<p key={idx} className={`chat__message ${chat.name === agentName && "chat__receiver"}`}>
-			    	// 				{ chat.message }
-			    	// 				<span className="chat__timestamp">{ new Date(chat.timestamp?.toDate()).toLocaleTimeString() }</span> 
-			    	// 			</p>
-			    	// 		)) 
-			    	// 	}
-			    	// 	<div ref={this.chatRef}/>		 			    
-			    	// </div>
-			    }
 			    <div className="chat__footer">  
 			    	<IconButton>
 			    		<InsertEmoticonIcon />

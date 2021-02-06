@@ -7,7 +7,7 @@
 	height: 100%;
 }
 
-.welcome__container > .welcome__text {
+.welcome__container > .welcome__text, .welcome__container > .welcome__signout {
 	margin: 20px;
 	color: grey;
 	font-weight: 700;
