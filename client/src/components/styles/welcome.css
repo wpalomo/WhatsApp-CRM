@@ -4,14 +4,18 @@
 }
 
 .welcome__container {
-	border: 1px solid blue;
 	height: 100%;
-
 }
 
-.welcome__container > p {
+.welcome__container > .welcome__text {
 	margin: 20px;
 	color: grey;
 	font-weight: 700;
 	text-align: center;
+}
+
+.welcome__container > .welcome__anime {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
