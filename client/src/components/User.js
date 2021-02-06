@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { AuthUserContext, withAuthorization } from "../session/index";
 import LeftBar from "./LeftSideBar/LeftBar";
 import ExpandedSingleChat from "./ExpandedSingleChat";
+import AgentWelcome from "./AgentWelcome";
 import './styles/user.css';
 import { db } from '../firebase'
 
@@ -106,6 +107,7 @@ class UserBase extends Component {
 				<Switch>
 					<Route path="/customers/all">
 						<LeftBar getCustomerData={this.getCustomer} companyid={companyid} customerList={allChats}/>
+						<AgentWelcome />
 					</Route>
 					<Route path="/customers/:customerId">
 						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>
