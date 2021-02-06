@@ -212,6 +212,109 @@ class ExpandedSingleChat extends Component {
 			return;
 		}
 	}
+
+	messageGroup = (array, agentName) => {
+
+		const dateToMils = (ts) => {
+		    let dateStr = new Date(ts).toDateString()
+		    let milliSecs = new Date(dateStr).getTime()
+		    return milliSecs
+		}
+
+		const convertHourToMilli = hr => {
+			const ms = 1000 * 60 * 60 
+			return ms * hr
+		}
+
+		let todayMillisecs = new Date(new Date().toDateString()).getTime()
+
+		
+		let today = array.filter(obj => dateToMils(obj.timestamp?.toDate()) === todayMillisecs)
+		let yesterday = array.filter(obj => (todayMillisecs - dateToMils(obj.timestamp?.toDate())) === convertHourToMilli(24))
+
+		//messages grouped by date
+		let msgGrps = []
+
+		let olderDays = array.filter(obj => (todayMillisecs - dateToMils(obj.timestamp?.toDate())) > convertHourToMilli(24))
+		if (olderDays.length > 0) {
+			let allDates = []
+			for (let obj of olderDays) {
+				allDates.push(obj?.timestamp?.toDate()) //if there is an object and if it has a timestamp entry
+			}
+			//convert to date string
+			let dateStrings = allDates.map(date => new Date(date).toDateString())
+
+			//get unique dates
+			let uniqueDates = new Set(dateStrings)
+			let grp;
+			for (let date of uniqueDates) {
+				grp = olderDays.filter(obj => date === new Date(obj.timestamp?.toDate()).toDateString())
+				msgGrps.push(grp)
+			}
+		}
+		
+		
+		return(
+			<div>
+				<div className="older__chats">
+					{
+						msgGrps.map((array, i) => (
+							<div key={i} className="this__day">
+								<div className="this__day__header">
+									<p>{ new Date(array[0]?.timestamp?.toDate()).toDateString() }</p>
+								</div>
+								{
+									array.map((chat, idx) => (
+										<p key={idx} className={`chat__message ${chat.name === agentName && "chat__receiver"}`}>
+									    	{ chat.message }
+									    	<span className="chat__timestamp">{ new Date(chat.timestamp?.toDate()).toLocaleTimeString() }</span> 
+									   </p>
+									))
+								}
+							</div>
+						))
+					}
+				</div>
+				<div className="yesterday__chats">
+					{ yesterday.length === 0 ? "" : <div className="yesterday__header"><p>YESTERDAY</p></div> }	
+					{ 
+					   yesterday.map((chat, idx) => (
+						   <p key={idx} className={`chat__message ${chat.name === agentName && "chat__receiver"}`}>
+						    	{ chat.message }
+						    	<span className="chat__timestamp">{ new Date(chat.timestamp?.toDate()).toLocaleTimeString() }</span> 
+						   </p>
+					  	)) 
+					}
+				</div>
+				<div className="today__chats">
+					{ today.length === 0 ? "" : <div className="today__header"><p>TODAY</p></div> }
+					{ 
+					   today.map((chat, idx) => (
+						   <p key={idx} className={`chat__message ${chat.name === agentName && "chat__receiver"}`}>
+						    	{ chat.message }
+						    	<span className="chat__timestamp">{ new Date(chat.timestamp?.toDate()).toLocaleTimeString() }</span> 
+						   </p>
+					  	)) 
+					}
+				</div>
+				<div ref={this.chatRef}/>
+			</div>
+		)
+
+		// return(
+		// 	<div> 
+		// 		{ 
+		// 		   yesterday.map((chat, idx) => (
+		// 			   <p key={idx} className={`chat__message ${chat.name === agentName && "chat__receiver"}`}>
+		// 			    	{ chat.message }
+		// 			    	<span className="chat__timestamp">{ new Date(chat.timestamp?.toDate()).toLocaleTimeString() }</span> 
+		// 			   </p>
+		// 		  	)) 
+		// 		}
+		// 		<div ref={this.chatRef}/>
+		// 	</div>
+		// )
+	}
   
 	render() {
 		const { agentMessage, customerNum, chats, showModal } = this.state
@@ -229,7 +332,7 @@ class ExpandedSingleChat extends Component {
 						<p>
 							Last seen{" "}
 							{
-								new Date(chats[chats.length - 1]?.timestamp?.toDate()).toUTCString()
+								new Date(chats[chats.length - 1]?.timestamp?.toDate()).toLocaleString()
 							}
 						</p>
 					</div>
@@ -241,20 +344,25 @@ class ExpandedSingleChat extends Component {
 						}
 					</div>
 			    </div>
-			    <div className="chat__body"> 
-				    { chats.map((chat, idx) => (
-				    	<p key={idx} className={`chat__message ${chat.name === agentName && "chat__receiver"}`}>
-				    		{ chat.message }
-				    		<span className="chat__timestamp">{ new Date(chat.timestamp?.toDate()).toLocaleTimeString() }</span> 
-				    	</p>
-				    )) }
-				    <div ref={this.chatRef}/>
-				   { 
-					   	<ResponseModal title="Notice" showModal={showModal} onClose={this.closeModal}> 
-					   		<p>An agent already responded to this customer!</p>
-					   </ResponseModal>
-					}
+			    <div className="chat__body">
+			    	{
+			    		this.messageGroup(chats, agentName)
+			    	}
 			    </div>
+			    {
+			    	//replaced by messageGroup function above
+			    	// <div className="chat__body"> 
+			    	// 	{ 
+			    	// 		chats.map((chat, idx) => (
+			    	// 			<p key={idx} className={`chat__message ${chat.name === agentName && "chat__receiver"}`}>
+			    	// 				{ chat.message }
+			    	// 				<span className="chat__timestamp">{ new Date(chat.timestamp?.toDate()).toLocaleTimeString() }</span> 
+			    	// 			</p>
+			    	// 		)) 
+			    	// 	}
+			    	// 	<div ref={this.chatRef}/>		 			    
+			    	// </div>
+			    }
 			    <div className="chat__footer">  
 			    	<IconButton>
 			    		<InsertEmoticonIcon />
@@ -270,6 +378,11 @@ class ExpandedSingleChat extends Component {
 			    		<MicIcon />
 			    	</IconButton>
 			    </div>
+			    { 
+					<ResponseModal title="Notice" showModal={showModal} onClose={this.closeModal}> 
+				   		<p>An agent already responded to this customer!</p>
+				   </ResponseModal>
+				}
 			</div>
 		)
 	}

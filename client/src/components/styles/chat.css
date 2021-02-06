@@ -90,3 +90,29 @@
 	padding: 10px;
 	color: gray;
 }
+
+.historical__date {
+	border: 1px solid red;
+	text-align: center;
+}
+
+.yesterday__chats > .yesterday__header,  .today__chats > .today__header, .this__day > .this__day__header {
+	text-align: center;
+	margin-bottom: 15px;
+	font-size: 11px;
+	color: gray;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.yesterday__header > p, .today__header > p, .this__day__header > p {
+	border: 1px solid blue; 
+	padding: 5px;
+	border-radius: 3px;
+	border: none;
+	background-color: lightblue;
+}
