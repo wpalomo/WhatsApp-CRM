@@ -77,8 +77,8 @@ class RegisterFormBase extends Component {
 		})
 	} 
 
-	sendAdminData = (email, name) => {
-		axios.post(`/api/v0/users/admin`, { email, name })
+	sendAdminData = (email, name, phoneNumber) => {
+		axios.post(`/api/v0/users/admin`, { email, name, phoneNumber })
 			.then()
 			.catch(err => console.log('error occurred when sending admin data to server', err))
 	}
@@ -106,7 +106,7 @@ class RegisterFormBase extends Component {
 					})
 					
 					//send a message to the backend to send verification email to the admin
-					this.sendAdminData(email, name)
+					this.sendAdminData(email, name, number) 
  
 					//add the company to the company list and get the doc id
 					try {

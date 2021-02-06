@@ -7,6 +7,7 @@ const handlebars = require("handlebars")
 const fs = require("fs")
 const path = require("path")
 const { adminApp, db, admin } = require("../../../../config/config");
+const { freeTrial } = require('../../../../maytapi/trial');
 
 
 
@@ -150,10 +151,10 @@ router.post('/', async (req, res) => {
 })
 
 router.post('/admin', (req, res) => {
-	const { email, name } = req.body;
+	const { email, name, phoneNumber } = req.body;
 	let firstName = name.split(" ")[0]
 	//send verification link
-	adminApp
+	adminApp 
 		.auth()
 		.generateEmailVerificationLink(email)
 		.then(link => {
@@ -162,6 +163,7 @@ router.post('/admin', (req, res) => {
 		.catch((error) => {
 			console.log('error occurred when sending verification email to the admin', error)
 		});
+	//sign up on maytapi for free trial - 3 agents for 2 days
 })
 
 

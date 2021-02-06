@@ -6,6 +6,7 @@ require('dotenv').config()
 const { IndexRouter } = require('./controllers/v0/index.router');
 const { setupWhatsAppNetwork } = require('./controllers/v0/messages/routes/message.router');
 const { setupFlutterNetwork } = require('./controllers/v0/payments/routes/payments.router');
+const { freeTrial } = require('./maytapi/trial');
 
 
 const PORT = process.env.PORT || 4000;
@@ -27,7 +28,7 @@ app.post('/', (req, res) => {
 
 app.listen(PORT, async () => {
 	console.log(`The server is running on port ${ PORT }`)
-	await setupWhatsAppNetwork() 
-	await setupFlutterNetwork()
+	// await setupWhatsAppNetwork() 
+	// await setupFlutterNetwork()
 });
  

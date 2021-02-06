@@ -3,8 +3,6 @@ const express = require("express");
 const socket = require('socket.io');
 const http = require('http');
 
-//https://dev.to/bravemaster619/how-to-prevent-multiple-socket-connections-and-events-in-react-531d
-
 const sockApp = express()
 const server = http.createServer(sockApp)
 
