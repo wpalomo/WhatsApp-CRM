@@ -1,8 +1,14 @@
 import React from "react";
+import "./styles/welcome.css";
 
-const AgentWelcome = () => {
+const AgentWelcome = ({ name }) => {
+	let firstName = name.split(" ")[0]
 	return(
-		<p>Welcome</p>
+		<div className="agent__welcome">
+			<div className="welcome__container">
+				<p>Welcome { firstName }!</p>
+			</div>
+		</div>
 	)
 }
 

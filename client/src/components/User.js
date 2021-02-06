@@ -29,7 +29,8 @@ class UserBase extends Component {
 			selectedCustomer:{},
 			companyid:"",
 			agentID: this.props.authUser ? this.props.authUser.uid : this.props.authUser,
-			phoneId:""
+			phoneId:"",
+			agentName: ""
 		}
 	} 
 
@@ -67,6 +68,14 @@ class UserBase extends Component {
 					phoneId: phoneRef.data().phoneID
 				}) 
 			} 
+
+			//agentName
+			let nameRef = await db.collection('companies').doc(companyid).collection('users').doc(agentID).get()
+			if (nameRef) {
+				this.setState({
+					agentName: nameRef.data().name
+				})
+			}
 		}
 	}  
  
@@ -100,14 +109,14 @@ class UserBase extends Component {
 	}
 	
 	render() {
-		const { allChats, selectedCustomer, agentID, companyid, phoneId } = this.state
+		const { allChats, selectedCustomer, agentID, companyid, phoneId, agentName } = this.state
 		
 		return (
 			<div className="app__body">
 				<Switch>
 					<Route path="/customers/all">
 						<LeftBar getCustomerData={this.getCustomer} companyid={companyid} customerList={allChats}/>
-						<AgentWelcome />
+						<AgentWelcome name={agentName}/>
 					</Route>
 					<Route path="/customers/:customerId">
 						<LeftBar getCustomerData={this.getCustomer} customerList={allChats}/>

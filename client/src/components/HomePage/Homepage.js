@@ -2,6 +2,7 @@ import React from "react";
 import HomeAnimation from "./HomeAnimation";
 import history from "../History";
 import "./homepage.css"; 
+import animationData from "../../anime/team.json";
  
 const HomePage = () => {
 	
@@ -51,7 +52,7 @@ const HomePage = () => {
 					</div>
 				</div>
 				<div className="home__rightarea">
-					<HomeAnimation />
+					<HomeAnimation animationData={animationData}/>
 				</div>
 			</div>
 		</div>
