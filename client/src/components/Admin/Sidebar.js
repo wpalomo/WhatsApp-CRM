@@ -64,6 +64,10 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyDataProp=NOOP }) 
 		history.push('/admin/subscription') 
 	}
 
+	const addPhonePage = () => {
+		history.push('/admin/addPhone') 
+	}
+
 	//loguout with auth
 	const logOut = () => {
 		firebase.doSignOut()
@@ -90,7 +94,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyDataProp=NOOP }) 
 				{
 					//<h2>MNG</h2>
 				}
-				<div onClick={chatsPage} className="sidebar__link sidebar__test">
+				<div onClick={addPhonePage} className="sidebar__link sidebar__test">
 					<i className="fa fa-phone-square"></i>
 					<p>Phone</p>
 				</div>

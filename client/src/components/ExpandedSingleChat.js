@@ -15,8 +15,6 @@ import "./styles/chat.css";
 
 //whatsapp credentials for sending message
 const instanceUrl = process.env.REACT_APP_MAYTAPI_INSTANCE_URL;
-const token = process.env.REACT_APP_MAYTAPI_TOKEN;
-const productId = process.env.REACT_APP_MAYTAPI_PRODUCT_ID;
 
 
 class ExpandedSingleChat extends Component {
@@ -31,7 +29,9 @@ class ExpandedSingleChat extends Component {
 			companyUid: this.props.secret.decryption(sessionStorage.getItem('iIi')),
 			chats:[],
 			phoneId: this.props.phoneId,
-			showModal: false
+			showModal: false,
+			productID: this.props.productID,
+			token: this.props.token
 		}
 	}  
 
@@ -63,7 +63,7 @@ class ExpandedSingleChat extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if ((prevProps.selectedCustomer.name !== this.props.selectedCustomer.name) || (prevProps.agentUid !== this.props.agentUid) || (prevProps.phoneId !== this.props.phoneId)) { //this condition handles when the agent selects another customer OR if the page is refreshed
+		if ((prevProps.selectedCustomer.name !== this.props.selectedCustomer.name) || (prevProps.agentUid !== this.props.agentUid) || (prevProps.phoneId !== this.props.phoneId) || (prevProps.productID !== this.props.productID) || (prevProps.token !== this.props.token)) { //this condition handles when the agent selects another customer OR if the page is refreshed
 			const { companyUid } = this.state
 			const { agentUid, secret } = this.props
 			//get code from sessionstorage and decrypt - customer id and customer number
@@ -82,14 +82,16 @@ class ExpandedSingleChat extends Component {
 				this.getAllMessages(customerId, agentID, companyUid)
 			}
 			this.setState({
-				phoneId: this.props.phoneId
+				phoneId: this.props.phoneId,
+				productID: this.props.productID,
+				token: this.props.token
 			})
 		}
 		this.scrollToBottom()
 	}
  
 	getAgentMessage = e => {
-		this.setState({
+		this.setState({ 
 			agentMessage: e.target.value
 		})
 	}
@@ -101,7 +103,7 @@ class ExpandedSingleChat extends Component {
 	}
 
 
-	saveResponder = (coyid, client, agentid, clientid, agentMessage, agentName, serverTimestamp, phoneId) => {
+	saveResponder = (coyid, client, agentid, clientid, agentMessage, agentName, serverTimestamp, phoneId, productID, token) => {
 		//for the db
 		db.collection('companies').doc(coyid).collection('response')
 		  .get()
@@ -115,7 +117,7 @@ class ExpandedSingleChat extends Component {
 				let responder = data[0].agentid
 				if (responder === agentid) {
 					this.sendResponse(coyid, agentid, clientid, agentMessage, agentName, serverTimestamp)
-					this.sendMessageToWhatsapp(client, agentMessage, phoneId)
+					this.sendMessageToWhatsapp(client, agentMessage, phoneId, productID, token)
 				} else {
 					this.setState({
 						showModal: true
@@ -123,7 +125,7 @@ class ExpandedSingleChat extends Component {
 				}
 			} else {//no one has responded
 				this.sendResponse(coyid, agentid, clientid, agentMessage, agentName, serverTimestamp)
-				this.sendMessageToWhatsapp(client, agentMessage, phoneId)
+				this.sendMessageToWhatsapp(client, agentMessage, phoneId, productID, token)
 				db.collection('companies').doc(coyid).collection('response').add({ customer:Number(client), agentid:agentid, customerid:clientid })
 			}
 		  })
@@ -144,13 +146,13 @@ class ExpandedSingleChat extends Component {
 		})							  
 	}
 
-	sendMessageToWhatsapp = (number, message, phoneId) => {
+	sendMessageToWhatsapp = (number, message, phoneId, productID, token) => {
 		let body = {
 			to_number:number,
 			message:message,
 			type: "text"
 		}
-		let url = `${instanceUrl}/${productId}/${phoneId}/sendMessage`
+		let url = `${instanceUrl}/${productID}/${phoneId}/sendMessage`
 		axios.post(url, body, {
 			headers: {
 				"x-maytapi-key":token
@@ -164,7 +166,7 @@ class ExpandedSingleChat extends Component {
 		//send to db, pull from db and show on the screen, in the left bar, and pass to the server
 		//to server
 		e.preventDefault()
-		const { agentMessage, customerNum, companyUid, phoneId } = this.state
+		const { agentMessage, customerNum, companyUid, phoneId, productID, token } = this.state
 		const { agentUid, secret } = this.props
 		
 		//get code from sessionstorage and decrypt - customer id
@@ -179,7 +181,7 @@ class ExpandedSingleChat extends Component {
 		let agentID = agentUid
 		//save agent message to db which is automatically shown on the screen
 		if (customerId) {
-			this.saveResponder(companyUid, customerNum, agentID, customerId, agentMessage, agentName, serverTimestamp, phoneId)
+			this.saveResponder(companyUid, customerNum, agentID, customerId, agentMessage, agentName, serverTimestamp, phoneId, productID, token)
 		}		
 		//clear the form
 		this.setState({

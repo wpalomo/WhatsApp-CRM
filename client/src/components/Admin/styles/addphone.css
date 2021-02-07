@@ -1,0 +1,8 @@
+.addphone__container {
+	grid-area:main;
+}
+
+.addphone__parent > img {
+	max-width:100%;
+	max-height:100%;
+}

@@ -7,6 +7,7 @@ import Sidebar from './Sidebar';
 import Main from "./Main";
 import Agents from "./Agents";
 import Subscription from "./Subscription"; 
+import AddPhone from "./AddPhone";
 import "../styles/admin.css";
 
 class Admin extends Component {
@@ -51,6 +52,11 @@ class Admin extends Component {
 						<Route path="/admin/home">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<Main />
+							<Sidebar companyDataProp={this.getCompanyData} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
+						</Route>
+						<Route path="/admin/addPhone">
+							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
+							<AddPhone />
 							<Sidebar companyDataProp={this.getCompanyData} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/chats">
