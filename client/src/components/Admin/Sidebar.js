@@ -91,6 +91,10 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyDataProp=NOOP }) 
 					//<h2>MNG</h2>
 				}
 				<div onClick={chatsPage} className="sidebar__link sidebar__test">
+					<i className="fa fa-phone-square"></i>
+					<p>Phone</p>
+				</div>
+				<div onClick={chatsPage} className="sidebar__link sidebar__test">
 					<i className="fa fa-comments"></i>
 					<p>Chats</p>
 				</div>

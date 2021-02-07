@@ -1,15 +1,20 @@
 "use strict";
 const express = require("express");
+const axios = require('axios');
 const router = express.Router();
+const ngrok = require('ngrok');
 const nodemailer = require('nodemailer');
 const mg = require("nodemailer-mailgun-transport")
 const handlebars = require("handlebars")
 const fs = require("fs")
 const path = require("path")
+const crypto = require('crypto');
 const { adminApp, db, admin } = require("../../../../config/config");
 const { freeTrial } = require('../../../../maytapi/trial');
 
-
+const INSTANCE_URL = 'https://api.maytapi.com/api';
+const ngrokAuthToken = process.env.NGROK_AUTH_TOKEN
+const PORT = process.env.PORT || 4000;
 
 const sendVerificationEmailAdmin = (email, name, link) => {
 	const emailTemplateSource = fs.readFileSync(path.join(__dirname, "/emails/admin.hbs"), "utf8");
@@ -72,6 +77,45 @@ const sendVerificationEmailAgent = (email, name, company, link) => {
 			console.log('the email was sent!')
 		}
 	})
+}
+
+const trialNetwork = async (productId, token, tunnel) => {
+	try {
+		const publicUrl = await ngrok.connect({
+			authtoken: ngrokAuthToken, 
+			subdomain: tunnel,
+			addr: PORT,
+			inspect: false,
+		})
+		let webhookUrl = `${publicUrl}/api/v0/message/webhook`
+		let url = `${INSTANCE_URL}/${productId}/setWebhook`
+		axios.post(url, { webhook: webhookUrl }, {
+			headers: {
+				'Content-Type': 'application/json', 
+				'x-maytapi-key': token
+			}
+		})
+		.then(res => console.log(res.data))
+		.catch(err => console.log('error on free trial webhook endpoint >>', err))
+	} catch (err) {
+		console.error('Error while connecting Ngrok to whatsapp', err);
+        return new Error('Ngrok-Maytapi connection Failed');
+	}
+} 
+
+const addTrialNumber = async (number, productId, token) => {
+		let url = `${INSTANCE_URL}/${productId}/addPhone`
+		try {
+			let response = await axios.post(url, { "number": number }, {
+				headers: {
+					'Content-Type': 'application/json',
+					'x-maytapi-key': token
+				}
+			})
+			return response.data
+		} catch(err) {
+			console.log('an error occurred when setting adding a new phone >>', err)
+		}
 }
 
 
@@ -150,48 +194,49 @@ router.post('/', async (req, res) => {
 	}	
 })
 
-router.post('/admin', (req, res) => {
+router.post('/admin', async (req, res) => {
 	const { email, name, phoneNumber } = req.body;
 	let firstName = name.split(" ")[0]
-	//send verification link
-	adminApp 
-		.auth()
-		.generateEmailVerificationLink(email)
-		.then(link => {
-			return sendVerificationEmailAdmin(email, firstName, link)
+	res.sendStatus(200)
+	try {
+		//send verification link
+		adminApp 
+			.auth()
+			.generateEmailVerificationLink(email)
+			.then(link => {
+				return sendVerificationEmailAdmin(email, firstName, link)
+			})
+			.catch((error) => {
+				console.log('error occurred when sending verification email to the admin', error)
+			});
+
+		//sign up on maytapi for free trial - 3 agents for 2 days
+		let pseudoName = name.replace(" ", "__")
+		let trialEmail = `${pseudoName}@gmail.com`
+		const trialPassword = crypto.randomBytes(8).toString('hex');
+		let trialData = await freeTrial(trialEmail, trialPassword);
+		
+		const { productId, token } = trialData
+
+		//add a phone
+		let phoneData = await addTrialNumber(phoneNumber, productId, token)
+		
+		//add to trials collection
+		const trialId = await db.collection('trials').add({
+			productId: productId,
+			token: token,
+			number: phoneNumber,
+			phoneId: phoneData.id,
+			email: email,
+			trialPassword: trialPassword,
+			trialEmail: trialEmail
 		})
-		.catch((error) => {
-			console.log('error occurred when sending verification email to the admin', error)
-		});
-	//sign up on maytapi for free trial - 3 agents for 2 days
+	} catch (err) {
+		console.log('err in free trial registration stage', err)
+	}
 })
 
 
 exports.UserRouter = router; 
-
-// let transport = nodemailer.createTransport({ 
-//   host: "smtp.mailtrap.io",
-//   port: 2525,
-//   auth: { 
-//     user: process.env.MAILTRAP_USER,
-//     pass: process.env.MAILTRAP_PASSWORD 
-//   }
-// })
-
-// const sendVerificationEmailAdmin = (link, email, name) => {
-// 	const message = {
-// 		from: 'admin@sauceflow.com',
-// 		to: `${email}`,
-// 		subject: 'Sauceflow WhatsApp CRM - Please confirm your email address',
-// 		html: `Hey <b>${name}!</b> <br><br> Thanks for signing up on Sauceflow. <br><br>To finish registration, please click the link below to verify your account:  <br><br> <a href=${link}>Verify email address</a> <br><br> Once verified, you can <a href="sauceflow.com/login" target="_blank">login</a>, add agents and start responding to customers on WhatsApp! <br><br>If you have any problems, please contact us: <a href="mailto:support@sauceflow.com">Sauceflow</a>`
-// 	}
-
-// 	transport.sendMail(message, (err, info) => {
-// 		if (err) {
-// 			console.log('an error occurred when sending verification email', err)
-// 		} else {
-// 			console.log('this is the info gotten from mailer >>', info)
-// 		}
-// 	})
-// }
+exports.trialNetwork = trialNetwork;
 

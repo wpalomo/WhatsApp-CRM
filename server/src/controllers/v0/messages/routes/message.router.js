@@ -11,7 +11,7 @@ const productId = process.env.MAYTAPI_PRODUCT_ID
 const ngrokAuthToken = process.env.NGROK_AUTH_TOKEN
 const user = process.env.NGROK_USER;
 const password = process.env.NGROK_PASSWORD;
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;
  
 
 // const setupNetwork = async () => {
@@ -77,6 +77,8 @@ router.get('/', (req, res) => {
 router.post('/webhook', async (req, res) => {
 	res.sendStatus(200)
 	if (req.body.type === 'ack') {//message status
+		return;
+	} else if (req.body.type === 'status') { //this is caused by the free trial
 		return;
 	} else {
 		let { message, user, receiver } = req.body;
