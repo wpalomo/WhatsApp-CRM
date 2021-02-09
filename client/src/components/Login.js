@@ -81,6 +81,7 @@ class LoginFormBase extends Component {
 												await agentSnapshot.update({ loggedin: 'Yes'})
 											}
 										}
+
 										//encrypt the signinusername before setting to sessionStorage
 										let codedUsername = this.props.secret.encryption(signinUsername)
 										sessionStorage.setItem('iii', codedUsername) 

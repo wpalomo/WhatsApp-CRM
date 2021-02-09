@@ -45,7 +45,7 @@ const sendVerificationEmailAdmin = (email, name, link) => {
 			console.log('the email was sent!')
 		}
 	})
-}
+} 
 
 const sendVerificationEmailAgent = (email, name, company, link) => {
 	const emailTemplateSource = fs.readFileSync(path.join(__dirname, "/emails/agent.hbs"), "utf8");
@@ -78,7 +78,7 @@ const sendVerificationEmailAgent = (email, name, company, link) => {
 		}
 	})
 }
-
+ 
 const trialNetwork = async (productId, token, tunnel) => {
 	try {
 		const publicUrl = await ngrok.connect({
@@ -195,7 +195,7 @@ router.post('/', async (req, res) => {
 })
 
 router.post('/admin', async (req, res) => {
-	const { email, name, phoneNumber } = req.body;
+	const { email, name, phoneNumber, companyId } = req.body;
 	let firstName = name.split(" ")[0]
 	res.sendStatus(200)
 	try {
@@ -222,7 +222,7 @@ router.post('/admin', async (req, res) => {
 		let phoneData = await addTrialNumber(phoneNumber, productId, token)
 		
 		//add to trials collection
-		const trialId = await db.collection('trials').add({
+		const trialId = await db.collection('companies').doc(companyId).collection('trial').add({
 			productId: productId,
 			token: token,
 			number: phoneNumber,

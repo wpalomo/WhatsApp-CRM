@@ -77,8 +77,8 @@ class RegisterFormBase extends Component {
 		})
 	} 
 
-	sendAdminData = (email, name, phoneNumber) => {
-		axios.post(`/api/v0/users/admin`, { email, name, phoneNumber })
+	sendAdminData = (email, name, phoneNumber, companyId) => {
+		axios.post(`/api/v0/users/admin`, { email, name, phoneNumber, companyId })
 			.then()
 			.catch(err => console.log('error occurred when sending admin data to server', err))
 	}
@@ -103,15 +103,15 @@ class RegisterFormBase extends Component {
 					})
 					.catch(err => {
 						console.log('Something went wrong with added user to firestore: ', err);
-					})
-					
-					//send a message to the backend to send verification email to the admin
-					this.sendAdminData(email, name, number) 
+					})  
  
 					//add the company to the company list and get the doc id
 					try {
-						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:0 })
+						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:0, active:'No' })
 						let newCompanyId = newCompany.id
+
+						//send a message to the backend to send verification email to the admin
+						this.sendAdminData(email, name, number, newCompanyId)
  
 						//add to the users collection
 						companyRef.doc(newCompanyId).collection('users').add({ name:name, role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
