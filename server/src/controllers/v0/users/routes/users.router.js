@@ -219,6 +219,9 @@ router.post('/admin', async (req, res) => {
 		let phoneData = await addTrialNumber(phoneNumber, productId, token)
 		
 		//add to trials collection
+		const registerDate = new Date(new Date()).getTime()
+		const twoDays = 48 * 60 * 60 * 1000 //48 hours in milliseconds
+		const freeTrialEnd = registerDate + twoDays;
 		const trialId = await db.collection('companies').doc(companyId).collection('trial').add({
 			productId: productId,
 			token: token,
@@ -226,7 +229,9 @@ router.post('/admin', async (req, res) => {
 			phoneId: phoneData.id,
 			email: email,
 			trialPassword: trialPassword,
-			trialEmail: trialEmail
+			trialEmail: trialEmail,
+			trialStart: registerDate,
+			trialEnd: freeTrialEnd
 		})
 	} catch (err) {
 		console.log('err in free trial registration stage', err)

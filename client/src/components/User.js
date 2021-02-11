@@ -66,10 +66,8 @@ class UserBase extends Component {
 			//get phone id - check if free trial or paid user
 			let phoneRef = await db.collection('companies').doc(companyid).get()
 			if (phoneRef.exists) {
-				let dataObj = phoneRef.data()
-				let keys = Object.keys(dataObj)
-				if (keys.includes('phoneID') && keys.includes('productID') && keys.includes('token')) {//paid user
-					const { phoneID, productID, token } = phoneRef.data()
+				const { productID, token, phoneID } = phoneRef.data()
+				if (phoneID && productID && token) {//paid user
 					this.setState({
 						phoneId: phoneID,
 						productID: productID, 

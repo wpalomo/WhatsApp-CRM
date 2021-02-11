@@ -78,7 +78,7 @@ class Admin extends Component {
 							<Subscription companyData={fullCompanyData}/>
 							<Sidebar companyDataProp={this.getCompanyData} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
-						<Redirect from="/admin" to="/admin/agents" exact/>
+						<Redirect from="/admin" to="/admin/addPhone" exact/>
 					</Switch>
 				</div> 
 			</div>

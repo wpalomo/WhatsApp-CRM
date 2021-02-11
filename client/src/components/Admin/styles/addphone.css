@@ -7,8 +7,9 @@
 	border-bottom: 1px solid lightgray;
 	height: 40px;
 	display: flex;
-	justify-content: center;
+	justify-content: space-around;
 	align-items: center;
+
 }
  
 .addphone__status .status__green {
@@ -20,7 +21,7 @@
 	color: red;
 	font-weight: 700;
 }
-
+ 
 .addphone__parent > img {
 	max-width:100%;
 	max-height:100%;
