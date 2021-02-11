@@ -32,7 +32,7 @@ class UserBase extends Component {
 			phoneId:"",
 			agentName: "",
 			productID:"",
-			token:""
+			token:"",
 		}
 	} 
 
@@ -63,15 +63,31 @@ class UserBase extends Component {
 				})
 			}) 
 			
-			//get phone id
+			//get phone id - check if free trial or paid user
 			let phoneRef = await db.collection('companies').doc(companyid).get()
-			if (phoneRef) {
-				this.setState({
-					phoneId: phoneRef.data().phoneID,
-					productID: phoneRef.data().productID,
-					token: phoneRef.data().token
-				}) 
-			} 
+			if (phoneRef.exists) {
+				let dataObj = phoneRef.data()
+				let keys = Object.keys(dataObj)
+				if (keys.includes('phoneID') && keys.includes('productID') && keys.includes('token')) {//paid user
+					const { phoneID, productID, token } = phoneRef.data()
+					this.setState({
+						phoneId: phoneID,
+						productID: productID,
+						token: token
+					})
+				} else {//free trial
+					let trialPhone = await db.collection('companies').doc(companyid).collection('trial').limit(1).get()
+					if (!trialPhone.empty) {
+						let trialData = trialPhone.docs.map(doc => doc.data())
+						const { phoneId, productId, token } = trialData[0]
+						this.setState({
+							phoneId: phoneId,
+							productID: productId,
+							token: token
+						})
+					}
+				}
+			}
 
 			//agentName
 			let nameRef = await db.collection('companies').doc(companyid).collection('users').doc(agentID).get()

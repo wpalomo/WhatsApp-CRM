@@ -1,6 +1,5 @@
 "use strict";
 const express = require("express");
-const ngrok = require('ngrok');
 const bodyParser = require("body-parser");
 require('dotenv').config();
 const { db } = require("./config/config");
@@ -30,66 +29,75 @@ app.post('/', (req, res) => {
 
 
 app.listen(PORT, async () => {
-	// let index = -1; //so that when it does += 1, it will start counting from zero
-	let idx = -1; //so that when it does += 1, it will start counting from zero
 
 	//set up a network for each company
-	const query = await db.collection('companies')
-	const observer = query.onSnapshot(async snapshot => {
-		for (let coy of snapshot.docs) {
-			let coySnapshot = await query.doc(coy.id).collection('trial').limit(1).get()
-			if (coySnapshot.empty) {//no free trial or it ended
-				let paidUsers = query.onSnapshot(async snapshot => {
-					let companies = snapshot.docs.map(doc => ({ id:doc.id, token: doc.data().token, productID: doc.data().productID, name: doc.data().name, status: doc.data().active }))
-					companies = companies.filter(obj => obj.token !== undefined)
-					
-					companies.forEach(async (company, index) => {
-						const { id, token, productID, name, status } = company
-						let tunnelName = `sauceflow-messages${index}`
-						let unsubscribe = query.doc(id).collection('users').onSnapshot(async snapshot => {
-							let users = snapshot.docs.map(doc => doc.data())
-							const online = users.filter(obj => obj.loggedin === 'Yes')
-							if (online.length === 0) {
-								await query.doc(id).update({ active: 'No' })
+	const companiesRef = await db.collection('companies')
+	const observer = companiesRef.onSnapshot(async snapshot => {
+		//check if the company has a trial collection
+		snapshot.docs.forEach(async (company, index) => {
+			let tunnel = 'No'
+			const { id } = company
+			let trialSnapshot = await companiesRef.doc(id).collection('trial').limit(1).get()
+			if (trialSnapshot.empty) {//trial has ended
+				//check if the company has paid. if not, have a listener in case they pay later
+				let tunnelName = `sauceflow-messages${index}`
+				const paidUser = companiesRef.doc(id)
+				const paidUserObserver = paidUser.onSnapshot(docSnapshot => {
+					const { token, productID, phoneID } = docSnapshot.data()
+					if (token && productID && phoneID) {
+						//put a listener on its agents for when they go online
+						const onlineUsers = companiesRef.doc(id).collection('users').where('loggedin', '==', 'Yes').limit(1)
+						const onlineObserver = onlineUsers.onSnapshot(async querySnapshot => {
+							const size = querySnapshot.size
+							if ((size === 1) && (tunnel === 'No')) {
+								tunnel = 'Yes'
+								await setupWhatsAppNetwork(productID, token, tunnelName)
+							} 
+
+							if ((size === 0) && (tunnel === 'Yes')) {
+								tunnel = 'No'
+								const ngrok = require('ngrok');
 								await ngrok.disconnect(`https://${tunnelName}.ngrok.io`)
 								await ngrok.disconnect(`http://${tunnelName}.ngrok.io`)
 							}
-
-							if (online.length === 1) {
-								//set the company active
-								if (status === 'No') {
-									await query.doc(id).update({ active: 'Yes' })
-								}
-								//if company is active, set up network else close the network
-								if (status === 'Yes') {
-									let url = await setupWhatsAppNetwork(productID, token, tunnelName)
-								}
-							}
-						}, err => {
-							console.log('error in paid users firebase query', err)
+						}, error => {
+							console.log(`Encountered error with the online users: ${error}`);
 						})
-					})
+					}
+				}, err => {
+					console.log('Encountered error in the paid users listener', err)
 				})
-			} else {//active free trial
-				coySnapshot.forEach(doc => {
-					idx += 1
-					const { token, productId } = doc.data()
-					//check if any agent is online and create a network if yes
-					let users = query.doc(coy.id).collection('users').onSnapshot(async snapshot => {
-						let online = snapshot.docs.filter(doc => doc.data().loggedin === 'Yes')
-						if (online.length >= 1) {
-							let tunnelName = `sauceflow-trial${idx}`
-							await trialNetwork(productId, token, tunnelName)
-						}
-					})
+			} else {//still got free trial
+				let trialUser = trialSnapshot.docs.map(doc => doc.data())
+				let trialTunnel = `sauceflow-trial${index}`
+				trialUser.forEach(userObj => {
+					const { token, productId, phoneId } = userObj
+					if (token && productId && phoneId) {
+						const onlineUsers = companiesRef.doc(id).collection('users').where('loggedin', '==', 'Yes').limit(1)
+						const onlineObserver = onlineUsers.onSnapshot(async querySnapshot => {
+							const size = querySnapshot.size
+							if ((size === 1) && (tunnel === 'No')) {
+								tunnel = 'Yes'
+								await trialNetwork(productId, token, trialTunnel)
+							} 
+
+							if ((size === 0) && (tunnel === 'Yes')) {
+								tunnel = 'No'
+								const ngrok = require('ngrok');
+								await ngrok.disconnect(`https://${trialTunnel}.ngrok.io`)
+								await ngrok.disconnect(`http://${trialTunnel}.ngrok.io`)
+							}
+						}, error => {
+							console.log(`Encountered error with the trial online users: ${error}`);
+						})
+					}
 				})
 			}
-		}
+		})
 	})
 
 	//payment update
 	// await setupFlutterNetwork()
 	console.log(`The server is running on port ${ PORT }`)
 });
-
 

@@ -22,7 +22,7 @@ const initialState = {
 	error: null,
 	showLoading: false
 } 
-
+ 
 
 class LoginFormBase extends Component { 
 

@@ -107,11 +107,11 @@ class RegisterFormBase extends Component {
  
 					//add the company to the company list and get the doc id
 					try {
-						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:0, active:'No' })
+						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:0 })
 						let newCompanyId = newCompany.id
 
 						//send a message to the backend to send verification email to the admin
-						this.sendAdminData(email, name, number, newCompanyId)
+						this.sendAdminData(email, name, number, newCompanyId) 
  
 						//add to the users collection
 						companyRef.doc(newCompanyId).collection('users').add({ name:name, role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })

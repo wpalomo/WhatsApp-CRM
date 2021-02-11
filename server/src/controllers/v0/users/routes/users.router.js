@@ -20,7 +20,7 @@ const sendVerificationEmailAdmin = (email, name, link) => {
 	const emailTemplateSource = fs.readFileSync(path.join(__dirname, "/emails/admin.hbs"), "utf8");
 	const mailgunAuth = {
 		auth: {
-			api_key: process.env.MAILGUN_API_KEY,
+			api_key: process.env.MAILGUN_API_KEY, 
 			domain: process.env.MAILGUN_LIVE_DOMAIN
 		}
 	}
@@ -123,10 +123,6 @@ const addTrialNumber = async (number, productId, token) => {
 //test
 //CHECK BELOW THE ROUTER EXPORTS
 
-router.get('/', (req, res) => {
-	res.status(200).send('this is the users endpoint')
-})
-
 router.post('/', async (req, res) => {
 	//create a new user, add it to the db users list for the company and send them a mail to auth
 	let { newAgentEmail, newAgentName, companyid } = req.body.newUserData;
@@ -216,6 +212,7 @@ router.post('/admin', async (req, res) => {
 		const trialPassword = crypto.randomBytes(8).toString('hex');
 		let trialData = await freeTrial(trialEmail, trialPassword);
 		
+		//trial data response received from maytapi
 		const { productId, token } = trialData
 
 		//add a phone

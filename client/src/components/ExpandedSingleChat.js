@@ -198,7 +198,7 @@ class ExpandedSingleChat extends Component {
 			if (agentSnapshot) {
 				await agentSnapshot.update({ loggedin: 'No'})
 			}
-		}
+		} 
 
 		this.props.firebase.doSignOut()
 		sessionStorage.clear()
