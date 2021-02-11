@@ -15,7 +15,7 @@ import '../styles/register.css';
 // 				{ firebase => <Register firebase={firebase}/> } 
 // 			</FirebaseContext.Consumer> 
 // 		</div>
-// 	) 
+// 	)  
 // } 
 
 //firebase above refers to a new instance of the class defined in the context provider, similar to const firebase = new Firebase()

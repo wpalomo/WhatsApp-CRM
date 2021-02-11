@@ -45,7 +45,7 @@ class Admin extends Component {
  		const { sidebarOpen, companyNum, companyName } = this.state
  		let fullCompanyData = {companyName, companyNum}
  		
- 		return( 
+ 		return(  
 			<div className="admin__container"> 
 				<div className="admin__parent">
 					<Switch>

@@ -16,11 +16,33 @@ const AddPhone = ({ companyNumber }) => {
 		  .where('number', '==', companyNumber)
 		  .get()
 		  .then(data => {
-				data.forEach(doc => {
-					setProductId(doc.data().productID)
-					setToken(doc.data().token)
-					setPhoneId(doc.data().phoneID)
-				})
+		  		let phoneData = data.docs.map(doc => doc.data())
+		  		let keys = Object.keys(phoneData[0])
+		  		if (keys.includes('phoneID') && keys.includes('productID') && keys.includes('token')) {//paid user
+		  			data.forEach(doc => {
+						setProductId(doc.data().productID)
+						setToken(doc.data().token)
+						setPhoneId(doc.data().phoneID)
+					})
+		  		} else {//free trial
+		  			db.collection('companies').where('number', '==', companyNumber) 
+		  			.get()
+		  			.then(snapshot => {
+		  				let id = snapshot.docs.map(doc => doc.id)
+		  				let companyId = id[0]
+		  				//get trial data
+		  				db.collection('companies').doc(companyId).collection('trial').limit(1).get()
+		  				  .then(trialSnapshot => {
+		  				  	const trialData = trialSnapshot.docs.map(doc => doc.data())
+		  				  	if (trialData.length !== 0) {
+		  				  		const { phoneId, productId, token } = trialData[0]
+		  				  		setProductId(productId)
+								setToken(token)
+								setPhoneId(phoneId)
+		  				  	}
+		  				})
+		  			})
+		  		}
 			}, 
 			err => {
 				console.log('error in addphone useEffect', err)
@@ -40,7 +62,7 @@ const AddPhone = ({ companyNumber }) => {
 						'x-maytapi-key': token
 					}
 				})
-				return response.data
+				return response.data 
 			} catch(err) {
 				console.log('an error occurred when getting phones >>', err)
 			}
@@ -52,7 +74,6 @@ const AddPhone = ({ companyNumber }) => {
 				setPhoneError("NOT CONNECTED")
 			}
 		})
-		
 	}, [productId, phoneId, token])
 
 

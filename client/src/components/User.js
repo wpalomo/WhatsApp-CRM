@@ -72,7 +72,7 @@ class UserBase extends Component {
 					const { phoneID, productID, token } = phoneRef.data()
 					this.setState({
 						phoneId: phoneID,
-						productID: productID,
+						productID: productID, 
 						token: token
 					})
 				} else {//free trial

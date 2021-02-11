@@ -192,7 +192,7 @@ router.post('/', async (req, res) => {
 
 router.post('/admin', async (req, res) => {
 	const { email, name, phoneNumber, companyId } = req.body;
-	let firstName = name.split(" ")[0]
+	let firstName = name.split(" ")[0] 
 	res.sendStatus(200)
 	try {
 		//send verification link
