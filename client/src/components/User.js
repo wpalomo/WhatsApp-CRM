@@ -31,7 +31,7 @@ class UserBase extends Component {
 			agentID: this.props.authUser ? this.props.authUser.uid : this.props.authUser,
 			phoneId:"",
 			agentName: "",
-			productID:"",
+			productID:"", 
 			token:"",
 		}
 	} 
@@ -80,7 +80,7 @@ class UserBase extends Component {
 						const { phoneId, productId, token } = trialData[0]
 						this.setState({
 							phoneId: phoneId,
-							productID: productId,
+							productID: productId, 
 							token: token
 						})
 					}

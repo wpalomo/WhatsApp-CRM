@@ -13,7 +13,7 @@ import { db, serverTimestamp } from '../firebase';
  
 import "./styles/chat.css";
 
-//whatsapp credentials for sending message
+//whatsapp credentials for sending message 
 const instanceUrl = process.env.REACT_APP_MAYTAPI_INSTANCE_URL;
 
 

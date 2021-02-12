@@ -58,7 +58,7 @@ class Agents extends Component {
 					userStatus: 'paidUser'
 				}) 
 			} else {//free trial
-				let trialPhone = await db.collection('companies').doc(id).collection('trial').limit(1).get()
+				let trialPhone = await db.collection('companies').doc(id).collection('trial').get()
 				if (!trialPhone.empty) {
 					this.setState({
 						userStatus: 'freetrial'
@@ -82,7 +82,7 @@ class Agents extends Component {
 			<div className="agents__container">
 				<div className="agents__top__row">
 					{ 
-						activated //if the user has activated their email, display the div that holds 'TEAM', otherwise, display the div that has 'We sent an email to you'. Inside the team's div, check again if it is a free trial and show the max number of agents that can be added in the free trial version
+						activated //if the user has activated their email, display the div that holds 'TEAM', otherwise, display the div that has 'We sent an email to you'. Inside the team's div, check again if it is a free trial and show the max number of agents that can be added in the free trial version. When the free trial ends, this is no longer displayed
 							? <div className="agents__top__heading">
 								Team 
 								{ userStatus === 'freetrial' ? <div>Free Trial Agent Limit: 3</div> : ""  } 

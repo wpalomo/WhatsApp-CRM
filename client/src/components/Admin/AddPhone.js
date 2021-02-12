@@ -44,7 +44,7 @@ class AddPhone extends Component {
 							phoneId: phoneID,
 							productId: productID,
 							freeTrial: false,
-						}, () => {
+						}, () => { 
 							this.getPhoneStatus()
 							this.getScreenStatus()
 							this.getSubscriptionStatus()
