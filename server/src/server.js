@@ -30,6 +30,14 @@ app.post('/', (req, res) => {
 
 app.listen(PORT, async () => {
 
+	// let test = await db.collection('typo').get()
+	// if (test.empty) {
+	// 	console.log('testing nothing')
+	// } else {
+	// 	console.log('something light')
+	// }
+	
+
 	//set up a network for each company
 	const companiesRef = await db.collection('companies')
 	const observer = companiesRef.onSnapshot(async snapshot => {
@@ -95,6 +103,11 @@ app.listen(PORT, async () => {
 			}
 		})
 	})
+
+	//cron job for trial companies to check if it is 48 hrs
+	const trialObserver = await companiesRef.where('trial', '==', true).onSnapshot(async snapshot => {
+		let data = snapshot.docs.map(doc => doc.id)
+	}) 
 
 	//payment update
 	// await setupFlutterNetwork()

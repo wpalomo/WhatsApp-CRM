@@ -83,12 +83,19 @@ class PasswordResetFormBase extends Component {
 		}
 	}
 
+	//to prevent memory leaks
+	componentWillUnmount() {
+		this.setState = (state, cb) => {
+			return;
+		}
+	}
+
 	render() {
 		const { password1, password2, error, showLoading } = this.state
 		const isInvalid = password1 === "" || password2 === ""
 		
 		return(
-			<div className="register__container">  
+			<div className="register__container">   
 				<p id="brand__name">Sauceflow</p>
 				<div className="register__body password__reset">
 					<div className="form__heading">

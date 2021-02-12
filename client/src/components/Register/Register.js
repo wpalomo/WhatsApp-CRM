@@ -110,18 +110,22 @@ class RegisterFormBase extends Component {
  
 					//add the company to the company list and get the doc id
 					try {
-						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:3 })
+						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:3, trial: true })
 						let newCompanyId = newCompany.id  
  
 						//add to the users collection
 						companyRef.doc(newCompanyId).collection('users').add({ name:name, role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
 
-						//send a message to the backend to send verification email to the admin
-						let result = await this.sendAdminData(email, name, number, newCompanyId)
-						if (result) {
-							this.setState({ showLoading: false })
-							//go to the admin route 
-							history.push("/admin")
+						try {
+							//send a message to the backend to send verification email to the admin
+							let result = await this.sendAdminData(email, name, number, newCompanyId)
+							if (result) {
+								this.setState({ showLoading: false })
+								//go to the admin route 
+								history.push("/admin")
+							}
+						} catch(err) {
+							this.setState({ showLoading:false, err })
 						}
 					} catch (err) {
 						console.log('Something went wrong with newly added company to firestore:', err);

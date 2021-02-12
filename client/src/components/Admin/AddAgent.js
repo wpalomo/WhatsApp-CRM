@@ -60,7 +60,7 @@ class AddAgentModal extends Component {
 					 		errorMsg: err.response.data,
 					 		showError:true,
 					 		showLoading: false
-					 	})
+					 	}) 
 				 	} else {
 				 		this.setState({ 
 					 		errorMsg: 'An error occurred. Please try again',
