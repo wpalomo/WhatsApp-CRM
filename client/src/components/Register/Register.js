@@ -11,7 +11,7 @@ import '../styles/register.css';
 // const SignUpPage = () => {
 // 	return(
 // 		<div> 
-// 			<FirebaseContext.Consumer>
+// 			<FirebaseContext.Consumer> 
 // 				{ firebase => <Register firebase={firebase}/> } 
 // 			</FirebaseContext.Consumer> 
 // 		</div>
@@ -77,10 +77,13 @@ class RegisterFormBase extends Component {
 		})
 	} 
 
-	sendAdminData = (email, name, phoneNumber, companyId) => {
-		axios.post(`/api/v0/users/admin`, { email, name, phoneNumber, companyId })
-			.then()
-			.catch(err => console.log('error occurred when sending admin data to server', err))
+	sendAdminData = async (email, name, phoneNumber, companyId) => {
+		try {
+			let response = await axios.post(`/api/v0/users/admin`, { email, name, phoneNumber, companyId })
+			return response
+		} catch(err) {
+			console.log('error occurred when sending admin data to server', err)
+		}
 	}
 
 	submitRegister = () => {
@@ -107,19 +110,21 @@ class RegisterFormBase extends Component {
  
 					//add the company to the company list and get the doc id
 					try {
-						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:0 })
-						let newCompanyId = newCompany.id
-
-						//send a message to the backend to send verification email to the admin
-						this.sendAdminData(email, name, number, newCompanyId) 
+						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:3 })
+						let newCompanyId = newCompany.id  
  
 						//add to the users collection
 						companyRef.doc(newCompanyId).collection('users').add({ name:name, role:'Owner', email:email, loggedin:"", status:"", activeAgent:"" })
-						this.setState({ showLoading: false })
-						//go to the admin route 
-						history.push("/admin")
+
+						//send a message to the backend to send verification email to the admin
+						let result = await this.sendAdminData(email, name, number, newCompanyId)
+						if (result) {
+							this.setState({ showLoading: false })
+							//go to the admin route 
+							history.push("/admin")
+						}
 					} catch (err) {
-						console.log('Something went wrong with newly added company to firestore: ', err);
+						console.log('Something went wrong with newly added company to firestore:', err);
 					}
 					this.setState({ ...initialState })
 				})
@@ -164,7 +169,7 @@ class RegisterFormBase extends Component {
 								<div className="number__container">
 									<label className="field__label" htmlFor="company__number">Company Number</label>
 									<div className="company__container__input">
-										<input onChange={this.onNumberChange} value={number} type="text" name="number" className="number" placeholder="For customer contact e.g. +234102..." required/>
+										<input onChange={this.onNumberChange} value={number} type="text" name="number" className="number" placeholder="For customer contact e.g. 234102..." required/>
 									</div>
 								</div>
 								<div className="email__container">

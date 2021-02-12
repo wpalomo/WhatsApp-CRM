@@ -1,5 +1,7 @@
 import React,  { Component } from "react";
 import axios from 'axios';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./styles/addphone.css";
 import { db } from '../../firebase'
 
@@ -11,10 +13,12 @@ class AddPhone extends Component {
 			productId:"",
 			token:"",
 			phoneId:"",
-			phoneSuccess:"",
-			phoneError:"",
+			phoneStatus:"",
 			freeTrial: false,
-			trialEnding:""
+			trialEnding:"",
+			showLoading: false,
+			statusClass:"",
+			screenLoading: false
 		}
 	}
 
@@ -39,9 +43,11 @@ class AddPhone extends Component {
 							token: token,
 							phoneId: phoneID,
 							productId: productID,
-							freeTrial: false
+							freeTrial: false,
 						}, () => {
 							this.getPhoneStatus()
+							this.getScreenStatus()
+							this.getSubscriptionStatus()
 						})
 					}
 				}
@@ -54,9 +60,11 @@ class AddPhone extends Component {
 								phoneId: phoneId,
 								productId: productId,
 								freeTrial: true,
-								trialEnding: trialEnd
+								trialEnding: trialEnd,
 							}, () => {
-								this.getPhoneStatus()
+								 this.getPhoneStatus()
+								 this.getScreenStatus()
+								 this.getSubscriptionStatus()
 							})
 						}
 				})
@@ -65,6 +73,9 @@ class AddPhone extends Component {
 	}
 
 	getPhoneStatus = async () => {
+		this.setState({
+			showLoading: true,
+		})
 		const INSTANCE_URL = 'https://api.maytapi.com/api';
 		const { productId, token, phoneId } = this.state
 		let url = `${INSTANCE_URL}/${productId}/${phoneId}/status`
@@ -75,36 +86,124 @@ class AddPhone extends Component {
 					'x-maytapi-key': token
 				}
 			})
+			
+			if (response && response.status === 200) {
+				const { data } = response;
+				if (data) {
+					const { number, status } = data
+					if ((number === null) && (status.loggedIn === false)) {
+						this.setState({
+							phoneStatus: 'Please scan the QR Code to add your phone',
+							showLoading: false,
+							statusClass: 'status__red',
+						})
+					} else if ((number !== null) && (status.loggedIn === true) && status.state) {
+						this.setState({
+							phoneStatus: status.state.state,
+							showLoading: false,
+							statusClass: 'status__green',
+						})
+					}
+				}
+			}
+		} catch(err) {
+			console.log(err)
+		}
+	}
+
+	getScreenStatus = async () => {
+		this.setState({
+			screenLoading: true
+		})
+		const INSTANCE_URL = 'https://api.maytapi.com/api';
+		const { productId, token, phoneId } = this.state
+		let url = `${INSTANCE_URL}/${productId}/${phoneId}/screen`
+		try {
+			let response = await axios.get(url, {
+				headers: {
+					'Content-Type': 'application/json',
+					'x-maytapi-key': token
+				}
+			})
+			
 			if (response && response.status === 200) {
 				this.setState({
-					phoneSuccess: response.data.status.state.state
-				})
-			} else {
-				this.setState({
-					phoneError: response.data.status.state.state
+					screenLoading: false
 				})
 			}
 		} catch(err) {
-			if (err.response.status === 500) {
-				this.setState({
-					phoneError: 'TRIAL ENDED'
-				})
-			} else {
-				console.log('an error occurred when getting phone status >>', err)
+			if (err) {
+				const { response } = err 
+				if (response) {
+					const { data } = response
+					if (data) {
+						const { message, success } = data;
+						if ((success === false) && (message === 'You do not have any phone limit.')) {
+							this.setState({
+								showLoading: false,
+								screenLoading: false,
+								phoneStatus: 'Trial Has Ended. Please make a subscription',
+								statusClass: 'status__red'
+							})
+						}
+					}
+				}
 			}
 		}
 	}
+
+	//not called when subsciption has expired
+	getSubscriptionStatus = async () => {
+		const INSTANCE_URL = 'https://api.maytapi.com/api';
+		const { productId, token, trialEnding } = this.state
+		let url = `${INSTANCE_URL}/${productId}/product`
+		try {
+			let response = await axios.get(url, {
+				headers: {
+					'Content-Type': 'application/json',
+					'x-maytapi-key': token
+				}
+			})
+
+			let hrsRemaining = this.trialRemainder(trialEnding)
+			if (response && response.status === 200) {
+				const { data } = response
+				if (data) {
+					let subType = data['package']
+					if (subType === 'trial') {
+						let { phone_limit } = data
+						if (phone_limit) {
+							phone_limit = hrsRemaining
+							if (phone_limit < 1) {
+								//clear the trial data and set to empty strings
+								this.setState({
+									phoneStatus: 'Trial Has Ended. Please make a subscription',
+									showLoading: false,
+									statusClass: 'status__red'
+								})
+							} 
+						}
+					}
+				}
+			}
+		} catch(err) {
+			console.log('error getting subscription status', err)
+		}
+	}
+
 
 	componentDidMount() {
 		const { companyNumber } = this.props
 		this.getPhoneData(companyNumber)
 	}
+	
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.companyNumber !== this.props.companyNumber) {
 			this.getPhoneData(this.props.companyNumber)
 		}
 	}
+	
 
 	trialRemainder = (endingDate) => {
 		let remainder = endingDate - new Date(new Date()).getTime() //milliseconds
@@ -114,25 +213,27 @@ class AddPhone extends Component {
 	}
 
 	render() {
-		const { phoneSuccess, phoneError, productId, phoneId, token, freeTrial, trialEnding } = this.state
+		const { phoneStatus, productId, phoneId, token, freeTrial, trialEnding, showLoading, statusClass, screenLoading } = this.state
 		const url = `https://api.maytapi.com/api/${productId}/${phoneId}/screen?token=${token}&time=${new Date(new Date()).getTime()}`
 		let endtime = this.trialRemainder(trialEnding)
+		
 		let phrase;
 		if (endtime > 1) {
 			phrase = <p>Free Trial ends in <span className="status__red">{endtime}</span> hours</p>
 		} else if (endtime === 1) {
 			phrase = <p>Free Trial ends in <span className="status__red">{endtime}</span> hour</p>
-		} else if (endtime === 0) {
-			phrase = <p className="status__red">Free trial has ended. Please subscribe to regain access</p>
+		} else if (endtime < 1) {
+			phrase = ""
 		}
 		
 		return(
 			<div className="addphone__container">
 				<div className="addphone__status">
-					<p>Phone Status: { phoneSuccess === 'CONNECTED' ?  <span className="status__green">{ phoneSuccess }</span> : <span className="status__red">{ phoneError }</span> }</p>
+					<div className="loading__spinner">Phone Status: { showLoading ? <Loader type="Circles" color="#4FCE5D" height={25} width={25}/> : <span className={statusClass}>{ phoneStatus }</span> }</div>
 					{ freeTrial && phrase }
 				</div>
 				<div className="addphone__parent">
+					<div className="loading__spinner__screen">{ screenLoading && <Loader type="Circles" color="#4FCE5D" height={70} width={70}/> }</div>
 					<img alt="" src={url}/>
 				</div>
 			</div>

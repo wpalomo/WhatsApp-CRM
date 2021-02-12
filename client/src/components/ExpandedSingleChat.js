@@ -274,7 +274,7 @@ class ExpandedSingleChat extends Component {
 									   </p>
 									))
 								}
-							</div>
+							</div> 
 						))
 					}
 				</div>

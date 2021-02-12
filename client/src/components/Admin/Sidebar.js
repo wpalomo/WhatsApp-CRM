@@ -12,7 +12,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyDataProp=NOOP }) 
 
 	const [companyName, setCompanyName] = useState("")
 	const [companyNumber, setCompanyNumber] = useState(null)
-
+	
 
 	let adminUser = useContext(AuthUserContext)
 
@@ -47,6 +47,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyDataProp=NOOP }) 
 		companyDataProp({companyNumber, companyName})
 	}, [companyNumber, companyName, companyDataProp])
 
+	
 
 	const getAgentsPage = () => {
 		history.push('/admin/agents') 
@@ -87,23 +88,23 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyDataProp=NOOP }) 
 				<i className="fa fa-times" id="sidebarIcon" onClick={closeSideBar}></i>
 			</div>
 			<div className="sidebar__menu">
-				<div onClick={adminHome} className="sidebar__link sidebar__test active_menu_link">
+				<div onClick={adminHome} id={1} className="sidebar__link sidebar__test active_menu_link">
 					<i className="fa fa-home"></i>
 					<p>Dashboard</p>
 				</div>
-				<div onClick={addPhonePage} className="sidebar__link sidebar__test">
+				<div onClick={addPhonePage} id={2} className="sidebar__link sidebar__test">
 					<i className="fa fa-phone-square"></i>
 					<p>Phone</p>
 				</div>
-				<div onClick={chatsPage} className="sidebar__link sidebar__test">
+				<div onClick={chatsPage} id={3} className="sidebar__link sidebar__test">
 					<i className="fa fa-comments"></i>
 					<p>Chats</p>
 				</div>
-				<div onClick={getAgentsPage} className="sidebar__link sidebar__test">
+				<div onClick={getAgentsPage} id={4} className="sidebar__link sidebar__test">
 					<i className="fa fa-users"></i>
 					<p>Agents</p>
 				</div>
-				<div onClick={subscriptionPage} className="sidebar__link sidebar__test">
+				<div onClick={subscriptionPage} id={5} className="sidebar__link sidebar__test">
 					<i className="fa fa-credit-card"></i>
 					<p>Subscription</p>
 				</div>		

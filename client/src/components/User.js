@@ -72,7 +72,7 @@ class UserBase extends Component {
 						phoneId: phoneID,
 						productID: productID, 
 						token: token
-					})
+					}) 
 				} else {//free trial
 					let trialPhone = await db.collection('companies').doc(companyid).collection('trial').limit(1).get()
 					if (!trialPhone.empty) {

@@ -21,7 +21,7 @@
 	margin-right: 10px;
 }
 
-.phone__entry > p {
+.phone__entry > p { 
 	font-size: 13px;
 	margin-right: 10px;
 }
@@ -137,6 +137,13 @@
 .agents__loader {
 	margin-top: 5px;
 }
+
+.agents__top__heading {
+	display: flex;
+	width: 50%;
+	justify-content: space-between;
+}
+
 
 
 	

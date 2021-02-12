@@ -3,6 +3,7 @@ import AddAgentModal from "./AddAgent";
 import { AuthUserContext } from "../../session/index";
 import AgentList from "./AgentList";
 import "./styles/agents.css";
+import { db } from "../../firebase";
 
 class Agents extends Component {
 
@@ -11,8 +12,8 @@ class Agents extends Component {
 		this.state = {
 			show: false,
 			companyid:"",
-			// activated: true,
-			activated: this.props.authUser ? this.props.authUser.emailVerified : ""
+			activated: this.props.authUser ? this.props.authUser.emailVerified : this.props.authUser,
+			userStatus: ""
 		}
 	}  
 
@@ -32,11 +33,43 @@ class Agents extends Component {
 	sendCoyID = value => {
 		this.setState({
 			companyid: value
+		}, () => {
+			this.checkTrialStatus(this.state.companyid)
 		})
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.authUser !== this.props.authUser) {
+			if (this.props.authUser) {
+				this.setState({
+					activated: this.props.authUser.emailVerified
+				})
+			}
+		}
+	} 
+
+	checkTrialStatus = async (id) => {
+		//get phone id - check if free trial or paid user
+		let companyRef = await db.collection('companies').doc(id).get()
+		if (companyRef.exists) {
+			const { productID, token, phoneID } = companyRef.data()
+			if (phoneID && productID && token) {//paid user
+				this.setState({
+					userStatus: 'paidUser'
+				}) 
+			} else {//free trial
+				let trialPhone = await db.collection('companies').doc(id).collection('trial').limit(1).get()
+				if (!trialPhone.empty) {
+					this.setState({
+						userStatus: 'freetrial'
+					})
+				}
+			}
+		}
 	}
  
 	render() {
-		const { companyid, activated } = this.state
+		const { companyid, activated, userStatus } = this.state
 		const { authUser } = this.props;
 		
 		let adminEmail;
@@ -44,15 +77,23 @@ class Agents extends Component {
 			adminEmail = authUser.email
 		}
 		
+		
 		return(
 			<div className="agents__container">
 				<div className="agents__top__row">
-					{ activated ? <div className="agents__top__heading">Team</div> : <div><p>Please activate your account. We sent an activation email to <b>{adminEmail}</b></p></div> } 
+					{ 
+						activated //if the user has activated their email, display the div that holds 'TEAM', otherwise, display the div that has 'We sent an email to you'. Inside the team's div, check again if it is a free trial and show the max number of agents that can be added in the free trial version
+							? <div className="agents__top__heading">
+								Team 
+								{ userStatus === 'freetrial' ? <div>Free Trial Agent Limit: 3</div> : ""  } 
+							 </div> 
+							: <div><p>We sent an activation email to <b>{adminEmail}</b></p></div> 
+					} 
 					<div onClick={this.showModal} className="add__agent">
 						<button>
 							<div>Add Agent</div> 
 						</button>   
-					</div>
+					</div> 
 					<AddAgentModal companyid={companyid} show={this.state.show} closeModal={this.closeOpenModal}/> 
 				</div>
 				<div className="agents__bottom__area">

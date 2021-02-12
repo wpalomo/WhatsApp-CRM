@@ -193,16 +193,15 @@ router.post('/', async (req, res) => {
 router.post('/admin', async (req, res) => {
 	const { email, name, phoneNumber, companyId } = req.body;
 	let firstName = name.split(" ")[0] 
-	res.sendStatus(200)
 	try {
 		//send verification link
-		adminApp 
+		adminApp  
 			.auth()
 			.generateEmailVerificationLink(email)
 			.then(link => {
 				return sendVerificationEmailAdmin(email, firstName, link)
 			})
-			.catch((error) => {
+			.catch(error => {
 				console.log('error occurred when sending verification email to the admin', error)
 			});
 
@@ -232,12 +231,17 @@ router.post('/admin', async (req, res) => {
 			trialEmail: trialEmail,
 			trialStart: registerDate,
 			trialEnd: freeTrialEnd
+		}) 
+		.then(doc => {
+			res.status(200).send({ trial: doc.id })
+		})
+		.catch(err => {
+			console.log("Error adding document: ", err);
 		})
 	} catch (err) {
 		console.log('err in free trial registration stage', err)
 	}
 })
-
 
 exports.UserRouter = router; 
 exports.trialNetwork = trialNetwork;
