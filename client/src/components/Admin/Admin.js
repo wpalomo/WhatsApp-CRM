@@ -17,7 +17,8 @@ class Admin extends Component {
 		this.state = {
 			sidebarOpen: false,
 			companyNum:"",
-			companyName:""
+			companyName:"",
+			companyID:""
 		}
 	}
 
@@ -33,6 +34,12 @@ class Admin extends Component {
 		})
 	}
 
+	getCompanyID = value => {
+		this.setState({
+			companyID: value
+		})
+	}
+
 	getCompanyData = value => {
 		const { companyNumber, companyName } = value
 		this.setState({
@@ -42,8 +49,8 @@ class Admin extends Component {
 	}
  
  	render() {
- 		const { sidebarOpen, companyNum, companyName } = this.state
- 		let fullCompanyData = {companyName, companyNum}
+ 		const { sidebarOpen, companyNum, companyName, companyID } = this.state
+ 		let fullCompanyData = {companyName, companyNum, companyID}
  		
  		return(  
 			<div className="admin__container"> 
@@ -69,7 +76,7 @@ class Admin extends Component {
 						<Route path="/admin/agents">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
 							<AuthUserContext.Consumer>
-								{ authUser => <Agents authUser={authUser}/> }
+								{ authUser => <Agents companyidForPayment={this.getCompanyID} authUser={authUser}/> }
 							</AuthUserContext.Consumer>
 							<Sidebar companyDataProp={this.getCompanyData} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
@@ -82,7 +89,7 @@ class Admin extends Component {
 					</Switch>
 				</div> 
 			</div>
-		)
+		) 
  	}
 	
 }

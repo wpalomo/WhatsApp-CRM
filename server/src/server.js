@@ -36,7 +36,9 @@ app.post('/', (req, res) => {
 
 
 app.listen(PORT, async () => {
-
+	// let c = 
+	// c.forEach(doc => console.log(doc.id))
+	
 	//set up a network for each company
 	const companiesRef = await db.collection('companies')
 	const observer = companiesRef.onSnapshot(async snapshot => {

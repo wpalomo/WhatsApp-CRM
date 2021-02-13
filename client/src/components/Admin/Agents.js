@@ -17,7 +17,7 @@ class Agents extends Component {
 		}
 	}  
 
-	
+	 
 	showModal = () => {
 		this.setState({
 			show: true
@@ -35,6 +35,7 @@ class Agents extends Component {
 			companyid: value
 		}, () => {
 			this.checkTrialStatus(this.state.companyid)
+			this.props.companyidForPayment(this.state.companyid)
 		})
 	}
 

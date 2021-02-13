@@ -77,7 +77,7 @@ class PaymentPlans extends Component {
 				showError: true
 			})
 		}
-	}
+	} 
 
 	paymentStatus = value => {
 		const { status, amount } = value
@@ -151,9 +151,7 @@ class PaymentPlans extends Component {
 						</div>
 						<div className="payment__top_bottomtext">
 							<p>Minimum number of agents to subscribe for: <span className="min__agents"><strong>2</strong></span></p>
-							{
-								//<p>Ends in 3 days. Subscribe now for full access!</p>
-							}
+							<p>Subsequently, you can increase in units of <strong>1</strong></p>
 						</div>
 					</div>	
 					<div className="payment__mid">
