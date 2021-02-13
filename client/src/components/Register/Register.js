@@ -110,7 +110,7 @@ class RegisterFormBase extends Component {
  
 					//add the company to the company list and get the doc id
 					try {
-						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:3, trial: true })
+						let newCompany = await companyRef.add({ name:companyName, number: Number(number), agentCount:0, agentLimit:2, trial: true })
 						let newCompanyId = newCompany.id  
  
 						//add to the users collection

@@ -85,7 +85,7 @@ class Agents extends Component {
 						activated //if the user has activated their email, display the div that holds 'TEAM', otherwise, display the div that has 'We sent an email to you'. Inside the team's div, check again if it is a free trial and show the max number of agents that can be added in the free trial version. When the free trial ends, this is no longer displayed
 							? <div className="agents__top__heading">
 								Team 
-								{ userStatus === 'freetrial' ? <div>Free Trial Agent Limit: 3</div> : ""  } 
+								{ userStatus === 'freetrial' ? <div>Free Trial Agent Limit: 2</div> : ""  } 
 							 </div> 
 							: <div><p>We sent an activation email to <b>{adminEmail}</b></p></div> 
 					} 

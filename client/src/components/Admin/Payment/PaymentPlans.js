@@ -4,6 +4,9 @@ import CreditCardModal from "./CreditCardModal";
 import SuccessModal from "./SuccessModal";
 import ErrorModal from "./ErrorModal";
 
+const monthlyPlanId =  9606
+const annualPlanId = 9607
+
 class PaymentPlans extends Component {
 
 	constructor() {
@@ -17,7 +20,7 @@ class PaymentPlans extends Component {
 			showSuccessModal: false,
 			showErrorModal: false,
 			amountPaid: 0,
-			flutterwavePaymentplanId: 9606,
+			flutterwavePaymentplanId: monthlyPlanId,
 			monthlyCost:25,
 			annualCost:21
 		}
@@ -61,12 +64,12 @@ class PaymentPlans extends Component {
 						if (!isNaN(totalCost)) {
 							this.setState({
 								totalBill: totalCost,
-								flutterwavePaymentplanId: 9607
+								flutterwavePaymentplanId: annualPlanId
 							})
 						}
 					}
 				}})
-	}
+	} 
 
 	getPaymentError = value => {
 		if (value < (this.state.monthlyCost * 2)) {
@@ -121,7 +124,7 @@ class PaymentPlans extends Component {
 					totalBill: totalCost,
 					currentAgentEntered: agentCount,
 					showError: false,
-					flutterwavePaymentplanId: 9607
+					flutterwavePaymentplanId: annualPlanId
 				})
 			}
 		}

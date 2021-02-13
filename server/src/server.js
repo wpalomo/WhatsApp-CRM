@@ -37,14 +37,6 @@ app.post('/', (req, res) => {
 
 app.listen(PORT, async () => {
 
-	// let test = await db.collection('typo').get()
-	// if (test.empty) {
-	// 	console.log('testing nothing')
-	// } else {
-	// 	console.log('something light')
-	// }
-	
-
 	//set up a network for each company
 	const companiesRef = await db.collection('companies')
 	const observer = companiesRef.onSnapshot(async snapshot => {
@@ -112,18 +104,21 @@ app.listen(PORT, async () => {
 	})
 
 	//cron job for trial companies to check if it is 48 hrs
-	//'0 0 */6 * * *'
-	cron.schedule('0 */2 * * * *', () => {
+	cron.schedule('0 0 */8 * * *', async () => {
 		const trialObserver = await companiesRef.where('trial', '==', true).onSnapshot(async snapshot => {
 			let trials = snapshot.docs.map(doc => doc.id)
 			trials.forEach(async coy => {
 				let snap = await companiesRef.doc(coy).collection('trial').get()
 				if (!snap.empty) {
-					snap.forEach(doc => {
+					snap.forEach(async doc => {
 						let ends = doc.data().trialEnd
+						let id = doc.id
 						let hrsRemaining = trialRemainder(ends)
 						if (hrsRemaining <= 0) {
-							console.log('code to clear trial collection for >>', coy, ends)
+							let old = await companiesRef.doc(coy).collection('trial').doc(id).delete()
+							let reset = await companiesRef.doc(coy).update({
+								trial: false
+							})
 						}
 					})
 				}
@@ -132,7 +127,7 @@ app.listen(PORT, async () => {
 	})
 	
 	//payment update
-	// await setupFlutterNetwork()
+	await setupFlutterNetwork()
 	console.log(`The server is running on port ${ PORT }`)
 });
 

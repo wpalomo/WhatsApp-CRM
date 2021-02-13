@@ -35,6 +35,10 @@ class AddPhone extends Component {
 			//check if there is a trial collection
 			const trialDoc = await companyRef.doc(companyId).collection('trial').get()
 			if (trialDoc.empty) {//paid user or ended trial
+				this.setState({
+					phoneStatus: 'Trial Has Ended. Please make a subscription',
+					statusClass: 'status__red'
+				})
 				const paidSnapshot = await companyRef.doc(companyId).get()
 				if (paidSnapshot.exists) {
 					const { token, phoneID, productID } = paidSnapshot.data()
@@ -107,7 +111,7 @@ class AddPhone extends Component {
 				}
 			}
 		} catch(err) {
-			console.log(err)
+			console.log('phone status error >>', err)
 		}
 	}
 
