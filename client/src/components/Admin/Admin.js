@@ -58,7 +58,9 @@ class Admin extends Component {
 					<Switch>
 						<Route path="/admin/home">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
-							<Main />
+							{
+								//<Main />
+							}
 							<Sidebar companyDataProp={this.getCompanyData} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
 						<Route path="/admin/addPhone">

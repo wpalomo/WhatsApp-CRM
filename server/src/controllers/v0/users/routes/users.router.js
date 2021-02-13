@@ -42,7 +42,7 @@ const sendVerificationEmailAdmin = (email, name, link) => {
 		if (err) {
 			console.log(`mailgun admin email to ${email} errored out >>`, err)
 		} else {
-			console.log('the email was sent!')
+			console.log('the admin email was sent!')
 		}
 	})
 } 
@@ -74,7 +74,7 @@ const sendVerificationEmailAgent = (email, name, company, link) => {
 		if (err) {
 			console.log(`mailgun agent email to ${email} errored out >>`, err)
 		} else {
-			console.log('the email was sent!')
+			console.log('the agent email was sent!')
 		}
 	})
 }
