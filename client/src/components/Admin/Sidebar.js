@@ -58,7 +58,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyDataProp=NOOP }) 
 	}
  
 	const adminHome = () => { 
-		history.push('/admin/agents')  
+		history.push('/admin/home')  
 	} 
 
 	const subscriptionPage = () => {
@@ -90,7 +90,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar, firebase, companyDataProp=NOOP }) 
 			<div className="sidebar__menu">
 				<div onClick={adminHome} id={1} className="sidebar__link sidebar__test active_menu_link">
 					<i className="fa fa-home"></i>
-					<p>Dashboard</p>
+					<p>Setup</p>
 				</div>
 				<div onClick={addPhonePage} id={2} className="sidebar__link sidebar__test">
 					<i className="fa fa-phone-square"></i>

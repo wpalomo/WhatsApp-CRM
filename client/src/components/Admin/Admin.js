@@ -4,10 +4,11 @@ import { AuthUserContext, withAuthorization } from "../../session/index";
 import Chats from "./Chats";
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
-import Main from "./Main";
+//import Main from "./Main";
 import Agents from "./Agents";
 import Subscription from "./Subscription"; 
 import AddPhone from "./AddPhone";
+import Setup from "./Setup";
 import "../styles/admin.css";
 
 class Admin extends Component {
@@ -58,6 +59,7 @@ class Admin extends Component {
 					<Switch>
 						<Route path="/admin/home">
 							<Navbar sidebarOpen={sidebarOpen} openSideBar={this.openSideBar}/>
+							<Setup />
 							{
 								//<Main />
 							}
@@ -87,7 +89,7 @@ class Admin extends Component {
 							<Subscription companyData={fullCompanyData}/>
 							<Sidebar companyDataProp={this.getCompanyData} sidebarOpen={sidebarOpen} closeSideBar={this.closeSideBar}/>
 						</Route>
-						<Redirect from="/admin" to="/admin/agents" exact/>
+						<Redirect from="/admin" to="/admin/home" exact/>
 					</Switch>
 				</div> 
 			</div>
