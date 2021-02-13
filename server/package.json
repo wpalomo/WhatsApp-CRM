@@ -19,6 +19,7 @@
     "firebase-admin": "^9.4.2",
     "handlebars": "^4.7.6",
     "ngrok": "^3.4.0",
+    "node-cron": "^2.0.3",
     "nodemailer": "^6.4.17",
     "nodemailer-mailgun-transport": "^2.0.2",
     "puppeteer": "^7.0.0",

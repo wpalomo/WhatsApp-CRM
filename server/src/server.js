@@ -2,6 +2,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 require('dotenv').config();
+const cron = require('node-cron');
 const { db } = require("./config/config");
 
 
@@ -15,6 +16,12 @@ const PORT = process.env.PORT || 4000;
 
 const app = express();
 
+const trialRemainder = (endingDate) => {
+	let remainder = endingDate - new Date(new Date()).getTime() //milliseconds
+	let toHours = 1000 * 60 * 60
+	let remainderHours = Math.floor(remainder / toHours)
+	return remainderHours
+}
  
 app.use(bodyParser.json());
 app.use('/api/v0/', IndexRouter)
@@ -105,10 +112,25 @@ app.listen(PORT, async () => {
 	})
 
 	//cron job for trial companies to check if it is 48 hrs
-	const trialObserver = await companiesRef.where('trial', '==', true).onSnapshot(async snapshot => {
-		let data = snapshot.docs.map(doc => doc.id)
-	}) 
-
+	//'0 0 */6 * * *'
+	cron.schedule('0 */2 * * * *', () => {
+		const trialObserver = await companiesRef.where('trial', '==', true).onSnapshot(async snapshot => {
+			let trials = snapshot.docs.map(doc => doc.id)
+			trials.forEach(async coy => {
+				let snap = await companiesRef.doc(coy).collection('trial').get()
+				if (!snap.empty) {
+					snap.forEach(doc => {
+						let ends = doc.data().trialEnd
+						let hrsRemaining = trialRemainder(ends)
+						if (hrsRemaining <= 0) {
+							console.log('code to clear trial collection for >>', coy, ends)
+						}
+					})
+				}
+			})
+		}) 
+	})
+	
 	//payment update
 	// await setupFlutterNetwork()
 	console.log(`The server is running on port ${ PORT }`)
