@@ -95,7 +95,7 @@ const trialNetwork = async (productId, token, tunnel) => {
 				'x-maytapi-key': token
 			}
 		})
-		.then(res => console.log(res.data))
+		.then(res => console.log('trial connected'))
 		.catch(err => console.log('error on free trial webhook endpoint >>', err))
 	} catch (err) {
 		console.error('Error while connecting Ngrok to whatsapp', err);

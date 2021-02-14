@@ -28,7 +28,7 @@ const setupWhatsAppNetwork = async (productId, token, tunnel) => {
 				'x-maytapi-key': token 
 			}
 		})
-		.then(res => console.log(res.data))
+		.then(res => console.log('connected'))
 		.catch(err => console.log('an error occurred when setting up webhook endpoint >>', err))
 
 		return publicUrl;
