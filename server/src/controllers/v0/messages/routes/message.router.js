@@ -12,20 +12,6 @@ const password = process.env.NGROK_PASSWORD;
 const PORT = process.env.PORT || 4000;
  
 
-// const setupNetwork = async () => {
-// 	let publicUrl = await ngrok.connect(4000)
-// 	let webhookUrl = `${publicUrl}/api/v0/message/webhook`
-// 	let url = `${INSTANCE_URL}/${productId}/setWebhook`
-// 	axios.post(url, { webhook: webhookUrl }, {
-// 		headers: {
-// 			'Content-Type': 'application/json', 
-// 			'x-maytapi-key': token
-// 		}
-// 	})
-// 	.then(res => console.log(res.data))
-// 	.catch(err => console.log('an error occurred when setting up webhook endpoint >>', err))
-// } 
-
 const setupWhatsAppNetwork = async (productId, token, tunnel) => {
 	try {
 		const publicUrl = await ngrok.connect({

@@ -8,7 +8,7 @@ class Chats extends Component {
 
 	constructor(props) {
 		super(props) 
-		this.state = {
+		this.state = { 
 			agentList: [], 
 			customerList: [],
 			chatHistory:[],

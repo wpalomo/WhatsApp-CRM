@@ -104,7 +104,7 @@ app.listen(PORT, async () => {
 	})
 
 	//cron job for trial companies to check if it is 48 hrs
-	cron.schedule('0 0 */8 * * *', async () => {
+	cron.schedule('0 0 */1 * * *', async () => {
 		const trialObserver = await companiesRef.where('trial', '==', true).onSnapshot(async snapshot => {
 			let trials = snapshot.docs.map(doc => doc.id)
 			trials.forEach(async coy => {
