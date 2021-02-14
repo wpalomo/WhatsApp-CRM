@@ -1,0 +1,14 @@
+node_modules
+<<<<<<< HEAD
+.env
+maytapi
+src/config
+=======
+src/firebase.js
+src/config
+.env
+src/old.js
+ssl
+maytapi
+src/controllers/v0/payments/routes
+>>>>>>> dev

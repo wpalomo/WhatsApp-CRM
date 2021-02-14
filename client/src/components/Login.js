@@ -1,18 +1,36 @@
 import React, { Component } from "react";
-// import axios from 'axios';
+import Loader from 'react-loader-spinner'
+import { withFirebase } from "../firebase/index";
+import { SessionDataContext } from "../encrypt/index";
 import history from "./History";
-// import "./routes.css"
+import "./styles/login.css"
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import whatsapp from './media/whatsapp.png';
+import { db, authFirebase } from '../firebase.js';
 
-class Login extends Component { 
+const SignInPage = () => (
+	<div>
+		<SessionDataContext.Consumer>
+			{ secret => <SignIn secret={secret}/> }
+		</SessionDataContext.Consumer>
+	</div>
+) 
+ 
+const initialState = {
+	signinUsername:"",
+	signinPassword:"", 
+	error: null,
+	showLoading: false
+} 
+ 
+
+class LoginFormBase extends Component { 
 
 	constructor(props) {
 		super(props)
-		this.state = {
-			signinUsername:"",
-			signinPassword:"" 
-		} 
+		this.state = { ...initialState }
 	} 
-
+ 
 	getSigninUsername = e => {
 		this.setState({
 			signinUsername: e.target.value
@@ -25,63 +43,117 @@ class Login extends Component {
 		})
 	}
 
-	onSubmitSignin =  async () => {
-		//const { signinUsername, signinPassword } = this.state;
-		history.push('/user')
-		this.setState({
-			signinUsername:"",
-			signinPassword:""
-		})
+	onSubmitSignin =  e => {
+		e.preventDefault()
+		this.setState({ showLoading: true }) //this is to let the user know that the page is being loaded
+		const { firebase } = this.props
+		const { signinUsername, signinPassword } = this.state
+		let adminRef = db.collection('admins');
+		let allAgentsRef = db.collection('allagents');
+		authFirebase.auth().setPersistence(authFirebase.auth.Auth.Persistence.SESSION)
+			.then(() => {
+				return firebase.doSignInWithEmailAndPassword(signinUsername, signinPassword)
+							.then(async (user) => {
+								let currentUser = user.user.uid
+								//check the admin collection if the currentUser is there
+								let snapshot = await adminRef.where('adminId', '==', currentUser).get()
+								if (snapshot.empty) {//agent 
+									//get the password - if default, send to the change password page else, send to customer list
+									if (signinPassword === "password") {
+										this.setState({ showLoading: false })
+										history.push('/passwordReset')
+									} else {
+										this.setState({ showLoading: false })
+										history.push('/customers')
+										//set loggedin to Yes
+										let companyid;
+										if (currentUser) {
+											let allAgentSnapshot = await allAgentsRef.where('agentId', '==', currentUser).get()
+											if (!allAgentSnapshot.empty) {
+												allAgentSnapshot.forEach(doc => {
+													companyid = doc.data().companyId 
+												})
+											}
+										}
+										if (companyid) {
+											let agentSnapshot = await db.collection('companies').doc(companyid).collection('users').doc(currentUser)
+											if (agentSnapshot) {
+												await agentSnapshot.update({ loggedin: 'Yes'})
+											}
+										}
+
+										//encrypt the signinusername before setting to sessionStorage
+										let codedUsername = this.props.secret.encryption(signinUsername)
+										sessionStorage.setItem('iii', codedUsername) 
+									} 
+								} else {//admin
+									this.setState({ showLoading: false })
+									history.push('/admin') 
+								}
+								//clear the form 
+								this.setState({ ...initialState })
+							})
+							.catch(error => {
+								this.setState({ showLoading: false, error })
+							})
+			})
+			.catch(error => {
+				console.log('error occurred with session persistence', error)
+			})
 	}
 
-	// onSubmitSignin =  async () => {
-	// 	const { signinUsername, signinPassword } = this.state;
-	// 	let token = await addCSRFToken();
-	// 	axios.defaults.headers['X-CSRF-Token'] = token;
-	// 	if ((signinUsername === "") || (signinPassword === "")) {
-	// 		alert("Please enter your username and password")
-	// 	}
-	// 	try {
-	// 		let resp = await axios.post(`/api/v0/users/login`, this.state) 
-	// 		if ((resp.status === 200) && (resp.data.auth === true)) {
-	// 			this.setState({
-	// 				signinUsername:"",
-	// 				signinPassword:""
-	// 			})
-	// 			sessionStorage.setItem("userid", resp.data.userid)
-	// 			sessionStorage.setItem("bookieSelection", resp.data.bookieAuth)
-	// 			history.push('/user')
-	// 		} 
-	// 	} catch (error) {
-	// 		alert("Wrong username or password")
-	// 	}
-		
-	// }
+	getNewPassword = () => {
+		history.push('/passwordForget')
+	}
+
+	goHome = () => {
+		history.go('/')
+	}
+
+	//to prevent memory leaks
+	componentWillUnmount() {
+		this.setState = (state, cb) => {
+			return;
+		}
+	}
  
 	render() {
-		const { signinUsername, signinPassword } = this.state
+		const { signinUsername, signinPassword, error, showLoading } = this.state
+		const isInvalid = signinUsername === "" || signinPassword === "" 
+		
 		return(
-			<div className="signin-container">
-				<div className="signin-text">
-					<p>Log in to Sauceflow</p> 
+			<div className="signin">
+				<div className="signin__container">
+				 <img src={whatsapp} alt=""/>
+				 	<div className="form-container">
+						<h1 onClick={this.goHome} className="brand__name">Sauceflow</h1>
+						<form>
+							{ showLoading && <Loader type="Circles" color="#4FCE5D" height={40} width={40}/> }
+							<div className="control">
+								<label htmlFor="name">Email</label>
+								<input value={signinUsername} onChange={this.getSigninUsername} type="text" name="name" id="name" placeholder="Email address"/>
+							</div>
+							<div className="control">
+								<label htmlFor="psw">Password</label>
+								<input value={signinPassword} onChange={this.getSigninPassword} type="password" name="psw" id="psw" placeholder="Password"/>
+							</div>
+							<div className="control">
+								{ error && <p className="error__message">{ error.message }</p> }
+								<input disabled={isInvalid} type="submit" value="Login" onClick={this.onSubmitSignin}/>
+							</div>
+						</form>
+						<div className="forgot__password">
+							<div onClick={this.getNewPassword}>Forgot Password</div>
+						</div>
+					</div>
 				</div>
-				<div className="signin-input">
-					<input value={signinUsername} onChange={this.getSigninUsername} type="text" name="username" placeholder="username"/>
-					<input value={signinPassword} onChange={this.getSigninPassword} type="password" name="password" placeholder="password"/>
-				</div>
-				<div>
-					<div className="signin-login-button" onClick={this.onSubmitSignin}>Log in</div>
-				</div>
-				{
-					// <div className="signin-footer">
-					// 				<p onClick={() => history.push('/forgot')}>Forgot password?</p> 
-					// 				<p onClick={() => history.push('/signup')}>Signup</p>
-					// 			</div>
-							}
 			</div>
 		)
 	}
-	
 }
 
-export default Login;
+const SignIn = withFirebase(LoginFormBase)
+
+export default SignInPage;
+
+export { SignIn };

@@ -11,8 +11,20 @@
   "author": "Tunde Oduguwa",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "socket.io": "^3.0.4"
+    "firebase-admin": "^9.4.2",
+    "handlebars": "^4.7.6",
+    "ngrok": "^3.4.0",
+    "node-cron": "^2.0.3",
+    "nodemailer": "^6.4.17",
+    "nodemailer-mailgun-transport": "^2.0.2",
+    "puppeteer": "^7.0.0",
+    "puppeteer-extra": "^3.1.16",
+    "puppeteer-extra-plugin-anonymize-ua": "^2.2.15",
+    "puppeteer-extra-plugin-stealth": "^2.7.4"
   }
 }
