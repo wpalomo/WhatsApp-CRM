@@ -8,7 +8,8 @@ node_modules
 README.md
 # testing
 coverage
-
+.env
+encrypt
 # production
 build
 
