@@ -4,8 +4,8 @@ import CreditCardModal from "./CreditCardModal";
 import SuccessModal from "./SuccessModal";
 import ErrorModal from "./ErrorModal";
 
-const monthlyPlanId =  9606
-const annualPlanId = 9607
+const monthlyPlanId = process.env.REACT_APP_FLUTTERWAVE_MONTHLY_PLAN_ID 
+const annualPlanId = process.env.REACT_APP_FLUTTERWAVE_ANNUAL_PLAN_ID
 
 class PaymentPlans extends Component {
 
@@ -141,6 +141,7 @@ class PaymentPlans extends Component {
 	render() {
 		const { totalBill, selectedRadio, showError, currentAgentEntered, defaultInput, showSuccessModal, showErrorModal, amountPaid, flutterwavePaymentplanId, monthlyCost, annualCost } = this.state
 		const { companyData } = this.props;
+		
 			return(
 			<div className="expanded__downright">
 				<div className="payment__container">
