@@ -40,7 +40,7 @@ const HomePage = () => {
 							</p>
 							<br/>
 							<p>
-								Sauceflow is your WhatsApp CRM.  
+								Sign up for a free 2 day trial.  
 							</p>
 						</div>
 						<div className="hero__button">
