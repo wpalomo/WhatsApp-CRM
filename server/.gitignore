@@ -2,5 +2,5 @@ node_modules
 .env
 maytapi
 src/config
-src/controllers/v0/payments/routes
+src/controllers/v0/payments
 
