@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Router, Switch, Route } from "react-router-dom";
 import history from "./History";
-import HomePage from "./HomePage/HomePage";
+import HomePage from "./HomePage/Homepage";
 import SignUpPage from "./Register/Register";
 import PasswordResetPage from "./PasswordReset/index";
 import PasswordForgetPage from "./PasswordForget/index";
