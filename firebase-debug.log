@@ -1,0 +1,43 @@
+[debug] [2021-02-17T08:22:30.031Z] ----------------------------------------------------------------------
+[debug] [2021-02-17T08:22:30.033Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\tunde\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init --token 1//03VxQDaGKUqMyCgYIARAAGAMSNwF-L9IrOxPVcckc_wD2_ITaIjXBMcE0jr4vcoJSG80OSUm8hj-p2VxIh34dlJ8uqM6DukXVI5c
+[debug] [2021-02-17T08:22:30.033Z] CLI Version:   9.3.0
+[debug] [2021-02-17T08:22:30.033Z] Platform:      win32
+[debug] [2021-02-17T08:22:30.033Z] Node Version:  v12.16.3
+[debug] [2021-02-17T08:22:30.035Z] Time:          Wed Feb 17 2021 09:22:30 GMT+0100 (West Africa Standard Time)
+[debug] [2021-02-17T08:22:30.035Z] ----------------------------------------------------------------------
+[debug] [2021-02-17T08:22:30.035Z] 
+[debug] [2021-02-17T08:22:30.044Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-02-17T08:22:30.044Z] > authorizing via --token option
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\tunde\Documents\Projects\CSTeam\WhatsApp-CRM
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2021-02-17T08:22:38.172Z] > refreshing access token with scopes: []
+[debug] [2021-02-17T08:22:38.173Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-02-17T08:22:39.085Z] <<< HTTP RESPONSE 200 {"date":"Wed, 17 Feb 2021 08:22:39 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-02-17T08:22:39.095Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2021-02-17T08:22:40.358Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2021-02-17T08:22:40.359Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project whatsapp-crm-81907 (WhatsApp CRM) 
+[info] 
+=== Hosting Setup
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
