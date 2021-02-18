@@ -1,0 +1,4 @@
+node_modules/
+src/config
+src/controllers/v0/payments
+src/maytapi

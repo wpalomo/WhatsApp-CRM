@@ -1,16 +1,13 @@
-"use strict";
+const functions = require("firebase-functions"); 
 const express = require("express");
 const bodyParser = require("body-parser");
-require('dotenv').config();
-const cron = require('node-cron');
-const { db } = require("./config/config"); 
+const { db } = require("./src/config/config"); 
 
 
-const { IndexRouter } = require('./controllers/v0/index.router');
-const { setupWhatsAppNetwork } = require('./controllers/v0/messages/routes/message.router');
-const { setupFlutterNetwork } = require('./controllers/v0/payments/routes/payments.router');
-const { trialNetwork } = require('./controllers/v0/users/routes/users.router');
-
+const { IndexRouter } = require('./src/controllers/v0/index.router');
+const { setupWhatsAppNetwork } = require('./src/controllers/v0/messages/routes/message.router');
+const { setupFlutterNetwork } = require('./src/controllers/v0/payments/routes/payments.router');
+const { trialNetwork } = require('./src/controllers/v0/users/routes/users.router');
 
 const PORT = process.env.PORT || 4000;
 
@@ -22,7 +19,7 @@ const trialRemainder = (endingDate) => {
 	let remainderHours = Math.floor(remainder / toHours)
 	return remainderHours
 }
- 
+
 app.use(bodyParser.json());
 app.use('/api/v0/', IndexRouter)
 
@@ -131,4 +128,5 @@ app.listen(PORT, async () => {
 	console.log(`The server is running on port ${ PORT }`)
 });
 
- 
+
+exports.app = functions.https.onRequest(app);
