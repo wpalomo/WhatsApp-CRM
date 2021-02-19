@@ -1,14 +1,13 @@
 "use strict";
 const express = require("express");
+const functions = require("firebase-functions");
 const ngrok = require('ngrok');
 const axios = require('axios');
 const router = express.Router(); 
 const { db, serverTimestamp } = require("../../../../config/config");
 
 const INSTANCE_URL = 'https://api.maytapi.com/api';
-const ngrokAuthToken = process.env.NGROK_AUTH_TOKEN
-const user = process.env.NGROK_USER;
-const password = process.env.NGROK_PASSWORD;
+const ngrokAuthToken = functions.config().ngrok.auth_token
 const PORT = process.env.PORT || 4000;
  
 

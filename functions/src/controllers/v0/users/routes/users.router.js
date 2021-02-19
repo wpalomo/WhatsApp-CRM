@@ -1,5 +1,6 @@
 "use strict";
 const express = require("express");
+const functions = require("firebase-functions");
 const axios = require('axios');
 const router = express.Router();
 const ngrok = require('ngrok');
@@ -13,15 +14,15 @@ const { adminApp, db, admin } = require("../../../../config/config");
 const { freeTrial } = require('../../../../maytapi/trial');
 
 const INSTANCE_URL = 'https://api.maytapi.com/api';
-const ngrokAuthToken = process.env.NGROK_AUTH_TOKEN
+const ngrokAuthToken = functions.config().ngrok.auth_token
 const PORT = process.env.PORT || 4000;
 
 const sendVerificationEmailAdmin = (email, name, link) => {
 	const emailTemplateSource = fs.readFileSync(path.join(__dirname, "/emails/admin.hbs"), "utf8");
 	const mailgunAuth = {
 		auth: {
-			api_key: process.env.MAILGUN_API_KEY, 
-			domain: process.env.MAILGUN_LIVE_DOMAIN
+			api_key: functions.config().mailgun.api_key, 
+			domain: functions.config().mailgun.live_domain
 		}
 	}
 
@@ -51,8 +52,8 @@ const sendVerificationEmailAgent = (email, name, company, link) => {
 	const emailTemplateSource = fs.readFileSync(path.join(__dirname, "/emails/agent.hbs"), "utf8");
 	const mailgunAuth = {
 		auth: {
-			api_key: process.env.MAILGUN_API_KEY,
-			domain: process.env.MAILGUN_LIVE_DOMAIN
+			api_key: functions.config().mailgun.api_key,
+			domain: functions.config().mailgun.live_domain
 		}
 	}
 
