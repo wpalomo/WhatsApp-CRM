@@ -100,29 +100,6 @@ app.listen(PORT, async () => {
 		})
 	})
 
-	//cron job for trial companies to check if it is 48 hrs
-	cron.schedule('0 0 */1 * * *', async () => {
-		const trialObserver = await companiesRef.where('trial', '==', true).onSnapshot(async snapshot => {
-			let trials = snapshot.docs.map(doc => doc.id)
-			trials.forEach(async coy => {
-				let snap = await companiesRef.doc(coy).collection('trial').get()
-				if (!snap.empty) {
-					snap.forEach(async doc => {
-						let ends = doc.data().trialEnd
-						let id = doc.id
-						let hrsRemaining = trialRemainder(ends)
-						if (hrsRemaining <= 0) {
-							let old = await companiesRef.doc(coy).collection('trial').doc(id).delete()
-							let reset = await companiesRef.doc(coy).update({
-								trial: false
-							})
-						}
-					})
-				}
-			})
-		}) 
-	})
-	
 	//payment update
 	await setupFlutterNetwork()
 	console.log(`The server is running on port ${ PORT }`)
@@ -130,3 +107,27 @@ app.listen(PORT, async () => {
 
 
 exports.app = functions.https.onRequest(app);
+
+//cron job for trial companies to check if it is 48 hrs
+exports.endTrial = functions.pubsub.schedule('0 0 */1 * * *').onRun(context => {
+	const companiesRef = await db.collection('companies')
+	const trialObserver = await companiesRef.where('trial', '==', true).onSnapshot(async snapshot => {
+		let trials = snapshot.docs.map(doc => doc.id)
+		trials.forEach(async coy => {
+			let snap = await companiesRef.doc(coy).collection('trial').get()
+			if (!snap.empty) {
+				snap.forEach(async doc => {
+					let ends = doc.data().trialEnd
+					let id = doc.id
+					let hrsRemaining = trialRemainder(ends)
+					if (hrsRemaining <= 0) {
+						let old = await companiesRef.doc(coy).collection('trial').doc(id).delete()
+						let reset = await companiesRef.doc(coy).update({
+							trial: false
+						})
+					}
+				})
+			}
+		})
+	})
+})
