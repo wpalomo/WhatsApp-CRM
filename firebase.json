@@ -13,8 +13,8 @@
       },
       {
         "source": "/api",
-        "function": "api"
-      }
+        "destination": "api"
+      },
     ]
   },
   "functions": {
