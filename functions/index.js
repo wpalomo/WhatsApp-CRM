@@ -132,9 +132,4 @@ exports.endTrial = functions.pubsub.schedule('0 0 */1 * * *').onRun(async contex
 	})
 })
 
-//function to store react app env
-// exports.reactConfig = functions.https.onCall((data, context) => {
-// 	return {
 
-// 	}
-// })
