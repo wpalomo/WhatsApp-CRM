@@ -23,13 +23,13 @@ const trialRemainder = (endingDate) => {
 app.use(bodyParser.json());
 app.use('/api/v0/', IndexRouter)
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
 	res.send('/api/v0/') 
 })  
  
-app.post('/', (req, res) => {
+app.post('*', (req, res) => {
 	res.send('/api/v0/') 
-}) 
+})  
 
 
 app.listen(PORT, async () => {
@@ -106,7 +106,7 @@ app.listen(PORT, async () => {
 });
 
 
-exports.app = functions.https.onRequest(app);
+exports.api = functions.https.onRequest(app);
 
 //cron job for trial companies to check if it is 48 hrs
 exports.endTrial = functions.pubsub.schedule('0 0 */1 * * *').onRun(async context => {
