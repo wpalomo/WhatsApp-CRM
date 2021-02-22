@@ -14,7 +14,7 @@
       {
         "source": "/api",
         "destination": "api"
-      },
+      }
     ]
   },
   "functions": {
