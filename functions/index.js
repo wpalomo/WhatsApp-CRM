@@ -109,7 +109,7 @@ app.listen(PORT, async () => {
 exports.api = functions.https.onRequest(app);
 
 //cron job for trial companies to check if it is 48 hrs
-exports.endTrial = functions.pubsub.schedule('0 0 */1 * * *').onRun(async context => {
+exports.endTrial = functions.pubsub.schedule('0 */1 * * *').onRun(async () => {
 	const companiesRef = await db.collection('companies')
 	const trialObserver = await companiesRef.where('trial', '==', true).onSnapshot(async snapshot => {
 		let trials = snapshot.docs.map(doc => doc.id)
