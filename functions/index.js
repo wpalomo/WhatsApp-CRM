@@ -9,8 +9,6 @@ const { setupWhatsAppNetwork } = require('./src/controllers/v0/messages/routes/m
 const { setupFlutterNetwork } = require('./src/controllers/v0/payments/routes/payments.router');
 const { trialNetwork } = require('./src/controllers/v0/users/routes/users.router');
 
-const PORT = process.env.PORT || 4000;
-
 const app = express();
 
 const trialRemainder = (endingDate) => {
@@ -31,9 +29,7 @@ app.post('*', (req, res) => {
 	res.send('/api/v0/') 
 })  
 
-
-app.listen(PORT, async () => {
-	
+(async () => {
 	//set up a network for each company
 	const companiesRef = await db.collection('companies')
 	const observer = companiesRef.onSnapshot(async snapshot => {
@@ -102,9 +98,7 @@ app.listen(PORT, async () => {
 
 	//payment update
 	await setupFlutterNetwork()
-	console.log(`The server is running on port ${ PORT }`)
-});
-
+})()
 
 exports.api = functions.https.onRequest(app);
 

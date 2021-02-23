@@ -12,7 +12,7 @@
         "destination": "/index.html"
       },
       {
-        "source": "/api",
+        "source": "/api/**",
         "function": "api"
       }
     ]
