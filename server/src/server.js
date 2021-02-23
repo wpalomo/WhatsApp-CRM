@@ -35,10 +35,9 @@ app.post('/', (req, res) => {
 }) 
 
 app.listen(PORT, async () => {
-	console.log(`The server is running on port ${ PORT }`)
-});
+	//payment update
+	await setupFlutterNetwork()
 
-(async () => {
 	//set up a network for each company
 	const companiesRef = await db.collection('companies')
 	const observer = companiesRef.onSnapshot(async snapshot => {
@@ -127,9 +126,9 @@ app.listen(PORT, async () => {
 			})
 		}) 
 	})
-	
-	//payment update
-	await setupFlutterNetwork()
-})()
+
+	console.log(`The server is running on port ${ PORT }`)
+});
+
 
  

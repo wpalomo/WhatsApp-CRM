@@ -18,12 +18,12 @@ const trialRemainder = (endingDate) => {
 	return remainderHours
 }
 
-
-//set up a network for each company
-const companiesRef = await db.collection('companies')
-const observer = companiesRef.onSnapshot(async snapshot => {
-	//check if the company has a trial collection
-	snapshot.docs.forEach(async (company, index) => {
+(async () => {
+	//set up a network for each company
+	const companiesRef = await db.collection('companies')
+	const observer = companiesRef.onSnapshot(async snapshot => {
+		//check if the company has a trial collection
+		snapshot.docs.forEach(async (company, index) => {
 			let tunnel = 'No'
 			const { id } = company
 			let trialSnapshot = await companiesRef.doc(id).collection('trial').limit(1).get()
@@ -82,12 +82,12 @@ const observer = companiesRef.onSnapshot(async snapshot => {
 					}
 				})
 			}
+		})
 	})
-})
 
-//payment update
-await setupFlutterNetwork()
-
+	//payment update
+	await setupFlutterNetwork()
+})()
 
 app.use(bodyParser.json());
 app.use('/api/v0/', IndexRouter)
