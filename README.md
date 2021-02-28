@@ -14,14 +14,14 @@ It will remove the need for multiple agents to share one phone as they will be a
 
 
 ## Technologies
-* Socket.io - v3.0.4
+* Firebase Firestore Real Time Database
 * Express - v4.17.1
-* Twilio API - v3.54.1
 * React - v17.0.1
+* Puppeteer - v7.0.0
 
 
 ## Status
-Project is: _in progress_ 
+Project stage: _v0 deployed_. You can check it out at [Sauceflow](https://www.sauceflow.com) - feedback welcome.
 
 ## Contact
 Created by [@shocotee](https://www.twitter.com/shocotee) - feel free to contact me!
