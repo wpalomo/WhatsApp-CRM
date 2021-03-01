@@ -1,5 +1,5 @@
 # WhatsApp CRM
-This is a Node.js application powered by Socket.io and Express that provides a one-to-many chat experience.
+This is a Node.js application powered by Firebase and Express that provides a one-to-many chat experience.
 
 ## Table of contents
 * [General info](#general-info)
@@ -14,7 +14,7 @@ It will remove the need for multiple agents to share one phone as they will be a
 
 
 ## Technologies
-* Firebase Firestore Real Time Database
+* Firebase Firestore RTDB
 * Express - v4.17.1
 * React - v17.0.1
 * Puppeteer - v7.0.0
