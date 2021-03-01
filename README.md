@@ -1,5 +1,5 @@
 # WhatsApp CRM
-This is a Node.js application powered by React, Firebase and Express that provides a one-to-many chat experience.
+This is a Node.js application powered by Firebase, Express, React and Node.js that provides a one-to-many and many-to-many chat experience on WhatsApp.
 
 ## Table of contents
 * [General info](#general-info)
@@ -8,9 +8,11 @@ This is a Node.js application powered by React, Firebase and Express that provid
 * [Contact](#contact)
 
 ## General info
-This app will help businesses to use only one customer-facing whatsapp number to receive messages among multiple support agents in real-time. 
+This app will help businesses to use only one customer-facing WhatsApp number to receive messages among multiple support agents in real-time. 
 
 It will remove the need for multiple agents to share one phone as they will be able to receive customer messages on the app wherever they are.
+
+Businesses also do not need to have multiple WhatsApp numbers as only one can do!
 
 
 ## Technologies
@@ -18,6 +20,8 @@ It will remove the need for multiple agents to share one phone as they will be a
 * Express - v4.17.1
 * React - v17.0.1
 * Puppeteer - v7.0.0
+* WhatsApp
+
 
 
 ## Status
