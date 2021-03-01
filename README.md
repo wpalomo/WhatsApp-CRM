@@ -1,5 +1,5 @@
 # WhatsApp CRM
-This is a Node.js application powered by Firebase and Express that provides a one-to-many chat experience.
+This is a Node.js application powered by React, Firebase and Express that provides a one-to-many chat experience.
 
 ## Table of contents
 * [General info](#general-info)
